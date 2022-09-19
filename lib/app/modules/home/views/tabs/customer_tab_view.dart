@@ -141,8 +141,6 @@ class CustomersTabView extends GetResponsiveView<CustomerTabController> {
                 margin: const EdgeInsets.only(top: 22),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  // color:
-                  //     screen.context.theme.backgroundColor.withOpacity(0.2),
                   color: screen.context.theme.backgroundColor,
                 ),
                 child: Column(
