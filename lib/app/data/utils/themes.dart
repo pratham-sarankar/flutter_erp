@@ -15,10 +15,15 @@ ThemeData lightTheme = ThemeData(
     error: Colors.red.shade800,
     onError: Colors.white,
     background: Colors.white,
-    onBackground: const Color(0xffacb4d2),
+    onBackground: const Color(0xff303030),
     surface: const Color(0xfffafbfc),
     surfaceVariant: const Color(0xfff8f9fb),
     onSurface: const Color(0xffa3acbf),
+  ),
+  dataTableTheme: const DataTableThemeData(
+    dataTextStyle: TextStyle(
+      color: Color(0xff303030),
+    ),
   ),
   extensions: [
     const MembershipColors(
@@ -42,7 +47,10 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  textTheme: GoogleFonts.poppinsTextTheme(),
+  drawerTheme: const DrawerThemeData(
+    backgroundColor: Colors.white,
+  ),
+  listTileTheme: const ListTileThemeData(),
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
       TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
@@ -50,7 +58,7 @@ ThemeData lightTheme = ThemeData(
       TargetPlatform.linux: ZoomPageTransitionsBuilder(),
     },
   ),
-  backgroundColor: Colors.white,
+  cardColor: Colors.white,
   dividerColor: const Color(0xfff0f2f5),
   hoverColor: CupertinoColors.secondarySystemBackground,
   dividerTheme: const DividerThemeData(
@@ -75,10 +83,10 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   primaryIconTheme: const IconThemeData(
-    color: Color.fromARGB(255, 142, 149, 173),
+    color: Color(0xffebeef2),
   ),
   iconTheme: const IconThemeData(
-    color: Color(0xffebeef2),
+    color: Color.fromARGB(255, 142, 149, 173),
   ),
   scaffoldBackgroundColor: Colors.white,
   shadowColor: Colors.black12,
@@ -98,7 +106,6 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   primaryColor: Colors.blue,
   brightness: Brightness.dark,
-  backgroundColor: Colors.grey.shade900,
   colorScheme: const ColorScheme.dark().copyWith(
     primary: Colors.blue,
     onPrimary: Colors.white,
@@ -106,8 +113,19 @@ ThemeData darkTheme = ThemeData(
     tertiary: Colors.white.withOpacity(0.65),
     onSecondary: Colors.grey.shade900,
     surface: Colors.grey.withOpacity(0.1),
-    onSurface: Colors.white60,
+    onSurface: Colors.white70,
+    secondaryContainer: Colors.grey.shade900,
+    surfaceVariant: Colors.black,
+    background: Colors.grey.shade900,
+    onBackground: Colors.white.withOpacity(0.8),
   ),
+
+  dataTableTheme: DataTableThemeData(
+    dataTextStyle: TextStyle(
+      color: Colors.white.withOpacity(0.8),
+    ),
+  ),
+  cardColor: Colors.grey.shade900,
   extensions: [
     const MembershipColors(
       premium: Color(0xffFFD700),
@@ -119,6 +137,10 @@ ThemeData darkTheme = ThemeData(
       decreaseColor: Colors.red,
     ),
   ],
+  drawerTheme: DrawerThemeData(
+    backgroundColor: Colors.grey.shade900,
+  ),
+  // cardColor: Colors.grey.shade900,
   dividerColor: Colors.grey.shade700,
   dividerTheme: DividerThemeData(
     color: Colors.grey.shade700,
@@ -128,12 +150,14 @@ ThemeData darkTheme = ThemeData(
     thickness: 1,
   ),
   primaryIconTheme: IconThemeData(
-    color: Colors.white.withOpacity(0.8),
-  ),
-  iconTheme: IconThemeData(
     color: Colors.grey.withOpacity(0.2),
   ),
-  textTheme: GoogleFonts.poppinsTextTheme(),
+  iconTheme: IconThemeData(
+    color: Colors.white.withOpacity(0.8),
+  ),
+  textTheme: GoogleFonts.poppinsTextTheme().apply(
+    displayColor: Colors.white.withOpacity(0.8),
+  ),
   scaffoldBackgroundColor: Colors.black,
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(

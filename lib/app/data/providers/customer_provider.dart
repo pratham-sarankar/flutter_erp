@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class CustomerProvider extends GetConnect {
   Future<List<Customer>> getDummyCustomers() async {
     Response response = await get<List<Customer>>(
-      'https://randomuser.me/api/?results=50',
+      'https://randomuser.me/api/?results=100',
       decoder: (data) {
         List<Customer> results = List.from(data['results'])
             .map((e) => Customer.fromJson(e))

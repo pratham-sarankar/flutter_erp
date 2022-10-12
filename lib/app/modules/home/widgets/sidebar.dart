@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,6 @@ class _SideBarState extends State<SideBar> {
         children: [
           Expanded(
             child: Drawer(
-              backgroundColor: context.theme.backgroundColor,
               child: Column(
                 children: [
                   SizedBox(
@@ -208,25 +208,40 @@ class _SideBarState extends State<SideBar> {
                                           ),
                                         ),
                                       ),
-                                ...e.sideBarDestinations.map(
-                                  (destination) => Focus(
-                                    child: _NavigatorTile(
-                                      title: destination.title,
-                                      icon: destination.icon,
-                                      path: destination.path,
-                                      isCollapsed: _isCollapsed,
-                                      isSelected:
-                                          destination.path == _selectedPath,
-                                      onSelected: () {
-                                        setState(() {
-                                          _selectedPath = destination.path;
-                                        });
-                                        widget.onSelected(destination.path);
-                                      },
-                                      boldIcon: destination.boldIcon,
-                                    ),
+                                FocusTraversalGroup(
+                                  child: Column(
+                                    children: [
+                                      for (int i = 0;
+                                          i < e.sideBarDestinations.length;
+                                          i++)
+                                        FocusTraversalOrder(
+                                          order:
+                                              NumericFocusOrder(i.toDouble()),
+                                          child: _NavigatorTile(
+                                            title:
+                                                e.sideBarDestinations[i].title,
+                                            icon: e.sideBarDestinations[i].icon,
+                                            path: e.sideBarDestinations[i].path,
+                                            isCollapsed: _isCollapsed,
+                                            isSelected:
+                                                e.sideBarDestinations[i].path ==
+                                                    _selectedPath,
+                                            onSelected: () {
+                                              setState(() {
+                                                _selectedPath = e
+                                                    .sideBarDestinations[i]
+                                                    .path;
+                                              });
+                                              widget.onSelected(e
+                                                  .sideBarDestinations[i].path);
+                                            },
+                                            boldIcon: e.sideBarDestinations[i]
+                                                .boldIcon,
+                                          ),
+                                        ),
+                                    ],
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           )
@@ -397,11 +412,6 @@ class _NavigatorTileState extends State<_NavigatorTile> {
   void initState() {
     _focusNode = FocusNode();
     _isFocused = false;
-    _focusNode.addListener(() {
-      setState(() {
-        _isFocused = _focusNode.hasFocus;
-      });
-    });
     _isHovered = false;
     super.initState();
   }
@@ -410,6 +420,13 @@ class _NavigatorTileState extends State<_NavigatorTile> {
   Widget build(BuildContext context) {
     return Focus(
       focusNode: _focusNode,
+      autofocus: widget.isSelected,
+      canRequestFocus: true,
+      onFocusChange: (focus) {
+        setState(() {
+          _isFocused = focus;
+        });
+      },
       onKey: (node, event) {
         if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
           widget.onSelected();
@@ -437,7 +454,7 @@ class _NavigatorTileState extends State<_NavigatorTile> {
           child: Container(
               color: _isHovered || _isFocused
                   ? context.theme.hoverColor
-                  : context.theme.backgroundColor,
+                  : context.theme.drawerTheme.backgroundColor,
               child: Row(
                 children: [
                   AnimatedContainer(
@@ -448,7 +465,7 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                     decoration: BoxDecoration(
                       color: widget.isSelected
                           ? context.theme.primaryColor
-                          : context.theme.backgroundColor,
+                          : context.theme.drawerTheme.backgroundColor,
                       borderRadius: const BorderRadius.horizontal(
                         right: Radius.circular(100),
                       ),
@@ -464,14 +481,14 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                                 Icon(
                                   widget.boldIcon ?? widget.icon,
                                   size: 20,
-                                  color: context.theme.iconTheme.color,
+                                  color: context.theme.primaryIconTheme.color,
                                 ),
                                 Icon(
                                   widget.icon,
                                   size: 20,
                                   color: widget.isSelected
                                       ? context.theme.primaryColor
-                                      : context.theme.primaryIconTheme.color,
+                                      : context.theme.iconTheme.color,
                                 ),
                               ],
                             ),
@@ -483,14 +500,14 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                                 Icon(
                                   widget.boldIcon ?? widget.icon,
                                   size: 20,
-                                  color: context.theme.iconTheme.color,
+                                  color: context.theme.primaryIconTheme.color,
                                 ),
                                 Icon(
                                   widget.icon,
                                   size: 20,
                                   color: widget.isSelected
                                       ? context.theme.primaryColor
-                                      : context.theme.primaryIconTheme.color,
+                                      : context.theme.iconTheme.color,
                                 ),
                               ],
                             ),
@@ -516,5 +533,11 @@ class _NavigatorTileState extends State<_NavigatorTile> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 }

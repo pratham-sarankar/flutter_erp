@@ -1,6 +1,5 @@
-import 'package:get/get.dart';
-
 import 'package:flutter_erp/app/modules/home/controllers/customer_controller.dart';
+import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
 

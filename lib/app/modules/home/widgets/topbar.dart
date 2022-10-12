@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class TopBar extends StatelessWidget {
                 child: Icon(
                   CupertinoIcons.search,
                   size: 20,
-                  color: context.theme.primaryIconTheme.color,
+                  color: context.theme.iconTheme.color,
                 ),
               ),
               style: TextStyle(
@@ -187,14 +188,14 @@ class __TopBarButtonState extends State<_TopBarButton> {
                 Icon(
                   widget.boldIcon ?? widget.icon,
                   size: 20,
-                  color: context.theme.iconTheme.color,
+                  color: context.theme.primaryIconTheme.color,
                 ),
               Icon(
                 widget.icon,
                 size: 20,
                 color: _isHovered
                     ? context.theme.primaryColor
-                    : context.theme.primaryIconTheme.color,
+                    : context.theme.iconTheme.color,
               ),
             ],
           ),

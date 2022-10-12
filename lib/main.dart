@@ -3,8 +3,8 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_strategy/url_strategy.dart';
+
 import 'app/routes/app_pages.dart';
 
 void main() {
@@ -14,7 +14,6 @@ void main() {
     const initialSize = Size(600, 450);
     appWindow.maximize();
     appWindow.minSize = initialSize;
-    // appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;
     appWindow.show();
   });

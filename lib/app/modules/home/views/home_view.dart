@@ -18,34 +18,27 @@ class HomeView extends GetResponsiveView<HomeController> {
       body: screen.isTablet
           ? Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 80),
-                  child: _body(),
+                FocusScope(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 80),
+                    child: _body(),
+                  ),
                 ),
-                _sideBar(isCollapsed: true),
+                FocusScope(
+                  autofocus: true,
+                  child: _sideBar(isCollapsed: true),
+                ),
               ],
             )
           : Row(
               children: [
-                _sideBar(),
+                FocusScope(
+                  autofocus: true,
+                  child: _sideBar(),
+                ),
                 Expanded(
-                  child: Container(
-                    color: Colors.white.withOpacity(0.2),
-                    child: Column(
-                      children: [
-                        TopBar(
-                          screen: screen,
-                        ),
-                        Obx(() {
-                          return Expanded(
-                            child: IndexedStack(
-                              index: controller.tabIndex.value,
-                              children: Routes.homeTabs.values.toList(),
-                            ),
-                          );
-                        })
-                      ],
-                    ),
+                  child: FocusScope(
+                    child: _body(),
                   ),
                 ),
               ],
@@ -178,8 +171,10 @@ class HomeView extends GetResponsiveView<HomeController> {
       color: Colors.white.withOpacity(0.2),
       child: Column(
         children: [
-          TopBar(
-            screen: screen,
+          FocusScope(
+            child: TopBar(
+              screen: screen,
+            ),
           ),
           Obx(() {
             return Expanded(
