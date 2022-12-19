@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,7 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75 + appWindow.titleBarHeight,
+      height: 75 + (!kIsWeb ? (!kIsWeb ? appWindow.titleBarHeight : 0) : 0),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -25,7 +26,7 @@ class TopBar extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(
-              top: appWindow.titleBarHeight,
+              top: ((!kIsWeb ? appWindow.titleBarHeight : 0)),
               left: max(Get.width * 0.015, 20),
             ),
             width: max(Get.width * 0.21, 220),
@@ -44,7 +45,7 @@ class TopBar extends StatelessWidget {
                 color: context.theme.colorScheme.secondary,
               ),
               padding: const EdgeInsets.only(
-                  top: 15, bottom: 15, left: 10, right: 10),
+                  top: 13, bottom: 13, left: 10, right: 10),
               placeholder: "Search Keywords",
               cursorHeight: 16,
               placeholderStyle: TextStyle(
@@ -77,7 +78,8 @@ class TopBar extends StatelessWidget {
               ],
             ),
           Padding(
-            padding: EdgeInsets.only(top: appWindow.titleBarHeight),
+            padding:
+                EdgeInsets.only(top: (!kIsWeb ? appWindow.titleBarHeight : 0)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -118,7 +120,7 @@ class TopBar extends StatelessWidget {
                 Icon(
                   Icons.keyboard_arrow_down_rounded,
                   size: 22,
-                  color: context.theme.primaryIconTheme.color,
+                  color: context.theme.iconTheme.color,
                 ),
                 SizedBox(width: Get.width * 0.01),
               ],
@@ -154,7 +156,7 @@ class __TopBarButtonState extends State<_TopBarButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: appWindow.titleBarHeight),
+      padding: EdgeInsets.only(top: (!kIsWeb ? appWindow.titleBarHeight : 0)),
       child: MouseRegion(
         onEnter: (event) {
           setState(() {

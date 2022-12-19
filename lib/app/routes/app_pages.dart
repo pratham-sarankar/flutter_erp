@@ -1,25 +1,85 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/modules/home/views/tabs/customer_tab_view.dart';
-import 'package:flutter_erp/app/modules/home/views/tabs/home_tab_view.dart';
-import 'package:flutter_erp/app/modules/home/views/tabs/reports_tab_view.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_erp/app/data/middlewares/redirect_middleware.dart';
 import 'package:get/get.dart';
 
+import '../data/services/token_service.dart';
+import '../modules/auth/bindings/auth_binding.dart';
+import '../modules/auth/views/auth_view.dart';
+import '../modules/designations/bindings/designations_binding.dart';
+import '../modules/designations/views/designations_view.dart';
+import '../modules/employees/bindings/employees_binding.dart';
+import '../modules/employees/views/employees_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
+import '../modules/user_groups/bindings/user_groups_binding.dart';
+import '../modules/user_groups/views/user_groups_view.dart';
+import '../modules/users/bindings/users_binding.dart';
+import '../modules/users/views/users_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static final INITIAL =
+      Get.find<TokenService>().hasToken ? Routes.HOME : Routes.HOME;
 
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
-      title: 'Dashboard',
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.AUTH,
+      page: () => const AuthView(),
+      binding: AuthBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () => SettingsView(),
+      binding: SettingsBinding(),
+      transition: Transition.noTransition,
+      middlewares: [
+        RedirectMiddleware(
+            (route) => const RouteSettings(name: Routes.DESIGNATIONS)),
+      ],
+    ),
+    GetPage(
+      name: _Paths.EMPLOYEES,
+      page: () => EmployeesView(),
+      binding: EmployeesBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.DESIGNATIONS,
+      page: () => DesignationsView(),
+      binding: DesignationsBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.USER_GROUPS,
+      page: () => UserGroupsView(),
+      binding: UserGroupsBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.USERS,
+      page: () => UsersView(),
+      binding: UsersBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      binding: ProfileBinding(),
+      transition: Transition.noTransition,
     ),
   ];
 }

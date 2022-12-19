@@ -36,16 +36,29 @@ ThemeData lightTheme = ThemeData(
       decreaseColor: Colors.red.shade600,
     ),
   ],
-  textButtonTheme: const TextButtonThemeData(
+  textTheme: GoogleFonts.poppinsTextTheme().apply(),
+  textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStatePropertyAll(
-        Color.fromARGB(255, 231, 234, 237),
-      ),
-      foregroundColor: MaterialStatePropertyAll(Color(0xff303030)),
-      padding: MaterialStatePropertyAll(
+      backgroundColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.grey.shade100;
+        }
+        return const Color.fromARGB(255, 231, 234, 237);
+      }),
+      // foregroundColor: const MaterialStatePropertyAll(Color(0xff303030)),
+      foregroundColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.grey.shade400;
+        }
+        return const Color(0xff303030);
+      }),
+      padding: const MaterialStatePropertyAll(
         EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       ),
     ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    fillColor: Colors.grey.shade500,
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: Colors.white,
@@ -58,7 +71,6 @@ ThemeData lightTheme = ThemeData(
       TargetPlatform.linux: ZoomPageTransitionsBuilder(),
     },
   ),
-  cardColor: Colors.white,
   dividerColor: const Color(0xfff0f2f5),
   hoverColor: CupertinoColors.secondarySystemBackground,
   dividerTheme: const DividerThemeData(
@@ -155,10 +167,11 @@ ThemeData darkTheme = ThemeData(
   iconTheme: IconThemeData(
     color: Colors.white.withOpacity(0.8),
   ),
-  textTheme: GoogleFonts.poppinsTextTheme().apply(
-    displayColor: Colors.white.withOpacity(0.8),
-  ),
+  textTheme: GoogleFonts.poppinsTextTheme().apply(),
   scaffoldBackgroundColor: Colors.black,
+  inputDecorationTheme: InputDecorationTheme(
+    fillColor: Colors.grey.shade500,
+  ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(
       side: MaterialStateProperty.resolveWith(
@@ -173,13 +186,23 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
-  textButtonTheme: const TextButtonThemeData(
+  textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStatePropertyAll(
-        Color.fromARGB(255, 197, 202, 208),
-      ),
-      foregroundColor: MaterialStatePropertyAll(Color(0xff303030)),
-      padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 10)),
+      backgroundColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.grey.shade100;
+        }
+        return const Color.fromARGB(255, 231, 234, 237);
+      }),
+      // foregroundColor: const MaterialStatePropertyAll(Color(0xff303030)),
+      foregroundColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.grey.shade400;
+        }
+        return const Color(0xff303030);
+      }),
+      padding:
+          const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 10)),
     ),
   ),
   checkboxTheme: CheckboxThemeData(

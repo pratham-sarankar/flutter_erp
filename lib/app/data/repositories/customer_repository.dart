@@ -1,4 +1,4 @@
-import 'package:flutter_erp/app/data/models/customers.dart';
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/providers/customer_provider.dart';
 
 class CustomerRepository {
@@ -8,8 +8,13 @@ class CustomerRepository {
 
   static final instance = CustomerRepository._privateConstructor();
 
-  Future<List<Customer>> getDummyCustomers() async {
-    List<Customer> results = await _provider.getDummyCustomers();
+  Future<List<Customer>> fetchAll() async {
+    List<Customer> results = await _provider.fetchAll();
     return results;
+  }
+
+  Future<void> insertOne(Customer customer) async {
+    await _provider.insertOne(customer);
+    return;
   }
 }

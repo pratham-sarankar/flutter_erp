@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,7 @@ class _SideBarState extends State<SideBar> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: appWindow.titleBarHeight,
+                    height: (!kIsWeb ? appWindow.titleBarHeight : 0),
                   ),
                   SizedBox(
                     height: 150,
@@ -172,42 +173,28 @@ class _SideBarState extends State<SideBar> {
                             (e) => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _isCollapsed
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 30,
-                                          bottom: 10,
-                                        ),
-                                        child: Center(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: _isCollapsed
+                                      ? Container()
+                                      : Padding(
+                                          padding: EdgeInsets.only(
+                                            left: max(Get.width * 0.02, 32),
+                                            top: 30,
+                                            bottom: 10,
+                                          ),
                                           child: Text(
                                             e.title,
                                             style: TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 12,
                                               letterSpacing: 0.3,
                                               fontWeight: FontWeight.w500,
-                                              color: context.theme.colorScheme
+                                              color: Get.theme.colorScheme
                                                   .onBackground,
                                             ),
                                           ),
                                         ),
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          left: max(Get.width * 0.02, 32),
-                                          top: 30,
-                                          bottom: 10,
-                                        ),
-                                        child: Text(
-                                          e.title,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            letterSpacing: 0.3,
-                                            fontWeight: FontWeight.w500,
-                                            color: Get
-                                                .theme.colorScheme.onBackground,
-                                          ),
-                                        ),
-                                      ),
+                                ),
                                 FocusTraversalGroup(
                                   child: Column(
                                     children: [
@@ -328,7 +315,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                     Icon(
                       CupertinoIcons.bars,
                       size: 30,
-                      color: context.theme.primaryIconTheme.color,
+                      color: context.theme.iconTheme.color,
                     ),
                   ],
                 ),
@@ -344,7 +331,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                         Icon(
                           Icons.close_rounded,
                           size: 30,
-                          color: context.theme.primaryIconTheme.color,
+                          color: context.theme.iconTheme.color,
                         ),
                       ],
                     ),
@@ -360,8 +347,9 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                             "Repolyze",
                             style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.bold,
                               color: context.theme.primaryColor,
+                              height: 1.3,
                             ),
                           ),
                           const SizedBox(height: 3),
@@ -370,6 +358,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w300,
+                              height: 1.3,
                               color: context.theme.colorScheme.onBackground,
                             ),
                           ),
@@ -461,11 +450,11 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                     duration: const Duration(milliseconds: 100),
                     margin: const EdgeInsets.symmetric(vertical: 2),
                     width: 2,
-                    height: 40,
+                    height: widget.isCollapsed ? 45 : 40,
                     decoration: BoxDecoration(
                       color: widget.isSelected
                           ? context.theme.primaryColor
-                          : context.theme.drawerTheme.backgroundColor,
+                          : Colors.transparent,
                       borderRadius: const BorderRadius.horizontal(
                         right: Radius.circular(100),
                       ),
@@ -474,7 +463,7 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                   Expanded(
                     child: widget.isCollapsed
                         ? Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 0),
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
@@ -516,6 +505,7 @@ class _NavigatorTileState extends State<_NavigatorTile> {
                             contentPadding: const EdgeInsets.only(left: 25),
                             title: Text(
                               widget.title,
+                              maxLines: 1,
                               style: TextStyle(
                                 fontWeight: widget.isSelected
                                     ? FontWeight.w600

@@ -1,15 +1,19 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/services/toast_service.dart';
+import 'package:flutter_erp/app/data/services/token_service.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
+  await Get.putAsync(() => ToastService().init());
+  await Get.putAsync(() => TokenService().init());
   doWhenWindowReady(() {
     const initialSize = Size(600, 450);
     appWindow.maximize();

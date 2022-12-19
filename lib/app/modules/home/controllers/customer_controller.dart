@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/models/customers.dart';
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/utils/extensions/datetime.dart';
 import 'package:get/get.dart';
 
 class CustomerTabController extends GetxController {
-  late RxList<bool> selectedList;
-
-  late Rx<CustomerDataSource> dataSource;
+  late CustomerDataSource dataSource;
+  late RxBool isLoading;
 
   @override
   void onInit() {
-    dataSource = Rx(CustomerDataSource());
+    isLoading = true.obs;
+    fetchCustomers();
     super.onInit();
+  }
+
+  void fetchCustomers() async {
+    var customers = await CustomerRepository.instance.fetchAll();
+    dataSource = CustomerDataSource(customers: customers);
+    isLoading.value = false;
   }
 
   @override
@@ -27,86 +32,20 @@ class CustomerTabController extends GetxController {
 }
 
 class CustomerDataSource extends DataTableSource {
-  late RxBool _isLoading;
-  late RxList<Customer> _customers;
-  late RxList<Customer> _selectedCustomers;
-  late RxInt _sortIndex;
-  late RxBool _ascending;
+  late final List<Customer> customers;
 
-  bool get isLoading => _isLoading.value;
-  bool get ascending => _ascending.value;
-  int get sortIndex => _sortIndex.value;
+  CustomerDataSource({required this.customers});
 
-  set setSortIndex(int index) {
-    _sortIndex.value = index;
-  }
-
-  set setAscending(bool value) {
-    _ascending.value = value;
-  }
-
-  CustomerDataSource() {
-    _isLoading = true.obs;
-    _customers = <Customer>[].obs;
-    _selectedCustomers = <Customer>[].obs;
-    _sortIndex = 0.obs;
-    _ascending = true.obs;
-    _initCustomers();
-  }
-
-  Future<void> _initCustomers() async {
-    _customers.value = await CustomerRepository.instance.getDummyCustomers();
-    _isLoading.value = false;
-  }
-
-  void sortByName() {
-    _customers.sort((a, b) {
-      return a.name.toLowerCase().compareTo(b.name.toLowerCase()) *
-          (ascending ? -1 : 1);
-    });
-    notifyListeners();
-  }
+  bool get hasData => customers.isNotEmpty;
 
   @override
   DataRow? getRow(int index) {
     return DataRow(
-      color: MaterialStateColor.resolveWith(
-        (states) {
-          return Colors.transparent;
-        },
-      ),
-      cells: <DataCell>[
-        DataCell(
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(_customers[index].photoURL),
-              ),
-              const SizedBox(width: 8),
-              Text(_customers[index].name),
-            ],
-          ),
-        ),
-        DataCell(
-          Text(_customers[index].memberSince.format("MMM dd, yyyy")),
-        ),
-        DataCell(
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
-            child: const Text("Gold"),
-          ),
-        ),
-        DataCell(
-          Text(
-            "₹${_customers[index].totalPurchased.toString()}",
-          ),
-        ),
-        DataCell(
-          Text(
-            _customers[index].totalVisits.toString(),
-          ),
-        ),
+      cells: [
+        DataCell(Text(customers[index].getName())),
+        DataCell(Text(customers[index].getEmail())),
+        DataCell(Text(customers[index].getPhoneNumber())),
+        DataCell(Text(customers[index].getDateOfBirth())),
         DataCell(
           Row(
             children: [
@@ -129,6 +68,23 @@ class CustomerDataSource extends DataTableSource {
               const SizedBox(width: 5),
               TextButton(
                 onPressed: () {},
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.mail_rounded,
+                      size: 14,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Mail",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 5),
+              TextButton(
+                onPressed: () {},
                 style: const ButtonStyle(
                   padding: MaterialStatePropertyAll(
                     EdgeInsets.zero,
@@ -143,23 +99,17 @@ class CustomerDataSource extends DataTableSource {
           ),
         ),
       ],
-      selected: _selectedCustomers.contains(_customers[index]),
-      onSelectChanged: (selected) {
-        if (selected!) {
-          _selectedCustomers.add(_customers[index]);
-        } else {
-          _selectedCustomers.remove(_customers[index]);
-        }
-        notifyListeners();
-      },
+      onSelectChanged: (value) {},
     );
   }
+
+  int get rowsPerPage => customers.length;
 
   @override
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _customers.length;
+  int get rowCount => customers.length;
 
   @override
   int get selectedRowCount => 0;
