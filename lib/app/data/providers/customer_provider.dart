@@ -10,7 +10,7 @@ class CustomerProvider extends GetConnect {
   Future<List<Customer>> fetchAll() async {
     final token = Get.find<TokenService>().readToken();
     Response response = await get(
-      'http://$host/customer/all',
+      '$host/customer/all',
       headers: {HttpHeaders.authorizationHeader: "bearer $token"},
     );
     if (response.statusCode != HttpStatus.ok) {

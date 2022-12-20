@@ -12,7 +12,7 @@ class EmployeeProvider extends GetConnect {
     // final token = Get.find<TokenService>().readToken();
     //TODO: Send token for the authentication.
     Response response = await get(
-      'http://$host/employee/all',
+      '$host/employee/all',
       headers: {'authorization': "bearer token"},
     );
     if (response.statusCode != HttpStatus.ok) {
@@ -28,7 +28,7 @@ class EmployeeProvider extends GetConnect {
   }
 
   Future<Employee> insertOne({required Employee employee}) async {
-    Response response = await post('http://$host/employee', employee.toMap());
+    Response response = await post('$host/employee', employee.toMap());
     if (response.statusCode != HttpStatus.created) {
       throw ApiException(
         status: response.statusCode ?? HttpStatus.internalServerError,
@@ -46,7 +46,7 @@ class EmployeeProvider extends GetConnect {
     final token = Get.find<TokenService>().readToken();
     //TODO: Send token for the authentication.
     Response response = await put(
-      "http://$host/employee/${employee.id}",
+      "$host/employee/${employee.id}",
       employee.toMap(),
       headers: {'authorization': "bearer token"},
     );
@@ -63,7 +63,7 @@ class EmployeeProvider extends GetConnect {
   Future<void> deleteOne({required Employee employee}) async {
     final token = Get.find<TokenService>().readToken();
     Response response = await delete(
-      "http://$host/employee/${employee.id}",
+      "$host/employee/${employee.id}",
       headers: {'authorization': "bearer $token"},
     );
     if (response.statusCode != HttpStatus.ok) {
@@ -79,7 +79,7 @@ class EmployeeProvider extends GetConnect {
     final ids = employees.map((e) => e.id.toString()).toList();
     final token = Get.find<TokenService>().readToken();
     Response response = await delete(
-      "http://$host/employee",
+      "$host/employee",
       query: {"ids": ids},
       // headers: {'authorization': "bearer $token"},
     );
@@ -94,7 +94,7 @@ class EmployeeProvider extends GetConnect {
 
   Future<String> uploadImage(Uint8List data) async {
     Response response = await post(
-      "http://$host/image",
+      "$host/image",
       FormData(
         {
           'image': MultipartFile(

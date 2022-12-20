@@ -11,8 +11,8 @@ abstract class Routes {
   //Settings Tab
   static const PROFILE = _Paths.PROFILE;
   static const USERS = _Paths.USERS;
-  static const USER_GROUPS = _Paths.USER_GROUPS;
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
+  static const USER_GROUPS = _Paths.USER_GROUPS;
 }
 
 abstract class _Paths {
@@ -25,6 +25,6 @@ abstract class _Paths {
   //Settings Tab
   static const PROFILE = '/settings/profile';
   static const USERS = '/settings/users';
-  static const USER_GROUPS = '/settings/user-groups';
   static const DESIGNATIONS = '/settings/designations';
+  static const USER_GROUPS = '/user-groups';
 }

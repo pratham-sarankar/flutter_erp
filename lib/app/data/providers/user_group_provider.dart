@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
-import 'package:flutter_erp/app/data/models/designation.dart';
-import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/services/token_service.dart';
+import 'package:flutter_erp/app/data/models/user.dart';
+import 'package:flutter_erp/app/data/models/user_group.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
 
-class DesignationProvider extends GetConnect {
-  Future<Designation> insertOne({required Designation designation}) async {
-    Response response = await post('$host/designation', {
-      "name": designation.name,
+class UserGroupProvider extends GetConnect {
+  Future<UserGroup> insertOne({required UserGroup group}) async {
+    Response response = await post('$host/group', {
+      "name": group.name,
     });
     if (response.statusCode != HttpStatus.created) {
       throw ApiException(
@@ -19,14 +18,14 @@ class DesignationProvider extends GetConnect {
       );
     }
     var data = response.body[dataKey];
-    return Designation.fromMap(data);
+    return UserGroup.fromMap(data);
   }
 
-  Future<List<Employee>> fetchOneWithEmployees(int id) async {
-    final token = Get.find<TokenService>().readToken();
+  Future<List<User>> fetchOneWithUsers(int id) async {
+    // final token = Get.find<TokenService>().readToken();
     Response response = await get(
-      '$host/designation/$id',
-      headers: {HttpHeaders.authorizationHeader: "bearer $token"},
+      '$host/group/$id',
+      headers: {HttpHeaders.authorizationHeader: "bearer token"},
     );
     if (response.statusCode != HttpStatus.ok) {
       throw ApiException(
@@ -36,17 +35,16 @@ class DesignationProvider extends GetConnect {
     }
     var data = response.body[dataKey];
 
-    List<Employee> users = data[employeesKey]
-        .map<Employee>((map) => Employee.fromMap(map))
-        .toList();
+    List<User> users =
+        data[usersKey].map<User>((map) => User.fromMap(map)).toList();
     return users;
   }
 
-  Future<List<Designation>> fetchAll() async {
+  Future<List<UserGroup>> fetchAll() async {
     //TODO: Send token for the authentication
     // final token = Get.find<TokenService>().readToken();
     Response response = await get(
-      '$host/designation/all',
+      '$host/group/all',
       headers: {HttpHeaders.authorizationHeader: "bearer token"},
     );
     if (response.statusCode != HttpStatus.ok) {
@@ -56,14 +54,14 @@ class DesignationProvider extends GetConnect {
       );
     }
     List data = response.body[dataKey];
-    List<Designation> groups =
-        data.map<Designation>((map) => Designation.fromMap(map)).toList();
+    List<UserGroup> groups =
+        data.map<UserGroup>((map) => UserGroup.fromMap(map)).toList();
     return groups;
   }
 
-  Future<Designation> updateOne(Designation designation) async {
-    Response response = await put('$host/designation/${designation.id}', {
-      "name": designation.name,
+  Future<UserGroup> updateOne(UserGroup group) async {
+    Response response = await put('$host/group/${group.id}', {
+      "name": group.name,
     });
     if (response.statusCode != HttpStatus.ok) {
       throw ApiException(
@@ -72,11 +70,11 @@ class DesignationProvider extends GetConnect {
       );
     }
     var data = response.body[dataKey];
-    return Designation.fromMap(data);
+    return UserGroup.fromMap(data);
   }
 
-  Future<void> deleteOne(Designation designation) async {
-    Response response = await delete('$host/designation/${designation.id}');
+  Future<void> deleteOne(UserGroup group) async {
+    Response response = await delete('$host/group/${group.id}');
     if (response.statusCode != HttpStatus.accepted) {
       throw ApiException(
         status: response.statusCode ?? HttpStatus.internalServerError,

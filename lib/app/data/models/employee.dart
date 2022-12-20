@@ -1,3 +1,4 @@
+import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:intl/intl.dart';
 
 class Employee {
@@ -68,7 +69,7 @@ class Employee {
 
   String? getPhotoUrl() {
     if (photoUrl == null) return null;
-    return "http://localhost:3000/employee/images/$photoUrl";
+    return "$host/employee/images/$photoUrl";
   }
 
   String getName() {
