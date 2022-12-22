@@ -54,7 +54,7 @@ class Employee {
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, username: $username, email: $email, phoneNumber: $phoneNumber, dob: $dob, photoUrl: $photoUrl}';
+    return 'Employee{id: $id, firstName: $firstName, lastName: $lastName, username: $username, email: $email, phoneNumber: $phoneNumber, dob: $dob, photoUrl: $photoUrl, designationId: $designationId}';
   }
 
   @override

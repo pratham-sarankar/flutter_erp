@@ -245,23 +245,35 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
                           ),
                           const SizedBox(height: 10),
                           PlusDropDown(
-                            initialValue: widget.designations!.first.id,
-                            items: widget.designations!
-                                .map<DropdownMenuItem<int>>(
-                                  (designation) => DropdownMenuItem<int>(
-                                    value: designation.id,
-                                    child: Text(
-                                      designation.getName(),
-                                      style:
-                                          context.textTheme.bodyLarge!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: context
-                                            .theme.colorScheme.onBackground,
+                            initialValue: employee.designationId,
+                            items: [
+                              DropdownMenuItem<int>(
+                                value: null,
+                                child: Text(
+                                  "Select a designation",
+                                  style: context.textTheme.bodyLarge!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade500,
+                                  ),
+                                ),
+                              ),
+                              ...widget.designations!
+                                  .map<DropdownMenuItem<int>>(
+                                    (designation) => DropdownMenuItem<int>(
+                                      value: designation.id,
+                                      child: Text(
+                                        designation.getName(),
+                                        style: context.textTheme.bodyLarge!
+                                            .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: context
+                                              .theme.colorScheme.onBackground,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
+                                  )
+                                  .toList(),
+                            ],
                             onChanged: (value) {
                               employee.designationId = value;
                             },

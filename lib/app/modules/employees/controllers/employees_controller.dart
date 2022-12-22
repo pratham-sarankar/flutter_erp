@@ -26,8 +26,7 @@ class EmployeesController extends GetxController {
     isRefreshing = false.obs;
     isSelectionMode = false.obs;
     designations = <Designation>[].obs;
-    fetchEmployees();
-    fetchDesignations();
+    init();
     super.onInit();
   }
 
@@ -42,6 +41,7 @@ class EmployeesController extends GetxController {
     }
     dataSource.value = EmployeeDataSource(
       employees: employees,
+      designations: designations,
       onUpdate: updateEmployee,
       onDelete: deleteEmployee,
       onSelect: onSelectEmployee,
@@ -49,30 +49,17 @@ class EmployeesController extends GetxController {
     isRefreshing.value = false;
   }
 
-  Future<void> fetchEmployees() async {
+  Future<void> init() async {
     var employees = await EmployeeRepository.instance.fetchAll();
+    designations.value = await DesignationRepository.instance.fetchAll();
     dataSource = Rx(EmployeeDataSource(
       employees: employees,
+      designations: designations,
       onUpdate: updateEmployee,
       onDelete: deleteEmployee,
       onSelect: onSelectEmployee,
     ));
     isLoading.value = false;
-  }
-
-  Future<void> fetchDesignations() async {
-    var fetchedGroups = await DesignationRepository.instance.fetchAll();
-    designations.value = fetchedGroups;
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   void createNewEmployee() async {
@@ -143,25 +130,29 @@ class EmployeesController extends GetxController {
     if (isRefreshing.value) return;
     isRefreshing.value = true;
     var employees = await EmployeeRepository.instance.fetchAll();
+    designations.value = await DesignationRepository.instance.fetchAll();
     dataSource.value = EmployeeDataSource(
       employees: employees,
+      designations: designations,
       onUpdate: updateEmployee,
       onDelete: deleteEmployee,
       onSelect: onSelectEmployee,
     );
-    designations.value = await DesignationRepository.instance.fetchAll();
     isRefreshing.value = false;
   }
 }
 
 class EmployeeDataSource extends DataTableSource {
   List<Employee> employees;
+  List<Designation> designations;
+
   final Function(Employee) onUpdate;
   final Function(Employee) onDelete;
   final Function(List<Employee>) onSelect;
 
   EmployeeDataSource(
       {required this.employees,
+      required this.designations,
       required this.onUpdate,
       required this.onDelete,
       required this.onSelect});
@@ -172,8 +163,7 @@ class EmployeeDataSource extends DataTableSource {
   DataRow? getRow(int index) {
     return DataRow(
       onLongPress: () {
-        if (onUpdate == null) return;
-        onUpdate!(employees[index]);
+        onUpdate(employees[index]);
       },
       cells: [
         DataCell(Row(
@@ -199,7 +189,14 @@ class EmployeeDataSource extends DataTableSource {
         )),
         DataCell(Text(employees[index].getEmail())),
         DataCell(Text(employees[index].getPhoneNumber())),
-        DataCell(Text(employees[index].getDateOfBirth())),
+        DataCell(
+          Text(designations
+                  .firstWhere(
+                      (element) => element.id == employees[index].designationId,
+                      orElse: () => Designation(name: "-"))
+                  .name ??
+              "-"),
+        ),
         DataCell(
           Row(
             children: [

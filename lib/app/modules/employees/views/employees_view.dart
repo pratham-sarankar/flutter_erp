@@ -87,7 +87,7 @@ class EmployeesView extends GetResponsiveView<EmployeesController> {
                                   ),
                                   DataColumn(
                                     label: Text(
-                                      "Date of Birth",
+                                      "Designation",
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,

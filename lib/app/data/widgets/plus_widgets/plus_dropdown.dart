@@ -40,7 +40,8 @@ class _PlusDropDownState extends State<PlusDropDown> {
             value = selectedValue;
           });
         },
-        icon: const Icon(Icons.arrow_drop_down_rounded, size: 25),
+        icon: Icon(Icons.arrow_drop_down_rounded,
+            size: 25, color: value == null ? Colors.grey : Colors.black),
         iconSize: 14,
         buttonHeight: 35,
         buttonPadding: const EdgeInsets.only(left: 5, right: 14),
