@@ -17,8 +17,11 @@ class TokenService extends GetxService {
     return await _box.write(tokenKey, token);
   }
 
+  Future<void> deleteToken() async {
+    return await _box.write(tokenKey, null);
+  }
+
   String readToken() {
-    return "";
-    // return _box.read(tokenKey);
+    return _box.read(tokenKey);
   }
 }

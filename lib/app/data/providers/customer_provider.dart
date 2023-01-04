@@ -1,31 +1,44 @@
-import 'dart:io';
-
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/services/token_service.dart';
+import 'package:flutter_erp/app/data/utils/abstracts/provider.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
 
-class CustomerProvider extends GetConnect {
-  Future<List<Customer>> fetchAll() async {
-    final token = Get.find<TokenService>().readToken();
-    Response response = await get(
-      '$host/customer/all',
-      headers: {HttpHeaders.authorizationHeader: "bearer $token"},
-    );
-    if (response.statusCode != HttpStatus.ok) {
-      throw ApiException(
-        status: response.statusCode ?? HttpStatus.internalServerError,
-        message: response.body[messageKey],
-      );
-    }
-    List data = response.body[dataKey];
-    List<Customer> customers =
-        data.map<Customer>((map) => Customer.fromMap(map)).toList();
-    return customers;
+class CustomerProvider extends Provider<Customer> {
+  CustomerProvider() : super(path: "/customer");
+
+  @override
+  Future insert(Customer value) async {
+    await post('/', value.toMap());
   }
 
-  Future<void> insertOne(Customer customer) async {
+  @override
+  Future<List<Customer>> fetch({int? limit, int? offset}) async {
+    Response response =
+        await get('/', query: {"limit": limit, "offset": offset});
+    List data = response.body[dataKey];
+    return data.map<Customer>((map) => Customer.fromMap(map)).toList();
+  }
+
+  @override
+  Future<Customer> fetchOne(int id) async {
+    Response response = await get('/$id');
+    return Customer.fromMap(response.body[dataKey]);
+  }
+
+  @override
+  Future<void> update(Customer value) async {
+    await put("/${value.id}", value.toMap());
+  }
+
+  @override
+  Future destroy(Customer value) async {
+    await delete('/${value.id}');
     return;
+  }
+
+  @override
+  Future destroyMany(List<Customer> value) async {
+    List ids = value.map((e) => e.id).toList();
+    await delete("/", query: {"ids": ids});
   }
 }

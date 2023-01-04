@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/designation.dart';
-import 'package:flutter_erp/app/modules/home/widgets/modal_form_field.dart';
+import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_form_field.dart';
 import 'package:get/get.dart';
 
 class DesignationDialog extends StatefulWidget {
@@ -69,7 +69,7 @@ class _DesignationDialogState extends State<DesignationDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "Name",
                 type: TextInputType.name,
                 hintText: "Manager",

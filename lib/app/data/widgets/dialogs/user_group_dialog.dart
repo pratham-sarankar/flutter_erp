@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/user_group.dart';
-import 'package:flutter_erp/app/modules/home/widgets/modal_form_field.dart';
+import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_form_field.dart';
 import 'package:get/get.dart';
 
 class UserGroupDialog extends StatefulWidget {
@@ -69,7 +69,7 @@ class _UserGroupDialogState extends State<UserGroupDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "Name",
                 type: TextInputType.name,
                 hintText: "Manager",

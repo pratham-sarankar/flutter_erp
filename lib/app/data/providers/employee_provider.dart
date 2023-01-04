@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/employee.dart';
@@ -8,11 +7,41 @@ import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
 
 class EmployeeProvider extends GetConnect {
-  Future<List<Employee>> fetchAll() async {
+  Future<Employee> fetchOne(int id) async {
     // final token = Get.find<TokenService>().readToken();
     //TODO: Send token for the authentication.
     Response response = await get(
-      '$host/employee/all',
+      '$host/employee/$id',
+      headers: {'authorization': "bearer token"},
+    );
+    if (response.statusCode != HttpStatus.ok) {
+      throw ApiException(
+        status: response.statusCode ?? HttpStatus.internalServerError,
+        message: response.body[messageKey],
+      );
+    }
+    var data = response.body[dataKey];
+    return Employee.fromMap(data);
+  }
+
+  Future<List<Employee>> search(Employee employee) async {
+    Response response = await get('$host/employee/search');
+    if (response.statusCode != HttpStatus.ok) {
+      throw ApiException(
+        status: response.statusCode ?? HttpStatus.internalServerError,
+        message: response.body[messageKey],
+      );
+    }
+    List data = response.body[dataKey];
+    return data.map<Employee>((e) => Employee.fromMap(e)).toList();
+  }
+
+  Future<List<Employee>> fetchAll() async {
+    // final token = Get.find<TokenService>().readToken();
+    //TODO: Send token for the authentication.
+    String url = "$host/employee/all";
+    Response response = await get(
+      url,
       headers: {'authorization': "bearer token"},
     );
     if (response.statusCode != HttpStatus.ok) {
@@ -36,10 +65,7 @@ class EmployeeProvider extends GetConnect {
       );
     }
     var data = response.body[dataKey];
-    //TODO: Save token here.
-    // var token = data[tokenKey];
-    // await Get.find<TokenService>().saveToken(token);
-    return Employee.fromMap(data[employeeKey]);
+    return Employee.fromMap(data);
   }
 
   Future<Employee> updateOne({required Employee employee}) async {
@@ -90,26 +116,5 @@ class EmployeeProvider extends GetConnect {
       );
     }
     return;
-  }
-
-  Future<String> uploadImage(Uint8List data) async {
-    Response response = await post(
-      "$host/image",
-      FormData(
-        {
-          'image': MultipartFile(
-            data,
-            filename: DateTime.now().toIso8601String(),
-          ),
-        },
-      ),
-    );
-    if (response.statusCode != HttpStatus.ok) {
-      throw ApiException(
-        status: response.statusCode ?? HttpStatus.internalServerError,
-        message: response.body[messageKey],
-      );
-    }
-    return response.body[dataKey];
   }
 }

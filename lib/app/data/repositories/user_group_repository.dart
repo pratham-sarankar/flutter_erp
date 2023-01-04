@@ -1,4 +1,4 @@
-import 'package:flutter_erp/app/data/models/user.dart';
+import 'package:flutter_erp/app/data/models/Users/user.dart';
 import 'package:flutter_erp/app/data/models/user_group.dart';
 import 'package:flutter_erp/app/data/providers/user_group_provider.dart';
 

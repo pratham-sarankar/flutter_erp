@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter_erp/app/data/models/employee.dart';
 import 'package:flutter_erp/app/data/providers/employee_provider.dart';
@@ -23,15 +22,15 @@ class EmployeeRepository {
     return await _provider.updateOne(employee: employee);
   }
 
+  Future<List<Employee>> search(Employee employee) async {
+    return await _provider.search(employee);
+  }
+
   Future<void> deleteOne(Employee employee) async {
     return await _provider.deleteOne(employee: employee);
   }
 
   Future<void> deleteMany(List<Employee> employees) async {
     return await _provider.deleteMany(employees: employees);
-  }
-
-  Future<String> uploadImage(Uint8List data) async {
-    return await _provider.uploadImage(data);
   }
 }

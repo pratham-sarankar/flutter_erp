@@ -1,0 +1,7 @@
+version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
+options: "94c13d25ec871a0d0aac47ae46db761c0c131eb4c55954c776c1a31e369d530f"
+build_start_time: [1672807805, 833055019]
+build_end_time: [1672807805, 863203048]
+inputs:
+  "/Users/prathamsarankar/.pub-cache/hosted/pub.dartlang.org/bitsdojo_window_macos-0.1.3/macos/Classes/BitsdojoWindow.swift": !private [1662898422, 808284044]
+  "/Users/prathamsarankar/.pub-cache/hosted/pub.dartlang.org/bitsdojo_window_macos-0.1.3/macos/Classes/BitsdojoWindowPlugin.swift": !private [1662898422, 798532009]

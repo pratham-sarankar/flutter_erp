@@ -4,13 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
+import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:flutter_erp/app/data/services/file_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
+import 'package:flutter_erp/app/data/utils/extensions/form_validator.dart';
 import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_dropdown.dart';
-import 'package:flutter_erp/app/modules/home/widgets/modal_form_field.dart';
+import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_form_field.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 
 class EmployeeDialog extends StatefulWidget {
@@ -107,14 +109,14 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
   }
 
   void _pickImage() async {
-    var image = await ImagePickerWeb.getImageAsBytes();
-    if (image == null) return;
+    var file = await Get.find<FileService>().pickImage();
+    if (file == null) return;
     setState(() {
-      this.image = image;
+      image = file.bytes;
       _isLoading = true;
     });
     try {
-      String key = await EmployeeRepository.instance.uploadImage(image);
+      String key = await FileRepository.instance.uploadFile(image!);
       employee.photoUrl = key;
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
@@ -139,6 +141,12 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
                 fit: BoxFit.cover,
               ),
             ),
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2),
+                  )
+                : null,
           ),
           Positioned(
             top: -10,
@@ -195,7 +203,7 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "First Name",
                 type: TextInputType.name,
                 hintText: "John",
@@ -207,11 +215,12 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
             ),
             const SizedBox(width: 20),
             Expanded(
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "Last Name",
                 type: TextInputType.name,
                 hintText: "Doe",
                 initialText: employee.lastName,
+                isRequired: true,
                 onSaved: (value) {
                   employee.lastName = value;
                 },
@@ -277,6 +286,7 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
                             onChanged: (value) {
                               employee.designationId = value;
                             },
+                            validator: ValidationBuilder().buildDyn(),
                           ),
                         ],
                       ),
@@ -285,13 +295,15 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
                   ),
                 Expanded(
                   flex: 40,
-                  child: ModalFormField(
+                  child: PlusFormField(
                     title: "Email",
                     type: TextInputType.emailAddress,
                     initialText: employee.email,
                     onSaved: (value) {
                       employee.email = value;
                     },
+                    onValidate:
+                        ValidationBuilder(optional: true).email().build(),
                     // onValidate: (value) {},
                   ),
                 ),
@@ -305,20 +317,20 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
           children: [
             Expanded(
               flex: 60,
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "Mobile no.",
                 isRequired: true,
                 initialText: employee.phoneNumber,
                 onSaved: (value) {
                   employee.phoneNumber = value;
                 },
-                // onValidate: (value) {},
+                onValidate: ValidationBuilder().phone().build(),
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               flex: 40,
-              child: ModalFormField(
+              child: PlusFormField(
                 title: "Date of Birth",
                 type: TextInputType.datetime,
                 hintText: "dd-mm-yyyy",
@@ -333,7 +345,6 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
                     return;
                   }
                 },
-                // onValidate: (value) {},
               ),
             ),
           ],

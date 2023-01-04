@@ -1,11 +1,10 @@
-import 'package:flutter_erp/app/data/utils/keys.dart';
+import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:intl/intl.dart';
 
 class Employee {
   final int? id;
   String? firstName;
   String? lastName;
-  String? username;
   String? email;
   String? phoneNumber;
   DateTime? dob;
@@ -17,7 +16,6 @@ class Employee {
     this.firstName,
     this.lastName,
     this.photoUrl,
-    this.username,
     this.email,
     this.phoneNumber,
     this.dob,
@@ -29,7 +27,6 @@ class Employee {
       'id': id,
       'firstName': firstName,
       'lastName': lastName,
-      'username': username,
       'email': email,
       'phoneNumber': phoneNumber,
       'dob': dob == null ? null : DateFormat("yyyy-M-dd").format(dob!),
@@ -43,7 +40,6 @@ class Employee {
       id: map['id'],
       firstName: map['firstName'],
       lastName: map['lastName'],
-      username: map['username'],
       email: map['email'],
       phoneNumber: map['phoneNumber'],
       photoUrl: map['photoUrl'],
@@ -54,7 +50,7 @@ class Employee {
 
   @override
   String toString() {
-    return 'Employee{id: $id, firstName: $firstName, lastName: $lastName, username: $username, email: $email, phoneNumber: $phoneNumber, dob: $dob, photoUrl: $photoUrl, designationId: $designationId}';
+    return 'Employee{id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, dob: $dob, photoUrl: $photoUrl, designationId: $designationId}';
   }
 
   @override
@@ -69,13 +65,10 @@ class Employee {
 
   String? getPhotoUrl() {
     if (photoUrl == null) return null;
-    return "$host/employee/images/$photoUrl";
+    return FileRepository.instance.getUrl(photoUrl!);
   }
 
   String getName() {
-    if (firstName == null && lastName == null) {
-      return username ?? '-';
-    }
     return "$firstName $lastName";
   }
 

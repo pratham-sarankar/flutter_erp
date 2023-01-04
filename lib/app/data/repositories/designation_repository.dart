@@ -1,32 +1,43 @@
 import 'package:flutter_erp/app/data/models/designation.dart';
-import 'package:flutter_erp/app/data/models/employee.dart';
 import 'package:flutter_erp/app/data/providers/designation_provider.dart';
+import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
+import 'package:get/get.dart';
 
-class DesignationRepository {
+class DesignationRepository extends Repository<Designation> {
   final DesignationProvider _provider;
 
   DesignationRepository._privateConstructor()
-      : _provider = DesignationProvider();
+      : _provider = Get.find<DesignationProvider>();
 
   static final instance = DesignationRepository._privateConstructor();
 
-  Future<Designation> insertOne(Designation designation) async {
-    return await _provider.insertOne(designation: designation);
+  @override
+  Future<void> insert(Designation value) {
+    return _provider.insert(value);
   }
 
-  Future<List<Designation>> fetchAll() async {
-    return await _provider.fetchAll();
+  @override
+  Future<Designation> fetchOne(int id) {
+    return _provider.fetchOne(id);
   }
 
-  Future<List<Employee>> fetchOneWithEmployees(int id) async {
-    return await _provider.fetchOneWithEmployees(id);
+  @override
+  Future<List<Designation>> fetch({int? limit, int? offset}) {
+    return _provider.fetch(limit: limit, offset: offset);
   }
 
-  Future<Designation> updateOne(Designation designation) async {
-    return await _provider.updateOne(designation);
+  @override
+  Future<void> update(Designation value) {
+    return _provider.update(value);
   }
 
-  Future<void> deleteOne(Designation designation) async {
-    return await _provider.deleteOne(designation);
+  @override
+  Future<void> destroy(Designation value) {
+    return _provider.destroy(value);
+  }
+
+  @override
+  Future<void> destroyMany(List<Designation> value) {
+    return _provider.destroyMany(value);
   }
 }

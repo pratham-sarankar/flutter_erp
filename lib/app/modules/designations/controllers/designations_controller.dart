@@ -31,7 +31,7 @@ class DesignationsController extends GetxController {
   }
 
   Future<void> fetchDesignations() async {
-    var designations = await DesignationRepository.instance.fetchAll();
+    var designations = await DesignationRepository.instance.fetch();
     this.designations = RxList(designations);
     isLoading.value = false;
   }
@@ -41,7 +41,7 @@ class DesignationsController extends GetxController {
         context: Get.context!, builder: (context) => const DesignationDialog());
     if (designation == null) return;
     try {
-      await DesignationRepository.instance.insertOne(designation);
+      await DesignationRepository.instance.insert(designation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -54,7 +54,7 @@ class DesignationsController extends GetxController {
         builder: (context) => DesignationDialog(designation: designation));
     if (updatedDesignation == null) return;
     try {
-      await DesignationRepository.instance.updateOne(updatedDesignation);
+      await DesignationRepository.instance.update(updatedDesignation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -70,7 +70,7 @@ class DesignationsController extends GetxController {
     );
     if (!(sure ?? false)) return;
     try {
-      await DesignationRepository.instance.deleteOne(designation);
+      await DesignationRepository.instance.destroy(designation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -80,7 +80,7 @@ class DesignationsController extends GetxController {
   Future<void> refresh() async {
     if (isRefreshing.value) return;
     isRefreshing.value = true;
-    designations.value = await DesignationRepository.instance.fetchAll();
+    designations.value = await DesignationRepository.instance.fetch();
     isRefreshing.value = false;
   }
 }

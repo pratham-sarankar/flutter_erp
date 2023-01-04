@@ -36,8 +36,8 @@ class EmployeesController extends GetxController {
     if (designationId == null) {
       employees = await EmployeeRepository.instance.fetchAll();
     } else {
-      employees = await DesignationRepository.instance
-          .fetchOneWithEmployees(designationId);
+      employees = (await DesignationRepository.instance.fetchOne(designationId))
+          .employees;
     }
     dataSource.value = EmployeeDataSource(
       employees: employees,
@@ -51,7 +51,7 @@ class EmployeesController extends GetxController {
 
   Future<void> init() async {
     var employees = await EmployeeRepository.instance.fetchAll();
-    designations.value = await DesignationRepository.instance.fetchAll();
+    designations.value = await DesignationRepository.instance.fetch();
     dataSource = Rx(EmployeeDataSource(
       employees: employees,
       designations: designations,
@@ -130,7 +130,7 @@ class EmployeesController extends GetxController {
     if (isRefreshing.value) return;
     isRefreshing.value = true;
     var employees = await EmployeeRepository.instance.fetchAll();
-    designations.value = await DesignationRepository.instance.fetchAll();
+    designations.value = await DesignationRepository.instance.fetch();
     dataSource.value = EmployeeDataSource(
       employees: employees,
       designations: designations,

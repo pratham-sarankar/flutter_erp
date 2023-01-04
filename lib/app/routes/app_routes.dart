@@ -5,7 +5,7 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const EMPLOYEES = _Paths.EMPLOYEES;
-  static const AUTH = _Paths.AUTH;
+  static const LOGIN = _Paths.LOGIN;
   static const SETTINGS = _Paths.SETTINGS;
 
   //Settings Tab
@@ -13,12 +13,13 @@ abstract class Routes {
   static const USERS = _Paths.USERS;
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
   static const USER_GROUPS = _Paths.USER_GROUPS;
+  static const CUSTOMERS = _Paths.CUSTOMERS;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/';
-  static const AUTH = '/auth';
+  static const LOGIN = '/login';
   static const EMPLOYEES = '/employees';
   static const SETTINGS = '/settings/';
 
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const USERS = '/settings/users';
   static const DESIGNATIONS = '/settings/designations';
   static const USER_GROUPS = '/user-groups';
+  static const CUSTOMERS = '/customers';
 }
