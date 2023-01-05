@@ -39,7 +39,7 @@ class EmployeeProvider extends GetConnect {
   Future<List<Employee>> fetchAll() async {
     // final token = Get.find<TokenService>().readToken();
     //TODO: Send token for the authentication.
-    String url = "$host/employee/all";
+    String url = "$host/employee/";
     Response response = await get(
       url,
       headers: {'authorization': "bearer token"},

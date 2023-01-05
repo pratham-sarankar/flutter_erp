@@ -13,8 +13,7 @@ class CustomerProvider extends Provider<Customer> {
 
   @override
   Future<List<Customer>> fetch({int? limit, int? offset}) async {
-    Response response =
-        await get('/', query: {"limit": limit, "offset": offset});
+    Response response = await get('/?limit=$limit&offset=$offset');
     List data = response.body[dataKey];
     return data.map<Customer>((map) => Customer.fromMap(map)).toList();
   }

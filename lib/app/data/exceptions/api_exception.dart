@@ -6,4 +6,9 @@ class ApiException implements Exception {
     required this.status,
     required this.message,
   });
+
+  @override
+  String toString() {
+    return 'ApiException{status: $status, message: $message}';
+  }
 }

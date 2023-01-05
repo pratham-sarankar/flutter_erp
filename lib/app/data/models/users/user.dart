@@ -9,6 +9,7 @@ class User {
 
   User({this.id, this.username, this.employeeId, this.groupId, this.employee});
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,

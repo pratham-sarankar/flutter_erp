@@ -26,7 +26,7 @@ class Designation {
       id: map['id'] as int,
       name: map['name'] as String,
       employeesCount: map['employees_count'] ?? 0,
-      employees: List.from(map['employees'])
+      employees: List.from(map['employees'] ?? [])
           .map((data) => Employee.fromMap(map))
           .toList(),
     );

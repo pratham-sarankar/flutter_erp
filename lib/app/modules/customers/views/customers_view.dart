@@ -1,9 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
+import 'package:flutter_erp/app/data/utils/resource_table_view/table_view.dart';
+import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
+import 'package:flutter_erp/app/data/widgets/dialogs/customer_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/customer.dart';
 import '../controllers/customers_controller.dart';
 
 class CustomersView extends GetResponsiveView<CustomersController> {
@@ -20,234 +24,22 @@ class CustomersView extends GetResponsiveView<CustomersController> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Obx(
-            () {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (!controller.dataSource.value.hasData) {
-                return Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      controller.createNewCustomer();
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(CupertinoIcons.add, size: 18),
-                        SizedBox(width: 5),
-                        Text("Add Customer"),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return ListView(
-                children: [
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Container(
-                        constraints:
-                            BoxConstraints(minWidth: constraints.minWidth),
-                        child: !controller.dataSource.value.hasData
-                            ? Container()
-                            : PaginatedDataTable(
-                                columns: [
-                                  DataColumn(
-                                    label: Text(
-                                      "Name",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: screen.context.theme.colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      "Email",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: screen.context.theme.colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      "Phone Number",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: screen.context.theme.colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      'Actions',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: screen.context.theme.colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                rowsPerPage:
-                                    controller.dataSource.value.rowsPerPage,
-                                header: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "All Customers",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: screen.context.theme.colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 40),
-                                      width: 150,
-                                      child: CupertinoTextField(
-                                        prefix: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8),
-                                          child: Icon(
-                                            CupertinoIcons.search,
-                                            size: 18,
-                                            color: screen
-                                                .context.theme.iconTheme.color,
-                                          ),
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300,
-                                          color: screen.context.theme
-                                              .colorScheme.secondary,
-                                        ),
-                                        padding: const EdgeInsets.only(
-                                            top: 8,
-                                            bottom: 8,
-                                            left: 8,
-                                            right: 10),
-                                        placeholder: "Search",
-                                        cursorHeight: 16,
-                                        // onChanged: controller.dataSource.onSearchUpdate,
-                                        placeholderStyle: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300,
-                                          color: screen.context.theme
-                                              .colorScheme.tertiary,
-                                        ),
-                                        clearButtonMode:
-                                            OverlayVisibilityMode.never,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: screen
-                                                .context
-                                                .theme
-                                                .outlinedButtonTheme
-                                                .style!
-                                                .side!
-                                                .resolve({})!.color,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  Obx(
-                                    () => !controller.isSelectionMode.value
-                                        ? TextButton(
-                                            child: Row(
-                                              children: controller
-                                                      .isRefreshing.value
-                                                  ? [
-                                                      const SizedBox(
-                                                        height: 15,
-                                                        width: 15,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color: Colors.grey,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                      ),
-                                                    ]
-                                                  : const [
-                                                      Icon(
-                                                        CupertinoIcons.refresh,
-                                                        size: 16,
-                                                      ),
-                                                      SizedBox(width: 5),
-                                                      Text("Refresh"),
-                                                    ],
-                                            ),
-                                            onPressed: () {
-                                              controller.refresh();
-                                            },
-                                          )
-                                        : Container(),
-                                  ),
-                                  Obx(
-                                    () => controller.isSelectionMode.value
-                                        ? TextButton(
-                                            child: Row(
-                                              children: const [
-                                                Icon(
-                                                  CupertinoIcons.delete,
-                                                  size: 16,
-                                                ),
-                                                SizedBox(width: 5),
-                                                Text("Delete All"),
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              controller
-                                                  .deleteSelectedCustomers();
-                                            },
-                                          )
-                                        : Container(),
-                                  ),
-                                  Obx(
-                                    () => !controller.isSelectionMode.value
-                                        ? TextButton(
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  CupertinoIcons.add,
-                                                  size: 16,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Text(
-                                                  screen.isDesktop
-                                                      ? "New Employee"
-                                                      : "Add",
-                                                ),
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              controller.createNewCustomer();
-                                            },
-                                          )
-                                        : Container(),
-                                  ),
-                                ],
-                                source: controller.dataSource.value,
-                              ),
-                      );
-                    },
-                  ),
-                ],
-              );
+          child: TableView<Customer>(
+            title: "All Customers",
+            repository: CustomerRepository.instance,
+            onCreate: () async {
+              Customer customer = await Get.dialog(const CustomerDialog());
+              return customer;
+            },
+            onUpdate: (value) async {
+              Customer customer =
+                  await Get.dialog(const CustomerDialog(), arguments: value);
+              return customer;
+            },
+            onDelete: (value) async {
+              bool? sure = await Get.dialog(const ConfirmationDialog(
+                  message: "Are you sure you want to perform this action?"));
+              return sure ?? false;
             },
           ),
         ),
