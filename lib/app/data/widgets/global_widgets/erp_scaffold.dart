@@ -89,6 +89,12 @@ class ErpScaffold extends StatelessWidget {
               boldIcon: IconlyBold.user3,
               path: Routes.CUSTOMERS,
             ),
+            SideBarDestination(
+              title: "Classes",
+              icon: IconlyLight.calendar,
+              boldIcon: IconlyBold.calendar,
+              path: Routes.CLASS,
+            ),
           ],
         ),
         SideBarGroup(

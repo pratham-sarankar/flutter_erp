@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/columns/table_column.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/resource.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/row/cell.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/row/resource_row.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/table_view.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/columns/table_column.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/resource.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/row/cell.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/row/resource_row.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/table_view.dart';
 import 'package:intl/intl.dart';
 
 class Customer extends Resource {
@@ -93,7 +93,6 @@ class Customer extends Resource {
   ResourceColumn getResourceColumn() {
     return ResourceColumn(
       columns: [
-        "Username",
         "First name",
         "Last name",
         "Email",
@@ -108,10 +107,6 @@ class Customer extends Resource {
   ResourceRow getResourceRow(TableController controller) {
     return ResourceRow(
       cells: [
-        Cell(children: [
-          // Cell(data: getPhotoUrl()),
-          Cell(data: username ?? "-"),
-        ]),
         Cell(data: firstName ?? "-"),
         Cell(data: lastName ?? "-"),
         Cell(data: getEmail()),

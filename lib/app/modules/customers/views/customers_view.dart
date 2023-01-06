@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/utils/resource_table_view/table_view.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager//table_view.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/customer_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
@@ -20,7 +20,8 @@ class CustomersView extends GetResponsiveView<CustomersController> {
       body: Scaffold(
         backgroundColor: screen.context.theme.colorScheme.surfaceVariant,
         body: Container(
-          margin: const EdgeInsets.only(right: 16, left: 16, top: 22),
+          margin:
+              const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -32,7 +33,7 @@ class CustomersView extends GetResponsiveView<CustomersController> {
               return customer;
             },
             onUpdate: (value) async {
-              Customer customer =
+              Customer? customer =
                   await Get.dialog(const CustomerDialog(), arguments: value);
               return customer;
             },

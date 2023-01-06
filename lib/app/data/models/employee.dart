@@ -1,7 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/columns/table_column.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/resource.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/row/cell.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/row/resource_row.dart';
+import 'package:flutter_erp/app/data/utils/resource_manager/table_view.dart';
 import 'package:intl/intl.dart';
 
-class Employee {
+class Employee extends Resource {
   final int? id;
   String? firstName;
   String? lastName;
@@ -78,5 +84,48 @@ class Employee {
 
   String getDateOfBirth() {
     return dob == null ? "-" : DateFormat('d MMM y').format(dob!);
+  }
+
+  @override
+  ResourceColumn getResourceColumn() {
+    return ResourceColumn(columns: [
+      "First name",
+      "Last name",
+      "Email",
+      "Phone number",
+      "Date of birth",
+      "Actions"
+    ]);
+  }
+
+  @override
+  ResourceRow getResourceRow(TableController controller) {
+    return ResourceRow(
+      cells: [
+        Cell(data: firstName ?? "-"),
+        Cell(data: lastName ?? "-"),
+        Cell(data: getEmail()),
+        Cell(data: getPhoneNumber()),
+        Cell(data: getDateOfBirth()),
+        Cell(children: [
+          Cell(
+            data: "Edit",
+            icon: Icons.edit,
+            isAction: true,
+            onPressed: () {
+              controller.updateRow(this);
+            },
+          ),
+          Cell(
+            data: "Delete",
+            icon: Icons.delete,
+            isAction: true,
+            onPressed: () {
+              controller.destroyRow(this);
+            },
+          ),
+        ])
+      ],
+    );
   }
 }

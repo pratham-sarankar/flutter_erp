@@ -38,7 +38,7 @@ class UsersController extends GetxController {
 
   void createNewUser() async {
     isRefreshing.value = true;
-    List<Employee> employees = await EmployeeRepository.instance.fetchAll();
+    List<Employee> employees = await EmployeeRepository.instance.fetch();
     isRefreshing.value = false;
     UserCredential? credential = await showCupertinoDialog(
         context: Get.context!,

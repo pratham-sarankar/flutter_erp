@@ -25,6 +25,8 @@ dependencies:
   dropdown_button2: ^1.9.2
   url_launcher: ^6.1.7
   file_picker: ^5.2.4
+  resource_manager:
+    path: /Users/prathamsarankar/Documents/flutter_projects/resource_manager
 
 dev_dependencies:
   build_runner:

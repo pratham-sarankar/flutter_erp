@@ -33,7 +33,7 @@ class CustomerDialogController extends GetxController {
 
   void updateImage() async {
     var result = await FilePicker.platform.pickFiles(
-      dialogTitle: "Hello world",
+      dialogTitle: "Pick Image",
       allowCompression: true,
       allowMultiple: false,
     );

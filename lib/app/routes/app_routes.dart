@@ -14,6 +14,7 @@ abstract class Routes {
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
   static const USER_GROUPS = _Paths.USER_GROUPS;
   static const CUSTOMERS = _Paths.CUSTOMERS;
+  static const CLASS = _Paths.CLASS;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const DESIGNATIONS = '/settings/designations';
   static const USER_GROUPS = '/user-groups';
   static const CUSTOMERS = '/customers';
+  static const CLASS = '/class';
 }

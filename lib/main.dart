@@ -18,7 +18,6 @@ void main() async {
   await Get.putAsync(() => TokenService().init());
   await Get.putAsync(() => CacheService().init());
   await Get.putAsync(() => FileService().init());
-  FlutterError.onError = (details) {};
   doWhenWindowReady(() {
     const initialSize = Size(600, 450);
     appWindow.maximize();
@@ -39,6 +38,7 @@ void main() async {
           themeMode: ThemeMode.light,
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
+          defaultTransition: Transition.noTransition,
         );
       },
     ),
