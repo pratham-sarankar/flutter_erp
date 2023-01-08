@@ -1,8 +1,0 @@
-version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
-options: "2d7042a983019f75ee25549608eb104995e1e8d71b41de64395b2c041468ab89"
-build_start_time: [1672809388, 868204116]
-build_end_time: [1672809390, 980766057]
-inputs:
-  "/Users/prathamsarankar/Documents/flutter_projects/sarankar/flutter_erp/macos/Flutter/GeneratedPluginRegistrant.swift": [1672809380, 965505599]
-  "/Users/prathamsarankar/Documents/flutter_projects/sarankar/flutter_erp/macos/Runner/AppDelegate.swift": [1662897905, 934086799]
-  "/Users/prathamsarankar/Documents/flutter_projects/sarankar/flutter_erp/macos/Runner/MainFlutterWindow.swift": [1663739733, 728871345]
