@@ -1,10 +1,19 @@
 import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/provider.dart';
+import 'package:flutter_erp/app/data/services/token_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class EmployeeProvider extends Provider<Employee> {
   EmployeeProvider() : super(path: "/employee");
+
+  @override
+  Future<Request> authenticator(Request request) async {
+    String token = Get.find<TokenService>().readToken();
+    request.headers['Authorization'] = "Bearer $token";
+    return request;
+  }
 
   @override
   Future destroy(Employee value) async {

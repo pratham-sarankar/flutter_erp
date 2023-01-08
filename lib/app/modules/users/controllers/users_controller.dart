@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/Users/user.dart';
 import 'package:flutter_erp/app/data/models/employee.dart';
 import 'package:flutter_erp/app/data/models/user_group.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/user_dialog.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class UsersController extends GetxController {
   late RxList<User> users;

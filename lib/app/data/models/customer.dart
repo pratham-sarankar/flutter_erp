@@ -1,11 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/columns/table_column.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/resource.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/row/cell.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/row/resource_row.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/table_view.dart';
 import 'package:intl/intl.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class Customer extends Resource {
   final int? id;
@@ -90,9 +88,16 @@ class Customer extends Resource {
   }
 
   @override
+  String get name => "Customer";
+
+  @override
+  bool get isEmpty => id == null;
+
+  @override
   ResourceColumn getResourceColumn() {
     return ResourceColumn(
       columns: [
+        "Username",
         "First name",
         "Last name",
         "Email",
@@ -107,6 +112,12 @@ class Customer extends Resource {
   ResourceRow getResourceRow(TableController controller) {
     return ResourceRow(
       cells: [
+        Cell(
+          data: getPhotoUrl() ?? "-",
+          children: [
+            Cell(data: username ?? "-"),
+          ],
+        ),
         Cell(data: firstName ?? "-"),
         Cell(data: lastName ?? "-"),
         Cell(data: getEmail()),
@@ -133,4 +144,25 @@ class Customer extends Resource {
       ],
     );
   }
+
+  @override
+  List<Field> getFields() {
+    return [
+      Field("photoUrl", FieldType.image, label: "Profile Photo"),
+      Field("firstName", FieldType.name, label: "First Name"),
+      Field("lastName", FieldType.name, label: "Last Name"),
+      Field("username", FieldType.name, label: "Username"),
+      Field("email", FieldType.email, label: "Email"),
+      Field("phoneNumber", FieldType.phoneNumber, label: "Contact Number"),
+      Field("password", FieldType.password, label: "Password"),
+    ];
+  }
+
+  @override
+  Future<String> fileUploader(Uint8List data) =>
+      FileRepository.instance.imageUploader(data);
+
+  @override
+  Future<Uint8List> fileDownloader(String key) =>
+      FileRepository.instance.imageDownloader(key);
 }

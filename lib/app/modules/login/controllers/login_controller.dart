@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/Users/user.dart';
 import 'package:flutter_erp/app/data/models/users/user_credential.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class LoginController extends GetxController {
   late RxString errorText;

@@ -1,7 +1,7 @@
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/providers/branch_provider.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class BranchRepository implements Repository<Branch> {
   final BranchProvider _provider;
@@ -40,4 +40,7 @@ class BranchRepository implements Repository<Branch> {
   Future<void> destroyMany(List<Branch> branches) {
     return _provider.destroyMany(branches);
   }
+
+  @override
+  Branch get empty => Branch();
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/providers/class_provider.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class ClassRepository extends Repository<Class> {
   final ClassProvider _provider;
@@ -38,4 +38,7 @@ class ClassRepository extends Repository<Class> {
   Future update(Class value) {
     return _provider.update(value);
   }
+
+  @override
+  Class get empty => Class();
 }

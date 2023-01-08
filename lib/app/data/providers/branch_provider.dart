@@ -1,10 +1,19 @@
 import 'package:flutter_erp/app/data/models/branch.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/provider.dart';
+import 'package:flutter_erp/app/data/services/token_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class BranchProvider extends Provider<Branch> {
   BranchProvider() : super(path: "/branch");
+
+  @override
+  Future<Request> authenticator(Request request) async {
+    String token = Get.find<TokenService>().readToken();
+    request.headers['Authorization'] = "Bearer $token";
+    return request;
+  }
 
   @override
   Future<void> insert(Branch value) async {

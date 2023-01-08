@@ -8,7 +8,7 @@ class PlusFormField extends StatefulWidget {
     required this.title,
     this.isRequired = false,
     this.onValidate,
-    this.type = TextInputType.text,
+    this.type = TextInputType.name,
     this.onSaved,
     this.hintText,
     this.initialText,

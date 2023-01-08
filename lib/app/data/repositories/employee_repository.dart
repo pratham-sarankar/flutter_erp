@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_erp/app/data/models/employee.dart';
 import 'package:flutter_erp/app/data/providers/employee_provider.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class EmployeeRepository extends Repository<Employee> {
   final EmployeeProvider _provider;
@@ -42,4 +42,7 @@ class EmployeeRepository extends Repository<Employee> {
   Future<List<Employee>> fetch({int? limit, int? offset}) async {
     return _provider.fetch(limit: limit, offset: offset);
   }
+
+  @override
+  Employee get empty => Employee();
 }

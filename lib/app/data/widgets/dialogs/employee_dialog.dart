@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/models/employee.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
@@ -116,10 +115,10 @@ class _EmployeeDialogState extends State<EmployeeDialog> {
       _isLoading = true;
     });
     try {
-      String key = await FileRepository.instance.uploadFile(image!);
+      String key = await FileRepository.instance.imageUploader(image!);
       employee.photoUrl = key;
-    } on ApiException catch (e) {
-      Get.find<ToastService>().showToast(e.message);
+    } catch (e) {
+      Get.find<ToastService>().showToast(e.toString());
     }
     setState(() {
       _isLoading = false;

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/branch_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class HomeController extends GetxController {
   late RxBool isLoading;

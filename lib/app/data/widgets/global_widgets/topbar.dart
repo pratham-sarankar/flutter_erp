@@ -4,11 +4,13 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/widgets/widgets.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key, required this.screen});
@@ -249,9 +251,12 @@ class __TopBarButtonState extends State<_TopBarButton> {
               const CircleBorder(),
             ),
           ),
-          onPressed: () {
-            Get.changeThemeMode(
-                Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+          onPressed: () async {
+            var result = await Get.dialog(
+                ResourceDialog<Customer>(resource: Customer()));
+            print(result);
+            // Get.changeThemeMode(
+            //     Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
           },
           child: Stack(
             alignment: Alignment.center,

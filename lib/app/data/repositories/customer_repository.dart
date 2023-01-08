@@ -1,7 +1,7 @@
 import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/providers/customer_provider.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class CustomerRepository implements Repository<Customer> {
   final CustomerProvider _provider;
@@ -40,4 +40,7 @@ class CustomerRepository implements Repository<Customer> {
   Future<void> destroyMany(List<Customer> customers) {
     return _provider.destroyMany(customers);
   }
+
+  @override
+  Customer get empty => Customer();
 }

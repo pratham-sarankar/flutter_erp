@@ -2,12 +2,12 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:flutter_erp/app/data/services/file_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class ClassDialogController extends GetxController {
   late GlobalKey<FormState> formKey;
@@ -42,7 +42,7 @@ class ClassDialogController extends GetxController {
     if (image == null) return;
     isLoading.value = true;
     try {
-      String key = await FileRepository.instance.uploadFile(image!);
+      String key = await FileRepository.instance.imageUploader(image!);
       model.photoUrl = key;
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);

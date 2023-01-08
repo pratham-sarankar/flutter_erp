@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/data/data.dart';
 
 class FileProvider extends GetConnect {
   Future<String> uploadFile(Uint8List data) async {

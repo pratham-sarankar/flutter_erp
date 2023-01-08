@@ -1,7 +1,7 @@
 import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/providers/designation_provider.dart';
-import 'package:flutter_erp/app/data/utils/abstracts/repository.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class DesignationRepository extends Repository<Designation> {
   final DesignationProvider _provider;
@@ -40,4 +40,7 @@ class DesignationRepository extends Repository<Designation> {
   Future<void> destroyMany(List<Designation> value) {
     return _provider.destroyMany(value);
   }
+
+  @override
+  Designation get empty => Designation();
 }

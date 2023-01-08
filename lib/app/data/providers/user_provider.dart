@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/Users/user.dart';
 import 'package:flutter_erp/app/data/models/users/user_credential.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class UserProvider extends GetConnect {
   Future<UserCredential> login({required UserCredential credential}) async {

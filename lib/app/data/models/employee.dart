@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/columns/table_column.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/resource.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/row/cell.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/row/resource_row.dart';
-import 'package:flutter_erp/app/data/utils/resource_manager/table_view.dart';
 import 'package:intl/intl.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class Employee extends Resource {
   final int? id;

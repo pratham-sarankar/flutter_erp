@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/exceptions/api_exception.dart';
 import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/repositories/designation_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/designation_dialog.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 class DesignationsController extends GetxController {
   late RxList<Designation> designations;
