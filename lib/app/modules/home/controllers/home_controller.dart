@@ -3,9 +3,9 @@ import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/branch_dialog.dart';
-import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
+import 'package:resource_manager/widgets/confirmation_dialog.dart';
 
 class HomeController extends GetxController {
   late RxBool isLoading;
@@ -22,7 +22,7 @@ class HomeController extends GetxController {
   }
 
   void init() async {
-    branches.value = await BranchRepository.instance.fetch();
+    branches.value = await Get.find<BranchRepository>().fetch();
     isLoading.value = false;
   }
 
@@ -31,7 +31,7 @@ class HomeController extends GetxController {
         context: Get.context!, builder: (context) => const BranchDialog());
     if (branch == null) return;
     try {
-      await BranchRepository.instance.insert(branch);
+      await Get.find<BranchRepository>().insert(branch);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -45,7 +45,7 @@ class HomeController extends GetxController {
     );
     if (updatedBranch == null) return;
     try {
-      await BranchRepository.instance.update(updatedBranch);
+      await Get.find<BranchRepository>().update(updatedBranch);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -60,7 +60,7 @@ class HomeController extends GetxController {
     );
     if (!sure) return;
     try {
-      await BranchRepository.instance.destroy(branch);
+      await Get.find<BranchRepository>().destroy(branch);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -69,7 +69,7 @@ class HomeController extends GetxController {
 
   Future refresh() async {
     isRefreshing.value = true;
-    branches.value = await BranchRepository.instance.fetch();
+    branches.value = await Get.find<BranchRepository>().fetch();
     isRefreshing.value = false;
   }
 

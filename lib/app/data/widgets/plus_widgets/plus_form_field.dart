@@ -12,12 +12,16 @@ class PlusFormField extends StatefulWidget {
     this.onSaved,
     this.hintText,
     this.initialText,
+    this.controller,
+    this.enabled = true,
   }) : super(key: key);
   final String title;
   final bool isRequired;
+  final bool enabled;
   final String? Function(String?)? onValidate;
   final void Function(String?)? onSaved;
   final TextInputType type;
+  final TextEditingController? controller;
   final String? hintText;
   final String? initialText;
 
@@ -31,7 +35,8 @@ class _PlusFormFieldState extends State<PlusFormField> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialText);
+    _controller =
+        widget.controller ?? TextEditingController(text: widget.initialText);
   }
 
   @override
@@ -73,6 +78,7 @@ class _PlusFormFieldState extends State<PlusFormField> {
             fontSize: 14,
             color: context.theme.colorScheme.onBackground,
           ),
+          enabled: widget.enabled,
           cursorHeight: 18,
           decoration: InputDecoration(
             isDense: true,
@@ -81,7 +87,7 @@ class _PlusFormFieldState extends State<PlusFormField> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            hintText: widget.hintText,
+            hintText: widget.hintText ?? "",
           ),
           onTap: () {
             if (widget.type == TextInputType.datetime) {

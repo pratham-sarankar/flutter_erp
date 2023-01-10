@@ -3,7 +3,7 @@ import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
-import 'package:resource_manager/resource_manager.dart';
+import 'package:resource_manager/widgets/resource_table_view.dart';
 
 import '../../../data/models/customer.dart';
 import '../controllers/customers_controller.dart';
@@ -23,9 +23,9 @@ class CustomersView extends GetResponsiveView<CustomersController> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: TableView<Customer>(
+          child: ResourceTableView<Customer>(
             title: "All Customers",
-            repository: CustomerRepository.instance,
+            repository: Get.find<CustomerRepository>(),
           ),
         ),
       ),

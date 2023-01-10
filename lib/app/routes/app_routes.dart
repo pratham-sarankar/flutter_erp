@@ -12,9 +12,12 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const USERS = _Paths.USERS;
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
-  static const USER_GROUPS = _Paths.USER_GROUPS;
+  static const PERMISSION_GROUPS = _Paths.PERMISSION_GROUPS;
   static const CUSTOMERS = _Paths.CUSTOMERS;
   static const CLASS = _Paths.CLASS;
+  static const BRANCHES = _Paths.BRANCHES;
+  static const COURSES = _Paths.COURSES;
+  static const PAYMENT = _Paths.PAYMENT;
 }
 
 abstract class _Paths {
@@ -28,7 +31,10 @@ abstract class _Paths {
   static const PROFILE = '/settings/profile';
   static const USERS = '/settings/users';
   static const DESIGNATIONS = '/settings/designations';
-  static const USER_GROUPS = '/user-groups';
+  static const PERMISSION_GROUPS = '/permission-groups';
   static const CUSTOMERS = '/customers';
   static const CLASS = '/class';
+  static const BRANCHES = '/branches';
+  static const COURSES = '/courses';
+  static const PAYMENT = '/payment';
 }

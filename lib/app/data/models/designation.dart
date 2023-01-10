@@ -1,7 +1,10 @@
 import 'package:flutter_erp/app/data/models/employee.dart';
+import 'package:resource_manager/resource_manager.dart';
 
-class Designation {
+class Designation extends Resource {
+  @override
   int? id;
+  @override
   String? name;
   int? employeesCount;
   List<Employee> employees;
@@ -13,23 +16,13 @@ class Designation {
     this.employees = const [],
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
       'employees_count': employeesCount,
     };
-  }
-
-  factory Designation.fromMap(Map<String, dynamic> map) {
-    return Designation(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      employeesCount: map['employees_count'] ?? 0,
-      employees: List.from(map['employees'] ?? [])
-          .map((data) => Employee.fromMap(map))
-          .toList(),
-    );
   }
 
   @override
@@ -46,4 +39,38 @@ class Designation {
   }
 
   bool get hasEmployees => (employeesCount ?? 0) > 0;
+
+  @override
+  Designation fromMap(Map<String, dynamic> map) {
+    return Designation(
+      id: map['id'] as int,
+      name: map['name'] as String,
+      employeesCount: map['employees_count'] ?? 0,
+      employees: List.from(map['employees'] ?? [])
+          .map((data) => Employee().fromMap(map))
+          .toList(),
+    );
+  }
+
+  @override
+  List<Field> getFields() {
+    // TODO: implement getFields
+    throw UnimplementedError();
+  }
+
+  @override
+  ResourceColumn getResourceColumn() {
+    // TODO: implement getResourceColumn
+    throw UnimplementedError();
+  }
+
+  @override
+  ResourceRow getResourceRow(TableController<Resource> controller) {
+    // TODO: implement getResourceRow
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement isEmpty
+  bool get isEmpty => throw UnimplementedError();
 }

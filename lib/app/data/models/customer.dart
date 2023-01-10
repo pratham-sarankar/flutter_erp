@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
 
 class Customer extends Resource {
+  @override
   final int? id;
   String? firstName;
   String? lastName;
@@ -47,11 +48,12 @@ class Customer extends Resource {
       'email': email,
       'phoneNumber': phoneNumber,
       if (password != null) 'password': password,
-      'dob': dob?.toIso8601String(),
+      'dob': dob == null ? null : getDateOfBirth(),
     };
   }
 
-  factory Customer.fromMap(Map<String, dynamic> map) {
+  @override
+  Customer fromMap(Map<String, dynamic> map) {
     return Customer(
       id: map['id'],
       firstName: map['firstName'],
@@ -61,8 +63,14 @@ class Customer extends Resource {
       email: map['email'],
       phoneNumber: map['phoneNumber'],
       password: map['password'],
-      dob: map['dob'] == null ? null : DateTime.parse(map['dob']),
+      dob: map['dob'] == null ? null : setDateOfBirth(map['dob']),
     );
+  }
+
+  DateTime setDateOfBirth(String data) {
+    var date = DateTime.tryParse(data);
+    date ??= DateFormat('d MMM y').parse(data);
+    return date;
   }
 
   String? getPhotoUrl() {
@@ -98,8 +106,7 @@ class Customer extends Resource {
     return ResourceColumn(
       columns: [
         "Username",
-        "First name",
-        "Last name",
+        "Name",
         "Email",
         "Phone number",
         "Date of birth",
@@ -113,13 +120,12 @@ class Customer extends Resource {
     return ResourceRow(
       cells: [
         Cell(
-          data: getPhotoUrl() ?? "-",
+          data: getPhotoUrl(),
           children: [
-            Cell(data: username ?? "-"),
+            Cell(data: username),
           ],
         ),
-        Cell(data: firstName ?? "-"),
-        Cell(data: lastName ?? "-"),
+        Cell(data: "${firstName ?? ""} ${lastName ?? ""}"),
         Cell(data: getEmail()),
         Cell(data: getPhoneNumber()),
         Cell(data: getDateOfBirth()),
@@ -151,10 +157,13 @@ class Customer extends Resource {
       Field("photoUrl", FieldType.image, label: "Profile Photo"),
       Field("firstName", FieldType.name, label: "First Name"),
       Field("lastName", FieldType.name, label: "Last Name"),
-      Field("username", FieldType.name, label: "Username"),
-      Field("email", FieldType.email, label: "Email"),
-      Field("phoneNumber", FieldType.phoneNumber, label: "Contact Number"),
-      Field("password", FieldType.password, label: "Password"),
+      Field("username", FieldType.name, label: "Username", isSearchable: true),
+      Field("email", FieldType.email, label: "Email", isSearchable: true),
+      Field("dob", FieldType.date, label: "Date of Birth"),
+      Field("phoneNumber", FieldType.phoneNumber,
+          label: "Contact Number", isSearchable: true),
+      Field("password", FieldType.password,
+          label: "Password", isRequired: isEmpty),
     ];
   }
 

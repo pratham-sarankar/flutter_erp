@@ -12,6 +12,7 @@ class ErpScaffold extends StatelessWidget {
   final String path;
   final ResponsiveScreen screen;
   final Widget body;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,16 +62,22 @@ class ErpScaffold extends StatelessWidget {
           title: "ANALYTICS",
           sideBarDestinations: [
             SideBarDestination(
-              title: "Home",
+              title: "Dashboard",
               icon: IconlyLight.home,
               boldIcon: IconlyBold.home,
               path: Routes.HOME,
             ),
             SideBarDestination(
-              title: "Reports",
+              title: "Branches",
               icon: IconlyLight.chart,
               boldIcon: IconlyBold.chart,
-              path: '/reports',
+              path: Routes.BRANCHES,
+            ),
+            SideBarDestination(
+              title: "Payments",
+              icon: IconlyLight.calendar,
+              boldIcon: IconlyBold.calendar,
+              path: Routes.PAYMENT,
             ),
           ],
         ),
@@ -94,6 +101,12 @@ class ErpScaffold extends StatelessWidget {
               icon: IconlyLight.calendar,
               boldIcon: IconlyBold.calendar,
               path: Routes.CLASS,
+            ),
+            SideBarDestination(
+              title: "Courses",
+              icon: IconlyLight.document,
+              boldIcon: IconlyBold.document,
+              path: Routes.COURSES,
             ),
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:form_validator/form_validator.dart';
 extension ValidationBuilderExtension on ValidationBuilder {
   String? Function(dynamic) buildDyn() {
     return (value) {
-      return this.test(value?.toString());
+      return test(value?.toString());
     };
   }
 }

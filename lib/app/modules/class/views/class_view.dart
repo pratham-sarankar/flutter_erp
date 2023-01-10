@@ -4,7 +4,7 @@ import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
-import 'package:resource_manager/widgets/widgets.dart';
+import 'package:resource_manager/resource_manager.dart';
 
 import '../controllers/class_controller.dart';
 
@@ -23,9 +23,9 @@ class ClassView extends GetResponsiveView<ClassController> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: TableView<Class>(
+          child: ResourceTableView<Class>(
             title: "All Classes",
-            repository: ClassRepository.instance,
+            repository: Get.find<ClassRepository>(),
           ),
         ),
       ),

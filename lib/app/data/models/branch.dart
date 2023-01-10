@@ -1,5 +1,10 @@
-class Branch {
+import 'package:resource_manager/resource_manager.dart';
+
+class Branch extends Resource<Branch> {
+  @override
   final int? id;
+
+  @override
   String? name;
   String? address;
   String? phoneNumber;
@@ -24,6 +29,7 @@ class Branch {
     return 'Branch{id: $id, name: $name, address: $address, phoneNumber: $phoneNumber, employeesCount: $employeesCount, customersCount: $customersCount, classesCount: $classesCount, coursesCount: $coursesCount}';
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -37,7 +43,8 @@ class Branch {
     };
   }
 
-  factory Branch.fromMap(Map<String, dynamic> map) {
+  @override
+  Branch fromMap(Map<String, dynamic> map) {
     return Branch(
       id: map['id'],
       name: map['name'],
@@ -49,4 +56,25 @@ class Branch {
       coursesCount: map['courses_count'] ?? 0,
     );
   }
+
+  @override
+  List<Field> getFields() {
+    // TODO: implement getFields
+    throw UnimplementedError();
+  }
+
+  @override
+  ResourceColumn getResourceColumn() {
+    // TODO: implement getResourceColumn
+    throw UnimplementedError();
+  }
+
+  @override
+  ResourceRow getResourceRow(TableController<Resource> controller) {
+    // TODO: implement getResourceRow
+    throw UnimplementedError();
+  }
+
+  @override
+  bool get isEmpty => id == null;
 }

@@ -1,15 +1,11 @@
-import 'dart:math';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/repositories/user_repository.dart';
-import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/widgets/confirmation_dialog.dart';
 import 'package:resource_manager/widgets/widgets.dart';
 
 class TopBar extends StatelessWidget {
@@ -29,57 +25,57 @@ class TopBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: ((!kIsWeb ? appWindow.titleBarHeight : 0)),
-              left: max(Get.width * 0.015, 20),
-            ),
-            width: max(Get.width * 0.21, 220),
-            child: CupertinoTextField(
-              prefix: Padding(
-                padding: const EdgeInsets.only(left: 13),
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 20,
-                  color: context.theme.iconTheme.color,
-                ),
-              ),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                color: context.theme.colorScheme.secondary,
-              ),
-              padding: const EdgeInsets.only(
-                  top: 13, bottom: 13, left: 10, right: 10),
-              placeholder: "Search Keywords",
-              cursorHeight: 16,
-              placeholderStyle: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                color: context.theme.colorScheme.onSurface,
-              ),
-              clearButtonMode: OverlayVisibilityMode.editing,
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.surface,
-                border: Border.all(
-                  color: context.theme.outlinedButtonTheme.style!.side!
-                      .resolve({})!.color,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(
+          //     top: ((!kIsWeb ? appWindow.titleBarHeight : 0)),
+          //     left: max(Get.width * 0.015, 20),
+          //   ),
+          //   width: max(Get.width * 0.21, 220),
+          //   child: CupertinoTextField(
+          //     prefix: Padding(
+          //       padding: const EdgeInsets.only(left: 13),
+          //       child: Icon(
+          //         CupertinoIcons.search,
+          //         size: 20,
+          //         color: context.theme.iconTheme.color,
+          //       ),
+          //     ),
+          //     style: TextStyle(
+          //       fontSize: 14,
+          //       fontWeight: FontWeight.w300,
+          //       color: context.theme.colorScheme.secondary,
+          //     ),
+          //     padding: const EdgeInsets.only(
+          //         top: 13, bottom: 13, left: 10, right: 10),
+          //     placeholder: "Search Keywords",
+          //     cursorHeight: 16,
+          //     placeholderStyle: TextStyle(
+          //       fontSize: 14,
+          //       fontWeight: FontWeight.w300,
+          //       color: context.theme.colorScheme.onSurface,
+          //     ),
+          //     clearButtonMode: OverlayVisibilityMode.editing,
+          //     decoration: BoxDecoration(
+          //       color: context.theme.colorScheme.surface,
+          //       border: Border.all(
+          //         color: context.theme.outlinedButtonTheme.style!.side!
+          //             .resolve({})!.color,
+          //       ),
+          //       borderRadius: BorderRadius.circular(12),
+          //     ),
+          //   ),
+          // ),
           const Spacer(),
           if (screen.isDesktop)
             Row(
-              children: [
-                const _TopBarButton(
-                    icon: IconlyLight.notification,
-                    boldIcon: IconlyBold.notification),
-                const _TopBarButton(
-                    icon: IconlyLight.plus, boldIcon: IconlyBold.plus),
-                SizedBox(width: Get.width * 0.012),
-                const VerticalDivider(),
+              children: const [
+                // const _TopBarButton(
+                //     icon: IconlyLight.notification,
+                //     boldIcon: IconlyBold.notification),
+                // const _TopBarButton(
+                //     icon: IconlyLight.plus, boldIcon: IconlyBold.plus),
+                // SizedBox(width: Get.width * 0.012),
+                VerticalDivider(),
               ],
             ),
           PopupMenuButton(
@@ -99,7 +95,7 @@ class TopBar extends StatelessWidget {
                     ),
                   );
                   if (sure ?? false) {
-                    await UserRepository.instance.logout();
+                    await Get.find<AuthService>().logout();
                     Get.toNamed(Routes.LOGIN);
                   }
                   return;
@@ -164,7 +160,7 @@ class TopBar extends StatelessWidget {
                     ],
                     image: DecorationImage(
                       image: NetworkImage(
-                          UserRepository.instance.currentUser.getPhotoUrl()),
+                          Get.find<AuthService>().currentUser.getPhotoUrl()),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -174,9 +170,9 @@ class TopBar extends StatelessWidget {
                     children: [
                       SizedBox(width: Get.width * 0.01),
                       SizedBox(
-                        width: 80,
+                        width: 100,
                         child: Text(
-                          UserRepository.instance.currentUser.getName(),
+                          Get.find<AuthService>().currentUser.getName(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

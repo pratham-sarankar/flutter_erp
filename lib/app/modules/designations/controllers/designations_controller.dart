@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/repositories/designation_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
-import 'package:flutter_erp/app/data/widgets/dialogs/confirmation_dialog.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/designation_dialog.dart';
 import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
+import 'package:resource_manager/widgets/confirmation_dialog.dart';
 
 class DesignationsController extends GetxController {
   late RxList<Designation> designations;
@@ -31,7 +31,7 @@ class DesignationsController extends GetxController {
   }
 
   Future<void> fetchDesignations() async {
-    var designations = await DesignationRepository.instance.fetch();
+    var designations = await Get.find<DesignationRepository>().fetch();
     this.designations = RxList(designations);
     isLoading.value = false;
   }
@@ -41,7 +41,7 @@ class DesignationsController extends GetxController {
         context: Get.context!, builder: (context) => const DesignationDialog());
     if (designation == null) return;
     try {
-      await DesignationRepository.instance.insert(designation);
+      await Get.find<DesignationRepository>().insert(designation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -54,7 +54,7 @@ class DesignationsController extends GetxController {
         builder: (context) => DesignationDialog(designation: designation));
     if (updatedDesignation == null) return;
     try {
-      await DesignationRepository.instance.update(updatedDesignation);
+      await Get.find<DesignationRepository>().update(updatedDesignation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -70,7 +70,7 @@ class DesignationsController extends GetxController {
     );
     if (!(sure ?? false)) return;
     try {
-      await DesignationRepository.instance.destroy(designation);
+      await Get.find<DesignationRepository>().destroy(designation);
     } on ApiException catch (e) {
       Get.find<ToastService>().showToast(e.message);
     }
@@ -80,7 +80,7 @@ class DesignationsController extends GetxController {
   Future<void> refresh() async {
     if (isRefreshing.value) return;
     isRefreshing.value = true;
-    designations.value = await DesignationRepository.instance.fetch();
+    designations.value = await Get.find<DesignationRepository>().fetch();
     isRefreshing.value = false;
   }
 }

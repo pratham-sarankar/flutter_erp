@@ -88,8 +88,8 @@ class ErpSettingsScaffold extends StatelessWidget {
                               path: Routes.USERS,
                             ),
                             PlusNavigationRailItem(
-                              label: 'User Groups',
-                              path: Routes.USER_GROUPS,
+                              label: 'Permission Groups',
+                              path: Routes.PERMISSION_GROUPS,
                             ),
                             PlusNavigationRailItem(
                               label: 'Designations',

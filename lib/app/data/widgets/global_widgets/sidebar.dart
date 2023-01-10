@@ -267,7 +267,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Repolyze",
+                            "Company name",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -277,7 +277,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            "Help boost your site",
+                            "Some tagline",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w300,
@@ -301,7 +301,7 @@ class _BranchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        List<Branch> branches = await BranchRepository.instance.fetch();
+        List<Branch> branches = await Get.find<BranchRepository>().fetch();
         showCupertinoDialog(
           context: context,
           builder: (context) => BranchSelectionDialog(branches: branches),
@@ -348,7 +348,7 @@ class _BranchTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "analize.com",
+                            "domain.com",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -356,7 +356,7 @@ class _BranchTile extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Main site",
+                            "Branch name",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w300,

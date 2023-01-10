@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:resource_manager/resource_manager.dart';
 
 class Class extends Resource {
+  @override
   final int? id;
   String? title;
   String? description;
@@ -19,23 +22,25 @@ class Class extends Resource {
 
   bool get hasPhoto => photoUrl != null;
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
       'description': description,
       'photoUrl': photoUrl,
-      'price': price,
+      'price': (price ?? "").toString(),
     };
   }
 
-  factory Class.fromMap(Map<String, dynamic> map) {
+  @override
+  Class fromMap(Map<String, dynamic> map) {
     return Class(
       id: map['id'],
       title: map['title'],
       description: map['description'],
       photoUrl: map['photoUrl'],
-      price: map['price'],
+      price: double.parse((map['price']).toString()),
     );
   }
 
@@ -79,4 +84,28 @@ class Class extends Resource {
     if (photoUrl == null) return null;
     return FileRepository.instance.getUrl(photoUrl!);
   }
+
+  @override
+  List<Field> getFields() {
+    return [
+      Field("photoUrl", FieldType.image, label: "Photo"),
+      Field("title", FieldType.name, label: "Title"),
+      Field("description", FieldType.text, label: "Description"),
+      Field("price", FieldType.number, label: "Price", isRequired: true),
+    ];
+  }
+
+  @override
+  bool get isEmpty => id == null;
+
+  @override
+  String get name => title ?? "";
+
+  @override
+  Future<String> fileUploader(Uint8List data) =>
+      FileRepository.instance.imageUploader(data);
+
+  @override
+  Future<Uint8List> fileDownloader(String url) =>
+      FileRepository.instance.imageDownloader(url);
 }

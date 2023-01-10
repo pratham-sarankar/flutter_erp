@@ -1,44 +1,15 @@
 import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/providers/customer_provider.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:resource_manager/resource_manager.dart';
 
-class CustomerRepository implements Repository<Customer> {
-  final CustomerProvider _provider;
-
-  CustomerRepository._privateConstructor()
-      : _provider = Get.find<CustomerProvider>();
-
-  static final instance = CustomerRepository._privateConstructor();
+class CustomerRepository extends Repository<Customer> {
+  CustomerRepository() : super(path: "/customer");
 
   @override
-  Future<void> insert(Customer customer) {
-    return _provider.insert(customer);
-  }
-
-  @override
-  Future<Customer> fetchOne(int id) {
-    return _provider.fetchOne(id);
-  }
-
-  @override
-  Future<List<Customer>> fetch({int? limit, int? offset}) {
-    return _provider.fetch(limit: limit, offset: offset);
-  }
-
-  @override
-  Future<void> update(Customer branch) {
-    return _provider.update(branch);
-  }
-
-  @override
-  Future<void> destroy(Customer branch) {
-    return _provider.destroy(branch);
-  }
-
-  @override
-  Future<void> destroyMany(List<Customer> customers) {
-    return _provider.destroyMany(customers);
+  Future<Request> authenticator(Request request) async {
+    return Get.find<AuthService>().authenticator(request);
   }
 
   @override

@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/data/models/Users/user.dart';
-import 'package:flutter_erp/app/data/models/users/user_credential.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
@@ -27,16 +25,12 @@ class LoginController extends GetxController {
   void login() async {
     try {
       isLoading.value = true;
-      await UserRepository.instance.login(
-          credential: UserCredential(
-        user: User(
-          username: usernameController.text,
-        ),
-        password: passwordController.text,
-      ));
+      await Get.find<UserRepository>()
+          .login(usernameController.text, passwordController.text);
       isLoading.value = false;
-      Get.toNamed(Routes.HOME);
+      Get.offAllNamed(Routes.HOME);
     } on ApiException catch (e) {
+      isLoading.value = false;
       Get.find<ToastService>().showToast(e.message);
     }
   }
