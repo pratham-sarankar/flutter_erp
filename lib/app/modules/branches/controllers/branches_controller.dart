@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
-import 'package:flutter_erp/app/data/widgets/dialogs/branch_dialog.dart';
 import 'package:get/get.dart';
 import 'package:resource_manager/data/data.dart';
 import 'package:resource_manager/widgets/confirmation_dialog.dart';
+import 'package:resource_manager/widgets/resource_dialog.dart';
 
 class BranchesController extends GetxController {
   late RxBool isLoading;
@@ -27,8 +27,8 @@ class BranchesController extends GetxController {
   }
 
   void createNewBranch() async {
-    Branch? branch = await showCupertinoDialog(
-        context: Get.context!, builder: (context) => const BranchDialog());
+    Branch? branch = await Get.dialog(
+        ResourceDialog(resource: Get.find<BranchRepository>().empty));
     if (branch == null) return;
     try {
       await Get.find<BranchRepository>().insert(branch);
@@ -39,10 +39,7 @@ class BranchesController extends GetxController {
   }
 
   void updateBranch(Branch branch) async {
-    Branch? updatedBranch = await showCupertinoDialog(
-      context: Get.context!,
-      builder: (context) => BranchDialog(branch: branch),
-    );
+    Branch? updatedBranch = await Get.dialog(ResourceDialog(resource: branch));
     if (updatedBranch == null) return;
     try {
       await Get.find<BranchRepository>().update(updatedBranch);

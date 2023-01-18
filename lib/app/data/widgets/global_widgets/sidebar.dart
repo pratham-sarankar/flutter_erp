@@ -1,3 +1,4 @@
+import 'dart:html' as web;
 import 'dart:math';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/dialogs/branch_selection_dialog.dart';
 import 'package:get/get.dart';
 
@@ -262,31 +264,35 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                 : Row(
                     children: [
                       const SizedBox(width: 25),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Company name",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: context.theme.primaryColor,
-                              height: 1.3,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Repolyze Yoga",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: context.theme.primaryColor,
+                                height: 1.3,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            "Some tagline",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                              height: 1.3,
-                              color: context.theme.colorScheme.onBackground,
+                            const SizedBox(height: 3),
+                            Text(
+                              "Each practice is a new beginning.",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300,
+                                height: 1.3,
+                                overflow: TextOverflow.ellipsis,
+                                color: context.theme.colorScheme.onBackground,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      const SizedBox(width: 15),
                     ],
                   ),
       ),
@@ -299,13 +305,18 @@ class _BranchTile extends StatelessWidget {
   final bool isCollapsed;
   @override
   Widget build(BuildContext context) {
+    var branch = Get.find<AuthService>().currentBranch;
     return GestureDetector(
       onTap: () async {
+        if (!Get.find<AuthService>().canEdit("Branches")) return;
         List<Branch> branches = await Get.find<BranchRepository>().fetch();
-        showCupertinoDialog(
+        Branch? branch = await showCupertinoDialog(
           context: context,
           builder: (context) => BranchSelectionDialog(branches: branches),
         );
+        if (branch == null) return;
+        await Get.find<AuthService>().setCurrentBranch(branch);
+        web.window.location.reload();
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -343,29 +354,35 @@ class _BranchTile extends StatelessWidget {
                       SizedBox(
                         width: max(Get.width * 0.007, 12),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "domain.com",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.secondary,
-                            ),
+                      Expanded(
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                branch.name ?? "",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: context.theme.colorScheme.secondary,
+                                ),
+                              ),
+                              Text(
+                                branch.address ?? "-",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Branch name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      const Spacer(),
                       Icon(
                         Icons.chevron_right,
                         color: Get.theme.colorScheme.onSurface,

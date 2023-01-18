@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class ClassView extends GetResponsiveView<ClassController> {
           child: ResourceTableView<Class>(
             title: "All Classes",
             repository: Get.find<ClassRepository>(),
+            canAdd: Get.find<AuthService>().canAdd("Classes"),
           ),
         ),
       ),

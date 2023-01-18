@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
-import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_navigation_rail.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resource_manager/widgets/plus_widgets/plus_navigation_rail.dart';
 
 class ErpSettingsScaffold extends StatelessWidget {
   const ErpSettingsScaffold(
@@ -78,24 +79,8 @@ class ErpSettingsScaffold extends StatelessWidget {
                             Get.toNamed(path);
                           },
                           path: path,
-                          destinations: [
-                            PlusNavigationRailItem(
-                              label: 'My Profile',
-                              path: Routes.PROFILE,
-                            ),
-                            PlusNavigationRailItem(
-                              label: 'Users',
-                              path: Routes.USERS,
-                            ),
-                            PlusNavigationRailItem(
-                              label: 'Permission Groups',
-                              path: Routes.PERMISSION_GROUPS,
-                            ),
-                            PlusNavigationRailItem(
-                              label: 'Designations',
-                              path: Routes.DESIGNATIONS,
-                            ),
-                          ],
+                          destinations:
+                              Get.find<AuthService>().getSettingsTabs(),
                         ),
                       ),
                       Expanded(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/sidebar.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/topbar.dart';
-import 'package:flutter_erp/app/routes/app_pages.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 
 class ErpScaffold extends StatelessWidget {
@@ -57,71 +56,7 @@ class ErpScaffold extends StatelessWidget {
         if (Get.currentRoute == path) return;
         Get.toNamed(path);
       },
-      sideBarGroups: [
-        SideBarGroup(
-          title: "ANALYTICS",
-          sideBarDestinations: [
-            SideBarDestination(
-              title: "Dashboard",
-              icon: IconlyLight.home,
-              boldIcon: IconlyBold.home,
-              path: Routes.HOME,
-            ),
-            SideBarDestination(
-              title: "Branches",
-              icon: IconlyLight.chart,
-              boldIcon: IconlyBold.chart,
-              path: Routes.BRANCHES,
-            ),
-            SideBarDestination(
-              title: "Payments",
-              icon: IconlyLight.calendar,
-              boldIcon: IconlyBold.calendar,
-              path: Routes.PAYMENT,
-            ),
-          ],
-        ),
-        SideBarGroup(
-          title: "MAIN MENU",
-          sideBarDestinations: [
-            SideBarDestination(
-              title: "Employees",
-              icon: IconlyLight.user2,
-              boldIcon: IconlyBold.user2,
-              path: Routes.EMPLOYEES,
-            ),
-            SideBarDestination(
-              title: "Customers",
-              icon: IconlyLight.user3,
-              boldIcon: IconlyBold.user3,
-              path: Routes.CUSTOMERS,
-            ),
-            SideBarDestination(
-              title: "Classes",
-              icon: IconlyLight.calendar,
-              boldIcon: IconlyBold.calendar,
-              path: Routes.CLASS,
-            ),
-            SideBarDestination(
-              title: "Courses",
-              icon: IconlyLight.document,
-              boldIcon: IconlyBold.document,
-              path: Routes.COURSES,
-            ),
-          ],
-        ),
-        SideBarGroup(
-          title: "OTHERS",
-          sideBarDestinations: [
-            SideBarDestination(
-              title: "Settings",
-              icon: IconlyLight.setting,
-              boldIcon: IconlyBold.setting,
-              path: Routes.SETTINGS,
-            ),
-          ],
-        ),
-      ],
+      sideBarGroups: Get.find<AuthService>().getSideBarGroups(),
     );
   }
 

@@ -43,6 +43,8 @@ class Branch extends Resource<Branch> {
     };
   }
 
+  bool get isMainBranch => name == "Main branch";
+
   @override
   Branch fromMap(Map<String, dynamic> map) {
     return Branch(
@@ -59,8 +61,25 @@ class Branch extends Resource<Branch> {
 
   @override
   List<Field> getFields() {
-    // TODO: implement getFields
-    throw UnimplementedError();
+    return [
+      Field(
+        "name",
+        FieldType.name,
+        isRequired: true,
+        label: "Name",
+      ),
+      Field(
+        "address",
+        FieldType.text,
+        label: "Address",
+      ),
+      Field(
+        "phoneNumber",
+        FieldType.phoneNumber,
+        isRequired: true,
+        label: "Phone Number",
+      ),
+    ];
   }
 
   @override

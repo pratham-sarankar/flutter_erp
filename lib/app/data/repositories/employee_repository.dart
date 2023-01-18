@@ -15,5 +15,18 @@ class EmployeeRepository extends Repository<Employee> {
   }
 
   @override
-  Employee get empty => Employee();
+  Employee get empty =>
+      Employee(branchId: Get.find<AuthService>().currentBranch.id);
+
+  @override
+  Future<List<Employee>> fetch(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
+  }
 }

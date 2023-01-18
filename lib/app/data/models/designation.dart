@@ -43,9 +43,9 @@ class Designation extends Resource {
   @override
   Designation fromMap(Map<String, dynamic> map) {
     return Designation(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      employeesCount: map['employees_count'] ?? 0,
+      id: map['id'],
+      name: map['name'],
+      employeesCount: int.parse((map['employees_count'] ?? 0).toString()),
       employees: List.from(map['employees'] ?? [])
           .map((data) => Employee().fromMap(map))
           .toList(),
@@ -54,8 +54,9 @@ class Designation extends Resource {
 
   @override
   List<Field> getFields() {
-    // TODO: implement getFields
-    throw UnimplementedError();
+    return [
+      Field("name", FieldType.name, isRequired: true, label: "Name"),
+    ];
   }
 
   @override
@@ -71,6 +72,5 @@ class Designation extends Resource {
   }
 
   @override
-  // TODO: implement isEmpty
-  bool get isEmpty => throw UnimplementedError();
+  bool get isEmpty => id == null;
 }

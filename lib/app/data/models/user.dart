@@ -1,4 +1,5 @@
 import 'package:flutter_erp/app/data/models/employee.dart';
+import 'package:flutter_erp/app/data/models/permission_group.dart';
 import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/repositories/permission_group_repository.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class User extends Resource<User> {
   int? employeeId;
   int? groupId;
   Employee? employee;
+  PermissionGroup? permissionGroup;
   String? password;
 
   User({
@@ -24,6 +26,7 @@ class User extends Resource<User> {
     this.groupId,
     this.employee,
     this.password,
+    this.permissionGroup,
   });
 
   @override
@@ -34,6 +37,7 @@ class User extends Resource<User> {
       'employee_id': employeeId,
       'group_id': groupId,
       'employee': employee?.toMap(),
+      'permission_group': permissionGroup?.toMap(),
       if (password != null) 'password': password!,
     };
   }
@@ -60,8 +64,11 @@ class User extends Resource<User> {
       employeeId: map['employee_id'],
       groupId: map['group_id'],
       employee:
-          map['employee'] != null ? Employee().fromMap(map['employee']) : null,
+          map['employee'] == null ? null : Employee().fromMap(map['employee']),
       password: map['password'],
+      permissionGroup: map['permission_group'] == null
+          ? null
+          : PermissionGroup().fromMap(map['permission_group']),
     );
   }
 

@@ -10,9 +10,13 @@ class BranchCard extends StatelessWidget {
     required this.branch,
     required this.onUpdate,
     required this.onDelete,
+    this.canEdit = true,
+    this.canDelete = true,
   }) : super(key: key);
   final Branch branch;
   final void Function(Branch) onUpdate;
+  final bool canEdit;
+  final bool canDelete;
   final void Function(Branch) onDelete;
   @override
   Widget build(BuildContext context) {
@@ -52,66 +56,70 @@ class BranchCard extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      PopupMenuButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 10,
-                        offset: const Offset(0, 20),
-                        onSelected: (value) async {
-                          switch (value) {
-                            case "edit":
-                              onUpdate(branch);
-                              break;
-                            case "delete":
-                              onDelete(branch);
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) {
-                          return <PopupMenuEntry>[
-                            PopupMenuItem(
-                              value: "edit",
-                              height: 35,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.edit,
-                                    size: 18,
-                                    color: Colors.green.shade600,
+                      if (canEdit || canDelete)
+                        PopupMenuButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 10,
+                          offset: const Offset(0, 20),
+                          onSelected: (value) async {
+                            switch (value) {
+                              case "edit":
+                                onUpdate(branch);
+                                break;
+                              case "delete":
+                                onDelete(branch);
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) {
+                            return <PopupMenuEntry>[
+                              if (canEdit)
+                                PopupMenuItem(
+                                  value: "edit",
+                                  height: 35,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        size: 18,
+                                        color: Colors.green.shade600,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      const Text(
+                                        "Edit",
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    "Edit",
-                                    style: TextStyle(fontSize: 14),
+                                ),
+                              if (canEdit && canDelete)
+                                const PopupMenuDivider(height: 1),
+                              if (canDelete)
+                                PopupMenuItem(
+                                  value: "delete",
+                                  height: 35,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        size: 18,
+                                        color: Colors.red.shade700,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      const Text(
+                                        "Delete",
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            const PopupMenuDivider(height: 1),
-                            PopupMenuItem(
-                              value: "delete",
-                              height: 35,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.delete,
-                                    size: 18,
-                                    color: Colors.red.shade700,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    "Delete",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ];
-                        },
-                        padding: EdgeInsets.zero,
-                        child: const Icon(Icons.more_vert, size: 22),
-                      )
+                                ),
+                            ];
+                          },
+                          padding: EdgeInsets.zero,
+                          child: const Icon(Icons.more_vert, size: 22),
+                        )
                     ],
                   ),
                   const SizedBox(height: 10),

@@ -26,15 +26,15 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const EMPLOYEES = '/employees';
   static const SETTINGS = '/settings/';
-
-  //Settings Tab
-  static const PROFILE = '/settings/profile';
-  static const USERS = '/settings/users';
-  static const DESIGNATIONS = '/settings/designations';
-  static const PERMISSION_GROUPS = '/permission-groups';
   static const CUSTOMERS = '/customers';
   static const CLASS = '/class';
   static const BRANCHES = '/branches';
   static const COURSES = '/courses';
   static const PAYMENT = '/payment';
+
+  //Settings Tab
+  static const PROFILE = '/settings/profile';
+  static const USERS = '/settings/users';
+  static const DESIGNATIONS = '/settings/designations';
+  static const PERMISSION_GROUPS = '/settings/permission-groups';
 }

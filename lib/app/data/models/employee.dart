@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/designation_repository.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
@@ -18,6 +19,7 @@ class Employee extends Resource {
   DateTime? dob;
   String? photoUrl;
   int? designationId;
+  int? branchId;
 
   Employee({
     this.id,
@@ -28,6 +30,7 @@ class Employee extends Resource {
     this.phoneNumber,
     this.dob,
     this.designationId,
+    this.branchId,
   });
 
   @override
@@ -41,6 +44,7 @@ class Employee extends Resource {
       'dob': dob == null ? null : getDateOfBirth(),
       'photoUrl': photoUrl,
       'designation_id': designationId,
+      'branch_id': branchId,
     };
   }
 
@@ -55,6 +59,7 @@ class Employee extends Resource {
       photoUrl: map['photoUrl'],
       dob: map['dob'] == null ? null : setDateOfBirth(map['dob']),
       designationId: map['designation_id'],
+      branchId: map['branch_id'],
     );
   }
 
@@ -79,7 +84,7 @@ class Employee extends Resource {
   }
 
   String getName() {
-    return "$firstName $lastName";
+    return "${firstName ?? ""} ${lastName ?? ""}";
   }
 
   String getPhoneNumber() {
@@ -98,8 +103,15 @@ class Employee extends Resource {
 
   @override
   ResourceColumn getResourceColumn() {
-    return ResourceColumn(
-        columns: ["Name", "Email", "Phone number", "Date of birth", "Actions"]);
+    return ResourceColumn(columns: [
+      "Name",
+      "Email",
+      "Phone number",
+      "Date of birth",
+      if (Get.find<AuthService>().canEdit("Employees") ||
+          Get.find<AuthService>().canDelete("Employees"))
+        "Actions",
+    ]);
   }
 
   @override
@@ -113,24 +125,28 @@ class Employee extends Resource {
         Cell(data: getEmail()),
         Cell(data: getPhoneNumber()),
         Cell(data: getDateOfBirth()),
-        Cell(children: [
-          Cell(
-            data: "Edit",
-            icon: Icons.edit,
-            isAction: true,
-            onPressed: () {
-              controller.updateRow(this);
-            },
-          ),
-          Cell(
-            data: "Delete",
-            icon: Icons.delete,
-            isAction: true,
-            onPressed: () {
-              controller.destroyRow(this);
-            },
-          ),
-        ])
+        if (Get.find<AuthService>().canEdit("Employees") ||
+            Get.find<AuthService>().canDelete("Employees"))
+          Cell(children: [
+            if (Get.find<AuthService>().canEdit("Employees"))
+              Cell(
+                data: "Edit",
+                icon: Icons.edit,
+                isAction: true,
+                onPressed: () {
+                  controller.updateRow(this);
+                },
+              ),
+            if (Get.find<AuthService>().canDelete("Employees"))
+              Cell(
+                data: "Delete",
+                icon: Icons.delete,
+                isAction: true,
+                onPressed: () {
+                  controller.destroyRow(this);
+                },
+              ),
+          ])
       ],
     );
   }

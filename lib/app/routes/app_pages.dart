@@ -60,7 +60,7 @@ class AppPages {
       middlewares: [
         AuthMiddleware(),
         RedirectMiddleware(
-          (route) => const RouteSettings(name: Routes.DESIGNATIONS),
+          (route) => const RouteSettings(name: Routes.PROFILE),
         ),
       ],
     ),

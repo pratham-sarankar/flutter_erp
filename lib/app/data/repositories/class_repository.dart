@@ -14,5 +14,17 @@ class ClassRepository extends Repository<Class> {
   }
 
   @override
-  Class get empty => Class();
+  Class get empty => Class(branchId: Get.find<AuthService>().currentBranch.id);
+
+  @override
+  Future<List<Class>> fetch(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
+  }
 }

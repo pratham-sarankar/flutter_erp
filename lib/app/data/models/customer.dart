@@ -2,8 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
+
+import '../services/auth_service.dart';
 
 class Customer extends Resource {
   @override
@@ -16,6 +19,7 @@ class Customer extends Resource {
   String? phoneNumber;
   String? password;
   DateTime? dob;
+  int? branchId;
 
   Customer({
     this.id,
@@ -27,6 +31,7 @@ class Customer extends Resource {
     this.phoneNumber,
     this.password,
     this.dob,
+    this.branchId,
   });
 
   @override
@@ -47,6 +52,7 @@ class Customer extends Resource {
       'photoUrl': photoUrl,
       'email': email,
       'phoneNumber': phoneNumber,
+      'branch_id': branchId,
       if (password != null) 'password': password,
       'dob': dob == null ? null : getDateOfBirth(),
     };
@@ -63,6 +69,7 @@ class Customer extends Resource {
       email: map['email'],
       phoneNumber: map['phoneNumber'],
       password: map['password'],
+      branchId: map['branch_id'],
       dob: map['dob'] == null ? null : setDateOfBirth(map['dob']),
     );
   }
@@ -96,7 +103,7 @@ class Customer extends Resource {
   }
 
   @override
-  String get name => "Customer";
+  String get name => "${firstName ?? ""} ${lastName ?? ""}";
 
   @override
   bool get isEmpty => id == null;
@@ -110,7 +117,9 @@ class Customer extends Resource {
         "Email",
         "Phone number",
         "Date of birth",
-        "Actions",
+        if (Get.find<AuthService>().canEdit("Customers") ||
+            Get.find<AuthService>().canDelete("Customers"))
+          "Actions",
       ],
     );
   }
@@ -129,24 +138,28 @@ class Customer extends Resource {
         Cell(data: getEmail()),
         Cell(data: getPhoneNumber()),
         Cell(data: getDateOfBirth()),
-        Cell(children: [
-          Cell(
-            isAction: true,
-            icon: Icons.edit,
-            data: "Edit",
-            onPressed: () {
-              controller.updateRow(this);
-            },
-          ),
-          Cell(
-            isAction: true,
-            icon: Icons.delete,
-            data: "Delete",
-            onPressed: () {
-              controller.destroyRow(this);
-            },
-          ),
-        ]),
+        if (Get.find<AuthService>().canEdit("Customers") ||
+            Get.find<AuthService>().canDelete("Customers"))
+          Cell(children: [
+            if (Get.find<AuthService>().canEdit("Customers"))
+              Cell(
+                isAction: true,
+                icon: Icons.edit,
+                data: "Edit",
+                onPressed: () {
+                  controller.updateRow(this);
+                },
+              ),
+            if (Get.find<AuthService>().canDelete("Customers"))
+              Cell(
+                isAction: true,
+                icon: Icons.delete,
+                data: "Delete",
+                onPressed: () {
+                  controller.destroyRow(this);
+                },
+              ),
+          ]),
       ],
     );
   }

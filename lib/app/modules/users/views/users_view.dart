@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class UsersView extends GetResponsiveView<UsersController> {
         repository: Get.find<UserRepository>(),
         title: "Users",
         description: "Add, edit, delete and update users of your company.",
+        canAdd: Get.find<AuthService>().canAdd("Users"),
         tileBuilder: (controller, data) {
           return Container(
             width: Get.width,
@@ -71,20 +73,26 @@ class UsersView extends GetResponsiveView<UsersController> {
                   ],
                 ),
                 const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    controller.updateTile(data);
-                  },
-                  child: Icon(Icons.edit, color: Colors.green.shade700),
-                ),
-                const SizedBox(width: 20),
-                GestureDetector(
-                  onTap: () {
-                    controller.destroyTile(data);
-                  },
-                  child: Icon(Icons.delete, color: Colors.red.shade700),
-                ),
-                const SizedBox(width: 20),
+                if (Get.find<AuthService>().canEdit("Users"))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.updateTile(data);
+                      },
+                      child: Icon(Icons.edit, color: Colors.green.shade700),
+                    ),
+                  ),
+                if (Get.find<AuthService>().canDelete("Users"))
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.destroyTile(data);
+                      },
+                      child: Icon(Icons.delete, color: Colors.red.shade700),
+                    ),
+                  ),
               ],
             ),
           );

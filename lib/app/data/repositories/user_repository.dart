@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter_erp/app/data/models/user.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
-import 'package:flutter_erp/app/data/services/cache_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
@@ -24,10 +23,12 @@ class UserRepository extends Repository<User> {
     );
     var data = response.body[dataKey];
     var user = data[userKey];
+    var branch = user[employeeKey][branchKey];
     var token = data[tokenKey];
 
     await Get.find<AuthService>().saveToken(token);
-    await Get.find<CacheService>().saveData(userKey, user);
+    await Get.find<AuthService>().saveData(userKey, user);
+    await Get.find<AuthService>().saveData(branchKey, branch);
   }
 
   Future<void> updatePassword(String password, String newPassword) async {
@@ -39,9 +40,21 @@ class UserRepository extends Repository<User> {
     var user = data[userKey];
     var token = data[tokenKey];
     await Get.find<AuthService>().saveToken(token);
-    await Get.find<CacheService>().saveData(userKey, user);
+    await Get.find<AuthService>().saveData(userKey, user);
   }
 
   @override
   User get empty => User();
+
+  @override
+  Future<List<User>> fetch(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
+  }
 }

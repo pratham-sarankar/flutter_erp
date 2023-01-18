@@ -2,7 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
+
+import '../services/auth_service.dart';
 
 class Course extends Resource<Course> {
   @override
@@ -11,6 +14,7 @@ class Course extends Resource<Course> {
   String? description;
   String? photoUrl;
   double? duration;
+  int? branchId;
 
   Course({
     this.id,
@@ -18,6 +22,7 @@ class Course extends Resource<Course> {
     this.description,
     this.photoUrl,
     this.duration,
+    this.branchId,
   });
 
   bool get hasPhoto => photoUrl != null;
@@ -29,6 +34,7 @@ class Course extends Resource<Course> {
       'title': title,
       'description': description,
       'photoUrl': photoUrl,
+      'branch_id': branchId,
       'duration': (duration ?? "").toString(),
     };
   }
@@ -40,6 +46,7 @@ class Course extends Resource<Course> {
       title: map['title'],
       description: map['description'],
       photoUrl: map['photoUrl'],
+      branchId: map['branch_id'],
       duration: double.parse((map['duration']).toString()),
     );
   }
@@ -47,7 +54,14 @@ class Course extends Resource<Course> {
   @override
   ResourceColumn getResourceColumn() {
     return ResourceColumn(
-      columns: ["Title", "Description", "Duration", "Actions"],
+      columns: [
+        "Title",
+        "Description",
+        "Duration",
+        if (Get.find<AuthService>().canEdit("Courses") ||
+            Get.find<AuthService>().canDelete("Courses"))
+          "Actions",
+      ],
     );
   }
 
@@ -58,24 +72,28 @@ class Course extends Resource<Course> {
         Cell(data: title ?? "-"),
         Cell(data: description ?? "-"),
         Cell(data: "$duration hrs"),
-        Cell(children: [
-          Cell(
-            isAction: true,
-            data: "Edit",
-            icon: Icons.edit,
-            onPressed: () {
-              controller.updateRow(this);
-            },
-          ),
-          Cell(
-            isAction: true,
-            data: "Delete",
-            icon: Icons.delete,
-            onPressed: () {
-              controller.destroyRow(this);
-            },
-          ),
-        ])
+        if (Get.find<AuthService>().canEdit("Courses") ||
+            Get.find<AuthService>().canDelete("Courses"))
+          Cell(children: [
+            if (Get.find<AuthService>().canEdit("Courses"))
+              Cell(
+                isAction: true,
+                data: "Edit",
+                icon: Icons.edit,
+                onPressed: () {
+                  controller.updateRow(this);
+                },
+              ),
+            if (Get.find<AuthService>().canDelete("Courses"))
+              Cell(
+                isAction: true,
+                data: "Delete",
+                icon: Icons.delete,
+                onPressed: () {
+                  controller.destroyRow(this);
+                },
+              ),
+          ])
       ],
     );
   }

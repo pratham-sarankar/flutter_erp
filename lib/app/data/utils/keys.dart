@@ -7,5 +7,7 @@ var messageKey = "message";
 var dataKey = "data";
 var tokenKey = "token";
 var employeesKey = "employees";
+var employeeKey = "employee";
 var userKey = 'user';
+var branchKey = "branch";
 var usersKey = "users";

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
-import 'package:flutter_erp/app/data/widgets/plus_widgets/plus_form_field.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resource_manager/data/abstracts/resource.dart';
+import 'package:resource_manager/widgets/plus_widgets/plus_form_field.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -52,6 +53,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "First Name",
                             initialText: user.employee?.firstName,
                             enabled: false,
+                            type: FieldType.name,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -60,6 +62,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "Last Name",
                             initialText: user.employee?.lastName,
                             enabled: false,
+                            type: FieldType.name,
                           ),
                         ),
                       ],
@@ -72,6 +75,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "Username",
                             initialText: user.username,
                             enabled: false,
+                            type: FieldType.name,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -80,6 +84,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "Email",
                             initialText: user.employee?.email,
                             enabled: false,
+                            type: FieldType.email,
                           ),
                         ),
                       ],
@@ -92,6 +97,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "Phone Number",
                             initialText: user.employee?.phoneNumber,
                             enabled: false,
+                            type: FieldType.phoneNumber,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -100,6 +106,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                             title: "Date of birth",
                             initialText: user.employee?.getDateOfBirth(),
                             enabled: false,
+                            type: FieldType.date,
                           ),
                         ),
                       ],
@@ -130,8 +137,8 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                           child: PlusFormField(
                             title: "Password",
                             enabled: true,
-                            type: TextInputType.visiblePassword,
                             controller: controller.password,
+                            type: FieldType.password,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -139,7 +146,7 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                           child: PlusFormField(
                             title: "New Password",
                             enabled: true,
-                            type: TextInputType.visiblePassword,
+                            type: FieldType.password,
                             controller: controller.newPassword,
                           ),
                         ),

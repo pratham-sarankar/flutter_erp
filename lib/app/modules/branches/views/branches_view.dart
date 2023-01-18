@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -79,19 +80,22 @@ class BranchesView extends GetResponsiveView<BranchesController> {
                             },
                           ),
                         ),
-                        const SizedBox(width: 15),
-                        TextButton(
-                          child: Row(
-                            children: const [
-                              Icon(CupertinoIcons.add, size: 16),
-                              SizedBox(width: 5),
-                              Text("Add Branch"),
-                            ],
-                          ),
-                          onPressed: () {
-                            controller.createNewBranch();
-                          },
-                        )
+                        if (Get.find<AuthService>().canAdd("Branches"))
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: TextButton(
+                              child: Row(
+                                children: const [
+                                  Icon(CupertinoIcons.add, size: 16),
+                                  SizedBox(width: 5),
+                                  Text("Add Branch"),
+                                ],
+                              ),
+                              onPressed: () {
+                                controller.createNewBranch();
+                              },
+                            ),
+                          )
                       ],
                     ),
                   ),
@@ -106,6 +110,10 @@ class BranchesView extends GetResponsiveView<BranchesController> {
                               branch: branch,
                               onUpdate: controller.updateBranch,
                               onDelete: controller.deleteBranch,
+                              canDelete: (!branch.isMainBranch) &&
+                                  Get.find<AuthService>().canDelete("Branches"),
+                              canEdit:
+                                  Get.find<AuthService>().canEdit("Branches"),
                             ),
                           )
                           .toList(),
