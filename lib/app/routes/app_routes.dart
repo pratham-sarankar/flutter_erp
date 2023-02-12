@@ -14,10 +14,13 @@ abstract class Routes {
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
   static const PERMISSION_GROUPS = _Paths.PERMISSION_GROUPS;
   static const CUSTOMERS = _Paths.CUSTOMERS;
-  static const CLASS = _Paths.CLASS;
+  static const CLASSES = _Paths.CLASSES;
   static const BRANCHES = _Paths.BRANCHES;
   static const COURSES = _Paths.COURSES;
   static const PAYMENT = _Paths.PAYMENT;
+  static const CLASS = _Paths.CLASS;
+  static const SUBSCRIPTIONS = _Paths.SUBSCRIPTIONS;
+  static const COUPON = _Paths.COUPON;
 }
 
 abstract class _Paths {
@@ -27,6 +30,7 @@ abstract class _Paths {
   static const EMPLOYEES = '/employees';
   static const SETTINGS = '/settings/';
   static const CUSTOMERS = '/customers';
+  static const CLASSES = '/classes';
   static const CLASS = '/class';
   static const BRANCHES = '/branches';
   static const COURSES = '/courses';
@@ -37,4 +41,6 @@ abstract class _Paths {
   static const USERS = '/settings/users';
   static const DESIGNATIONS = '/settings/designations';
   static const PERMISSION_GROUPS = '/settings/permission-groups';
+  static const SUBSCRIPTIONS = '/subscriptions';
+  static const COUPON = '/coupon';
 }

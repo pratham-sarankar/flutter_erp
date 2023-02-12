@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/designation.dart';
 import 'package:flutter_erp/app/data/repositories/designation_repository.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
@@ -21,6 +22,8 @@ class Employee extends Resource {
   int? designationId;
   int? branchId;
 
+  Designation? designation;
+
   Employee({
     this.id,
     this.firstName,
@@ -31,6 +34,7 @@ class Employee extends Resource {
     this.dob,
     this.designationId,
     this.branchId,
+    this.designation,
   });
 
   @override
@@ -60,6 +64,7 @@ class Employee extends Resource {
       dob: map['dob'] == null ? null : setDateOfBirth(map['dob']),
       designationId: map['designation_id'],
       branchId: map['branch_id'],
+      designation: map['designation']!=null? Designation().fromMap(map['designation']):null,
     );
   }
 
@@ -108,6 +113,7 @@ class Employee extends Resource {
       "Email",
       "Phone number",
       "Date of birth",
+      "Designation",
       if (Get.find<AuthService>().canEdit("Employees") ||
           Get.find<AuthService>().canDelete("Employees"))
         "Actions",
@@ -125,6 +131,7 @@ class Employee extends Resource {
         Cell(data: getEmail()),
         Cell(data: getPhoneNumber()),
         Cell(data: getDateOfBirth()),
+        Cell(data: designation?.name??"-"),
         if (Get.find<AuthService>().canEdit("Employees") ||
             Get.find<AuthService>().canDelete("Employees"))
           Cell(children: [
@@ -180,8 +187,7 @@ class Employee extends Resource {
         isSearchable: true,
       ),
       Field('designation_id', FieldType.dropdown,
-          label: "Designation",
-          foreignRepository: Get.find<DesignationRepository>()),
+          label: "Designation", repository: Get.find<DesignationRepository>()),
       Field(
         'dob',
         FieldType.date,

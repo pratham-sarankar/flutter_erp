@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_erp/app/modules/permission_group/views/permission_group_view.dart';
+
 import 'package:get/get.dart';
 
 import '../data/middlewares/auth_middleware.dart';
@@ -9,6 +9,10 @@ import '../modules/branches/bindings/branches_binding.dart';
 import '../modules/branches/views/branches_view.dart';
 import '../modules/class/bindings/class_binding.dart';
 import '../modules/class/views/class_view.dart';
+import '../modules/classes/bindings/classes_binding.dart';
+import '../modules/classes/views/classes_view.dart';
+import '../modules/coupon/bindings/coupon_binding.dart';
+import '../modules/coupon/views/coupon_view.dart';
 import '../modules/courses/bindings/courses_binding.dart';
 import '../modules/courses/views/courses_view.dart';
 import '../modules/customers/bindings/customers_binding.dart';
@@ -24,10 +28,13 @@ import '../modules/login/views/login_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_view.dart';
 import '../modules/permission_group/bindings/permission_group_binding.dart';
+import '../modules/permission_group/views/permission_group_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
+import '../modules/subscriptions/bindings/subscriptions_binding.dart';
+import '../modules/subscriptions/views/subscriptions_view.dart';
 import '../modules/users/bindings/users_binding.dart';
 import '../modules/users/views/users_view.dart';
 
@@ -113,11 +120,25 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.CLASSES,
+      page: () => ClassesView(),
+      binding: ClassesBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
       name: _Paths.CLASS,
       page: () => ClassView(),
       binding: ClassBinding(),
       middlewares: [
-        AuthMiddleware(),
+        RedirectMiddleware(
+          (route) => Get.parameters.containsKey('id')
+              ? null
+              : const RouteSettings(
+                  name: Routes.CLASSES,
+                ),
+        ),
       ],
     ),
     GetPage(
@@ -143,6 +164,16 @@ class AppPages {
       middlewares: [
         AuthMiddleware(),
       ],
+    ),
+    GetPage(
+      name: _Paths.SUBSCRIPTIONS,
+      page: () => SubscriptionsView(),
+      binding: SubscriptionsBinding(),
+    ),
+    GetPage(
+      name: _Paths.COUPON,
+      page: () =>  CouponView(),
+      binding: CouponBinding(),
     ),
   ];
 }

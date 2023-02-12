@@ -270,7 +270,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Repolyze Yoga",
+                              "Gyanish Yoga",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

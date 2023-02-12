@@ -1,11 +1,11 @@
-import 'package:flutter_erp/app/data/models/payment.dart';
+import 'package:flutter_erp/app/data/models/package.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:resource_manager/resource_manager.dart';
+import 'package:resource_manager/data/abstracts/repository.dart';
 
-class PaymentRepository extends Repository<Payment> {
-  PaymentRepository() : super(path: "/payment");
+class PackageRepository extends Repository<Package> {
+  PackageRepository() : super(path: "/package");
 
   @override
   Future<Request> authenticator(Request request) async {
@@ -13,17 +13,18 @@ class PaymentRepository extends Repository<Payment> {
   }
 
   @override
-  Payment get empty =>
-      Payment(branchId: Get.find<AuthService>().currentBranch.id);
+  Package get empty {
+    return Package(classId: int.parse(Get.parameters['id'] ?? "0"));
+  }
 
   @override
-  Future<List<Payment>> fetch(
+  Future<List<Package>> fetch(
       {int limit = 100,
       int offset = 0,
       Map<String, dynamic> queries = const {}}) {
     var updatedQueries = {
       ...queries,
-      "branch_id": Get.find<AuthService>().currentBranch.id,
+      "classId": Get.parameters['id'] ?? queries["classId"],
     };
     return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
   }

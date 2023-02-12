@@ -248,8 +248,7 @@ class __TopBarButtonState extends State<_TopBarButton> {
             ),
           ),
           onPressed: () async {
-            var result = await Get.dialog(
-                ResourceDialog<Customer>(resource: Customer()));
+            var result = await Get.dialog(ResourceDialog(resource: Customer()));
             print(result);
             // Get.changeThemeMode(
             //     Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);

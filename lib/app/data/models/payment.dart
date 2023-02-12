@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
+import 'package:flutter_erp/app/data/models/payment_mode.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
@@ -8,31 +9,39 @@ import 'package:resource_manager/resource_manager.dart';
 class Payment extends Resource {
   @override
   final int? id;
-  int? customerId;
-  Customer? customer;
-  int? amount;
   int? branchId;
+  int? customerId;
+  int? modeId;
+  double? amount;
   String? description;
+  Customer? customer;
+  PaymentMode? mode;
 
   Payment({
     this.id,
     this.customerId,
+    this.modeId,
     this.description,
     this.amount,
     this.branchId,
     this.customer,
+    this.mode,
   });
 
   @override
   Payment fromMap(Map<String, dynamic> map) {
     return Payment(
       id: map['id'],
-      amount: int.parse(map['amount'].toString()),
+      modeId: map['mode_id'],
+      amount: double.parse(map['amount'].toString()),
       customerId: map['customer_id'],
       description: map['description'],
       branchId: map['branch_id'],
       customer:
           map['customer'] == null ? null : Customer().fromMap(map['customer']),
+      mode: map['payment_mode'] == null
+          ? null
+          : PaymentMode().fromMap(map['payment_mode']),
     );
   }
 
@@ -42,7 +51,7 @@ class Payment extends Resource {
       Field(
         "customer_id",
         FieldType.foreign,
-        foreignRepository: Get.find<CustomerRepository>(),
+        repository: Get.find<CustomerRepository>(),
         isRequired: true,
         label: "Customer",
       ),
@@ -111,5 +120,10 @@ class Payment extends Resource {
       "amount": amount,
       'branch_id': branchId,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Payment{id: $id, customerId: $customerId, customer: $customer, amount: $amount, branchId: $branchId, description: $description}';
   }
 }

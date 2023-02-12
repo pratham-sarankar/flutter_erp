@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:flutter_erp/app/data/services/ivr_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
@@ -141,6 +143,26 @@ class Customer extends Resource {
         if (Get.find<AuthService>().canEdit("Customers") ||
             Get.find<AuthService>().canDelete("Customers"))
           Cell(children: [
+            Cell(
+              isAction: true,
+              icon: Icons.call,
+              data: "Call",
+              onPressed: () {
+                if (phoneNumber != null) {
+                  Get.find<IVRService>()
+                      .initiateCall('8000924465', phoneNumber!);
+                }
+              },
+            ),
+            // if (Get.find<AuthService>().canEdit("Subscriptions"))
+              Cell(
+                isAction: true,
+                data: "Subscribe",
+                icon: Icons.edit,
+                onPressed: () {
+                  Get.find<TableController<Subscription>>().insertRow(initialData: {'customer_id':id});
+                },
+              ),
             if (Get.find<AuthService>().canEdit("Customers"))
               Cell(
                 isAction: true,

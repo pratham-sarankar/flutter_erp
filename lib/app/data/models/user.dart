@@ -83,13 +83,13 @@ class User extends Resource<User> {
         FieldType.dropdown,
         isRequired: true,
         label: "Permission Group",
-        foreignRepository: Get.find<PermissionGroupRepository>(),
+        repository: Get.find<PermissionGroupRepository>(),
       ),
       Field(
         "employee_id",
         FieldType.foreign,
         isRequired: true,
-        foreignRepository: Get.find<EmployeeRepository>(),
+        repository: Get.find<EmployeeRepository>(),
       ),
     ];
   }

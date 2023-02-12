@@ -1,9 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/employee.dart';
+import 'package:flutter_erp/app/data/models/subscription.dart';
+import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
+import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
+import 'package:rrule/rrule.dart';
 
 import '../services/auth_service.dart';
 
@@ -13,16 +18,25 @@ class Class extends Resource {
   String? title;
   String? description;
   String? photoUrl;
-  double? price;
+  RecurrenceRule? schedule;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
   int? branchId;
+  int? trainerId;
+
+  Employee? trainer;
 
   Class({
     this.id,
     this.title,
     this.description,
     this.photoUrl,
-    this.price,
+    this.schedule,
     this.branchId,
+    this.endTime,
+    this.startTime,
+    this.trainerId,
+    this.trainer,
   });
 
   bool get hasPhoto => photoUrl != null;
@@ -34,8 +48,12 @@ class Class extends Resource {
       'title': title,
       'description': description,
       'photoUrl': photoUrl,
-      'price': (price ?? "").toString(),
       'branch_id': branchId,
+      'trainer_id': trainerId,
+      'schedule': schedule?.toString(),
+      if (startTime != null)
+        'start_time': "${startTime?.hour}:${startTime?.minute}",
+      if (endTime != null) 'end_time': "${endTime?.hour}:${endTime?.minute}",
     };
   }
 
@@ -46,8 +64,15 @@ class Class extends Resource {
       title: map['title'],
       description: map['description'],
       photoUrl: map['photoUrl'],
-      price: double.parse((map['price']).toString()),
       branchId: branchId,
+      startTime: timeFromString(map['start_time']),
+      endTime: timeFromString(map['end_time']),
+      schedule: map['schedule'] == null
+          ? null
+          : RecurrenceRule.fromString(map['schedule']),
+      trainer:
+          map['trainer'] == null ? null : Employee().fromMap(map['trainer']),
+      trainerId: map['trainer_id'],
     );
   }
 
@@ -57,12 +82,21 @@ class Class extends Resource {
       columns: [
         "Title",
         "Description",
-        "Price",
+        "Trainer",
+        "Schedule",
+        "Starts at",
+        "Ends at",
         if (Get.find<AuthService>().canEdit("Classes") ||
             Get.find<AuthService>().canDelete("Classes"))
           "Actions",
       ],
     );
+  }
+
+  TimeOfDay timeFromString(String value) {
+    int hour = int.parse(value.split(":")[0]);
+    int minute = int.parse(value.split(":")[1]);
+    return TimeOfDay(hour: hour, minute: minute);
   }
 
   @override
@@ -71,7 +105,14 @@ class Class extends Resource {
       cells: [
         Cell(data: title ?? "-"),
         Cell(data: description ?? "-"),
-        Cell(data: (price ?? "-").toString()),
+        Cell(data: trainer?.getName() ?? "-"),
+        Cell(
+          data: schedule == null
+              ? "-"
+              : Get.find<RRuleService>().generateReadableText(schedule!),
+        ),
+        Cell(data: startTime?.format(Get.context!) ?? "-"),
+        Cell(data: endTime?.format(Get.context!) ?? "-"),
         if (Get.find<AuthService>().canEdit("Classes") ||
             Get.find<AuthService>().canDelete("Classes"))
           Cell(
@@ -105,13 +146,31 @@ class Class extends Resource {
     return FileRepository.instance.getUrl(photoUrl!);
   }
 
+  String get formattedTime {
+    if (startTime == null || endTime == null) {
+      return "-";
+    }
+    return "${startTime?.format(Get.context!)} to ${endTime?.format(Get.context!)}";
+  }
+
   @override
   List<Field> getFields() {
     return [
       Field("photoUrl", FieldType.image, label: "Photo"),
       Field("title", FieldType.name, label: "Title"),
       Field("description", FieldType.text, label: "Description"),
-      Field("price", FieldType.number, label: "Price", isRequired: true),
+      Field("start_time", FieldType.time, label: "Starts At", isRequired: true),
+      Field("end_time", FieldType.time, label: "Ends At", isRequired: true),
+      Field("schedule", FieldType.recurring,
+          label: "Schedule", isRequired: true),
+      Field(
+        "trainer_id",
+        FieldType.dropdown,
+        label: "Trainer",
+        isRequired: true,
+        repository: Get.find<EmployeeRepository>(),
+        queries: {'designation_key': 'trainer'},
+      )
     ];
   }
 

@@ -53,8 +53,11 @@ class ErpScaffold extends StatelessWidget {
       isCollapsed: isCollapsed,
       initialPath: path,
       onSelected: (path) {
-        if (Get.currentRoute == path) return;
-        Get.toNamed(path);
+        if (Get.currentRoute == path) {
+          return;
+        } else {
+          Get.toNamed(path);
+        }
       },
       sideBarGroups: Get.find<AuthService>().getSideBarGroups(),
     );
