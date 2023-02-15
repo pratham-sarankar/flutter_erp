@@ -8,6 +8,7 @@ import 'package:flutter_erp/app/data/services/ivr_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
+import 'package:flutter_erp/app/data/widgets/global_widgets/window_scaffold.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -16,8 +17,13 @@ import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
-  Get.create<BranchRepository>(()=>BranchRepository());
+  doWhenWindowReady(() {
+    appWindow.maximize();
+  });
+  if (GetPlatform.isWeb) {
+    setPathUrlStrategy();
+  }
+  Get.create<BranchRepository>(() => BranchRepository());
   Get.lazyPut<BranchRepository>(() => BranchRepository());
   Get.lazyPut<UserRepository>(() => UserRepository());
   Get.lazyPut<ModuleRepository>(() => ModuleRepository());
@@ -29,13 +35,6 @@ void main() async {
 
   await Get.find<ModuleRepository>().init();
   await Get.find<AuthService>().reloadUser();
-  doWhenWindowReady(() {
-    const initialSize = Size(600, 450);
-    appWindow.maximize();
-    appWindow.minSize = initialSize;
-    appWindow.alignment = Alignment.center;
-    appWindow.show();
-  });
   runApp(
     GetMaterialApp(
       title: "Flutter ERP",
@@ -46,6 +45,11 @@ void main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       defaultTransition: Transition.noTransition,
+      builder: (context, child) {
+        return WindowScaffold(
+          child: child!,
+        );
+      },
     ),
   );
 }

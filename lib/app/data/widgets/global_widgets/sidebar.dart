@@ -55,9 +55,6 @@ class _SideBarState extends State<SideBar> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: (!kIsWeb ? appWindow.titleBarHeight : 0),
-                  ),
-                  SizedBox(
                     height: 150,
                     child: Container(
                       margin: EdgeInsets.zero,

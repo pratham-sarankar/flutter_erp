@@ -14,7 +14,7 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75 + (!kIsWeb ? (!kIsWeb ? appWindow.titleBarHeight : 0) : 0),
+      height: 75,
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -68,6 +68,7 @@ class TopBar extends StatelessWidget {
           const Spacer(),
           if (screen.isDesktop)
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: const [
                 // const _TopBarButton(
                 //     icon: IconlyLight.notification,
@@ -141,6 +142,7 @@ class TopBar extends StatelessWidget {
             elevation: 10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
+
               children: [
                 SizedBox(
                   width: Get.width * 0.015,
