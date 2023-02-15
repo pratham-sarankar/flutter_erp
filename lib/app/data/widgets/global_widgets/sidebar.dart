@@ -1,6 +1,4 @@
-import 'dart:html' as web;
 import 'dart:math';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -22,12 +20,14 @@ class SideBar extends StatefulWidget {
     required this.sideBarGroups,
     this.minWidth = 250,
   });
+
   final ResponsiveScreen screen;
   final double minWidth;
   final List<SideBarGroup> sideBarGroups;
   final String initialPath;
   final bool isCollapsed;
   final Function(String) onSelected;
+
   @override
   State<SideBar> createState() => _SideBarState();
 }
@@ -35,6 +35,7 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   late String _selectedPath;
   late bool _isCollapsed;
+
   @override
   void initState() {
     _isCollapsed = widget.isCollapsed;
@@ -197,8 +198,10 @@ class SideBarDestination {
 
 class _SidebarTitle extends StatefulWidget {
   const _SidebarTitle({required this.onTap, required this.isCollapsed});
+
   final VoidCallback onTap;
   final bool isCollapsed;
+
   @override
   State<_SidebarTitle> createState() => __SidebarTitleState();
 }
@@ -303,6 +306,7 @@ class __SidebarTitleState extends State<_SidebarTitle> {
 class _BranchTile extends StatelessWidget {
   const _BranchTile({Key? key, required this.isCollapsed}) : super(key: key);
   final bool isCollapsed;
+
   @override
   Widget build(BuildContext context) {
     var branch = Get.find<AuthService>().currentBranch;
@@ -310,13 +314,13 @@ class _BranchTile extends StatelessWidget {
       onTap: () async {
         if (!Get.find<AuthService>().canEdit("Branches")) return;
         List<Branch> branches = await Get.find<BranchRepository>().fetch();
-        Branch? branch = await showCupertinoDialog(
-          context: context,
-          builder: (context) => BranchSelectionDialog(branches: branches),
-        );
+        Branch? branch =
+            await Get.dialog(BranchSelectionDialog(branches: branches));
         if (branch == null) return;
         await Get.find<AuthService>().setCurrentBranch(branch);
-        web.window.location.reload();
+        var route = Get.currentRoute;
+        Get.deleteAll();
+        Get.offAndToNamed(route);
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -410,6 +414,7 @@ class _NavigatorTile extends StatefulWidget {
     required this.isCollapsed,
     this.boldIcon,
   });
+
   final String title;
   final IconData icon;
   final IconData? boldIcon;
@@ -426,6 +431,7 @@ class _NavigatorTileState extends State<_NavigatorTile> {
   late bool _isHovered;
   late bool _isFocused;
   late FocusNode _focusNode;
+
   @override
   void initState() {
     _focusNode = FocusNode();

@@ -198,10 +198,7 @@ class ClassView extends GetResponsiveView<ClassController> {
                         const SizedBox(width: 20),
                         const VerticalDivider(),
                         const SizedBox(width: 20),
-                        Container(
-                          height: 100,
-                          width: 400,
-                          color: Colors.blue,
+                        Expanded(
                           child: FutureBuilder(
                             future: Get.find<SubscriptionRepository>().fetch(queries: {'class_id':Get.parameters['id']}),
                             builder: (context, snapshot) {

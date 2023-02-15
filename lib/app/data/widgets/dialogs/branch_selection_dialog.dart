@@ -2,20 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:get/get.dart';
 
-class BranchSelectionDialog extends StatefulWidget {
+class BranchSelectionDialog extends StatelessWidget {
   const BranchSelectionDialog({Key? key, required this.branches})
       : super(key: key);
   final List<Branch> branches;
-  @override
-  State<BranchSelectionDialog> createState() => _BranchSelectionDialogState();
-}
-
-class _BranchSelectionDialogState extends State<BranchSelectionDialog> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -58,15 +48,15 @@ class _BranchSelectionDialogState extends State<BranchSelectionDialog> {
 
   Widget _branchesList() {
     return ListView.separated(
-      itemCount: widget.branches.length,
+      itemCount: branches.length,
       itemBuilder: (context, index) => ListTile(
         onTap: () {
-          Get.back(result: widget.branches[index]);
+          Get.back(result: branches[index]);
         },
         horizontalTitleGap: 0,
         contentPadding: EdgeInsets.zero,
-        title: Text(widget.branches[index].name ?? "-"),
-        subtitle: Text(widget.branches[index].address ?? "-"),
+        title: Text(branches[index].name ?? "-"),
+        subtitle: Text(branches[index].address ?? "-"),
       ),
       separatorBuilder: (context, index) => const Divider(),
     );
@@ -110,3 +100,5 @@ class _BranchSelectionDialogState extends State<BranchSelectionDialog> {
     );
   }
 }
+
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/sidebar.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/topbar.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,11 @@ class ErpScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.find<ToastService>().showToast("message");
+        },
+      ),
       body: !screen.isDesktop
           ? Stack(
               children: [

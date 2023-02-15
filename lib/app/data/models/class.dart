@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
@@ -93,7 +92,8 @@ class Class extends Resource {
     );
   }
 
-  TimeOfDay timeFromString(String value) {
+  TimeOfDay? timeFromString(String? value) {
+    if (value == null) return null;
     int hour = int.parse(value.split(":")[0]);
     int minute = int.parse(value.split(":")[1]);
     return TimeOfDay(hour: hour, minute: minute);

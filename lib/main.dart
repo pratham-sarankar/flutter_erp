@@ -17,10 +17,10 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
+  Get.create<BranchRepository>(()=>BranchRepository());
   Get.lazyPut<BranchRepository>(() => BranchRepository());
   Get.lazyPut<UserRepository>(() => UserRepository());
   Get.lazyPut<ModuleRepository>(() => ModuleRepository());
-
   Get.put(IVRService());
   await Get.putAsync(() => ToastService().init());
   await Get.putAsync(() => AuthService().init());

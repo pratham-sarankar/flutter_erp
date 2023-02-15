@@ -16,7 +16,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_iconly: ^1.0.2
-  fluttertoast:
   get: ^4.6.5
   google_fonts: ^3.0.1
   url_strategy: ^0.2.0
