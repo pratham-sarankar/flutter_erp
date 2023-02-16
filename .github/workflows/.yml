@@ -1,37 +1,23 @@
 name: Flutter CRM
 
-on: push
+on:
+  push:
+    branches:
+      - unstable
+
 
 jobs:
-  build-and-release-linux:
-    runs-on: ubuntu-latest
-
-  build-and-release-windows:
+  flutter_test:
+    name: Run flutter test and analyse
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'stable'
-          flutter-version: '3.7.0'
-      - name: Install project dependencies
-        run: flutter pub get
-      - name: Generate intermediates
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Enable windows build
-        run: flutter config --enable-windows-desktop
-      - name: Build artifacts
-        run: flutter build windows --release
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          filename: FlutterErp-${{github.ref_name}}-windows.zip
-          directory: build/windows/runner/Release
-      - name: Windows Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: build/windows/runner/Release/FlutterErp-${{github.ref_name}}-windows.zip
+          channel: "stable"
+      - run: flutter pub get
+      - run: flutter analyse
+      - run: flutter build windows --release
