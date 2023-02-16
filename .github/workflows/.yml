@@ -35,6 +35,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: build/windows/runner/Release/FlutterErp-${{github.ref_name}}-windows.zip
-
-  build-and-release-macos:
-    runs-on: macos-latest
