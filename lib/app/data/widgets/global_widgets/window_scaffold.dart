@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class WindowScaffold extends StatelessWidget {
   const WindowScaffold({Key? key, this.child}) : super(key: key);
   final Widget? child;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
