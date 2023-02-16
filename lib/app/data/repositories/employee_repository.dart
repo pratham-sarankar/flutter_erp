@@ -1,37 +1,32 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/providers/employee_provider.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:resource_manager/resource_manager.dart';
 
-class EmployeeRepository {
-  final EmployeeProvider _provider;
+class EmployeeRepository extends Repository<Employee> {
+  EmployeeRepository() : super(path: "/employee");
 
-  EmployeeRepository._privateConstructor() : _provider = EmployeeProvider();
-
-  static final instance = EmployeeRepository._privateConstructor();
-
-  Future<List<Employee>> fetchAll() async {
-    return await _provider.fetchAll();
+  @override
+  Future<Request> authenticator(Request request) async {
+    return Get.find<AuthService>().authenticator(request);
   }
 
-  Future<Employee> insertOne(Employee employee) async {
-    return _provider.insertOne(employee: employee);
-  }
+  @override
+  Employee get empty =>
+      Employee(branchId: Get.find<AuthService>().currentBranch.id);
 
-  Future<Employee> updateOne(Employee employee) async {
-    return await _provider.updateOne(employee: employee);
-  }
-
-  Future<void> deleteOne(Employee employee) async {
-    return await _provider.deleteOne(employee: employee);
-  }
-
-  Future<void> deleteMany(List<Employee> employees) async {
-    return await _provider.deleteMany(employees: employees);
-  }
-
-  Future<String> uploadImage(Uint8List data) async {
-    return await _provider.uploadImage(data);
+  @override
+  Future<List<Employee>> fetch(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
   }
 }

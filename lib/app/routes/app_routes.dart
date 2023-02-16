@@ -5,26 +5,42 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const EMPLOYEES = _Paths.EMPLOYEES;
-  static const AUTH = _Paths.AUTH;
+  static const LOGIN = _Paths.LOGIN;
   static const SETTINGS = _Paths.SETTINGS;
 
   //Settings Tab
   static const PROFILE = _Paths.PROFILE;
   static const USERS = _Paths.USERS;
   static const DESIGNATIONS = _Paths.DESIGNATIONS;
-  static const USER_GROUPS = _Paths.USER_GROUPS;
+  static const PERMISSION_GROUPS = _Paths.PERMISSION_GROUPS;
+  static const CUSTOMERS = _Paths.CUSTOMERS;
+  static const CLASSES = _Paths.CLASSES;
+  static const BRANCHES = _Paths.BRANCHES;
+  static const COURSES = _Paths.COURSES;
+  static const PAYMENT = _Paths.PAYMENT;
+  static const CLASS = _Paths.CLASS;
+  static const SUBSCRIPTIONS = _Paths.SUBSCRIPTIONS;
+  static const COUPON = _Paths.COUPON;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/';
-  static const AUTH = '/auth';
+  static const LOGIN = '/login';
   static const EMPLOYEES = '/employees';
   static const SETTINGS = '/settings/';
+  static const CUSTOMERS = '/customers';
+  static const CLASSES = '/classes';
+  static const CLASS = '/class';
+  static const BRANCHES = '/branches';
+  static const COURSES = '/courses';
+  static const PAYMENT = '/payment';
 
   //Settings Tab
   static const PROFILE = '/settings/profile';
   static const USERS = '/settings/users';
   static const DESIGNATIONS = '/settings/designations';
-  static const USER_GROUPS = '/user-groups';
+  static const PERMISSION_GROUPS = '/settings/permission-groups';
+  static const SUBSCRIPTIONS = '/subscriptions';
+  static const COUPON = '/coupon';
 }

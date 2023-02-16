@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/widgets/erp_settings_scaffold.dart';
+import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 

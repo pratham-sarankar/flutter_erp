@@ -1,32 +1,18 @@
 import 'package:flutter_erp/app/data/models/designation.dart';
-import 'package:flutter_erp/app/data/models/employee.dart';
-import 'package:flutter_erp/app/data/providers/designation_provider.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:resource_manager/resource_manager.dart';
 
-class DesignationRepository {
-  final DesignationProvider _provider;
+import '../services/auth_service.dart';
 
-  DesignationRepository._privateConstructor()
-      : _provider = DesignationProvider();
+class DesignationRepository extends Repository<Designation> {
+  DesignationRepository() : super(path: "/designation");
 
-  static final instance = DesignationRepository._privateConstructor();
-
-  Future<Designation> insertOne(Designation designation) async {
-    return await _provider.insertOne(designation: designation);
+  @override
+  Future<Request> authenticator(Request request) async {
+    return Get.find<AuthService>().authenticator(request);
   }
 
-  Future<List<Designation>> fetchAll() async {
-    return await _provider.fetchAll();
-  }
-
-  Future<List<Employee>> fetchOneWithEmployees(int id) async {
-    return await _provider.fetchOneWithEmployees(id);
-  }
-
-  Future<Designation> updateOne(Designation designation) async {
-    return await _provider.updateOne(designation);
-  }
-
-  Future<void> deleteOne(Designation designation) async {
-    return await _provider.deleteOne(designation);
-  }
+  @override
+  Designation get empty => Designation();
 }
