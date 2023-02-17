@@ -17,11 +17,6 @@ class ErpScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.find<ToastService>().showToast("message");
-        },
-      ),
       body: !screen.isDesktop
           ? Stack(
               children: [

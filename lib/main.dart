@@ -18,7 +18,9 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   doWhenWindowReady(() {
-    appWindow.maximize();
+    final win = appWindow;
+    win.maximize();
+    win.show();
   });
   if (GetPlatform.isWeb) {
     setPathUrlStrategy();

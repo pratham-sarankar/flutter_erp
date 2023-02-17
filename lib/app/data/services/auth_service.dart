@@ -18,6 +18,7 @@ class AuthService extends GetxService {
   Future<AuthService> init() async {
     await GetStorage.init();
     _box = GetStorage();
+    // await _box.erase();
     return this;
   }
 

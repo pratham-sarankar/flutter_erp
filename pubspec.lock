@@ -691,11 +691,9 @@ packages:
   resource_manager:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "2dbf4ef414c8ab655870f10c19062a3a915ce760"
-      url: "https://github.com/pratham-sarankar/resource_manager"
-    source: git
+      path: "/Users/prathamsarankar/Documents/packages/resource_manager"
+      relative: false
+    source: path
     version: "0.0.1"
   rrule:
     dependency: "direct main"
@@ -803,6 +801,14 @@ packages:
     description:
       name: syncfusion_flutter_core
       sha256: "33141f9073c607bd113898d241aa6a03ccc1856a314bd061015180c35d47012f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "20.4.50"
+  syncfusion_flutter_datagrid:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datagrid
+      sha256: "5be9b82e66baecb6dd6b65e324fc738ae5a49c849592f8ac2d386a537a22b88d"
       url: "https://pub.dev"
     source: hosted
     version: "20.4.50"

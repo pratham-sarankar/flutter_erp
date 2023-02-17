@@ -4,6 +4,7 @@ import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
+import 'package:flutter_erp/app/modules/class/views/chat_view.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -122,7 +123,8 @@ class ClassView extends GetResponsiveView<ClassController> {
                             title: "Packages",
                             description:
                                 "Add, Update or Delete the packages of this class.",
-                            canAdd: Get.find<AuthService>().canAdd("Designations"),
+                            canAdd:
+                                Get.find<AuthService>().canAdd("Designations"),
                             tileBuilder: (controller, data) {
                               return Container(
                                 width: Get.width,
@@ -198,25 +200,8 @@ class ClassView extends GetResponsiveView<ClassController> {
                         const SizedBox(width: 20),
                         const VerticalDivider(),
                         const SizedBox(width: 20),
-                        Expanded(
-                          child: FutureBuilder(
-                            future: Get.find<SubscriptionRepository>().fetch(queries: {'class_id':Get.parameters['id']}),
-                            builder: (context, snapshot) {
-                              if(!snapshot.hasData){
-                                return const Center(
-                                  child: Text("No Data"),
-                                );
-                              }
-                              return ListView(
-                                children: [
-                                  for(var data in snapshot.data!)
-                                    ListTile(
-                                      title: Text(data.customer?.name??"-"),
-                                    ),
-                                ],
-                              );
-                            },
-                          ),
+                        const Expanded(
+                          child: ChatView(),
                         ),
                       ],
                     ),

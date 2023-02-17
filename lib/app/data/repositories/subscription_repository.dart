@@ -15,4 +15,16 @@ class SubscriptionRepository extends Repository<Subscription> {
   @override
   Subscription get empty =>
       Subscription(branchId: Get.find<AuthService>().currentBranch.id);
+
+  @override
+  Future<List<Subscription>> fetch(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
+    var updatedQueries = {
+      ...queries,
+      "class_id": Get.parameters['id'] ?? queries["class_id"],
+    };
+    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
+  }
 }
