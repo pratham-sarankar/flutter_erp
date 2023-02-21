@@ -2,7 +2,7 @@ import 'package:flutter_erp/app/data/models/permission.dart';
 import 'package:flutter_erp/app/data/models/user.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/sidebar.dart';
+import 'package:flutter_erp/widgets/global_widgets/sidebar.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';

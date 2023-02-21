@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:get/get.dart';

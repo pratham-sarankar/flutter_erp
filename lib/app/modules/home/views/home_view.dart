@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/dashboard_widget.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
-import 'package:flutter_erp/app/data/widgets/payment_chart.dart';
+import 'package:flutter_erp/widgets/global_widgets/dashboard_widget.dart';
+import 'package:flutter_erp/widgets/global_widgets/erp_scaffold.dart';
+import 'package:flutter_erp/widgets/payment_chart.dart';
 import 'package:flutter_erp/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';

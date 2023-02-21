@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/erp_scaffold.dart';
+import 'package:flutter_erp/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +13,7 @@ class ErpSettingsScaffold extends StatelessWidget {
   final String path;
   final ResponsiveScreen screen;
   final Widget body;
+
   @override
   Widget build(BuildContext context) {
     return ErpScaffold(

@@ -5,10 +5,11 @@ import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/services/file_service.dart';
 import 'package:flutter_erp/app/data/services/ivr_service.dart';
+import 'package:flutter_erp/app/data/services/mail_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/window_scaffold.dart';
+import 'package:flutter_erp/widgets/global_widgets/window_scaffold.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -30,6 +31,7 @@ void main() async {
   Get.lazyPut<UserRepository>(() => UserRepository());
   Get.lazyPut<ModuleRepository>(() => ModuleRepository());
   Get.put(IVRService());
+  Get.put(MailService());
   await Get.putAsync(() => ToastService().init());
   await Get.putAsync(() => AuthService().init());
   await Get.putAsync(() => FileService().init());

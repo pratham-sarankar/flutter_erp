@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_erp/app/data/models/branch.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
-import 'package:flutter_erp/app/data/widgets/dialogs/branch_selection_dialog.dart';
+import 'package:flutter_erp/widgets/dialogs/branch_selection_dialog.dart';
 import 'package:get/get.dart';
 
 class SideBar extends StatefulWidget {

@@ -5,7 +5,7 @@ import 'package:flutter_erp/app/data/models/permission_group.dart';
 import 'package:flutter_erp/app/data/repositories/module_repository.dart';
 import 'package:flutter_erp/app/data/repositories/permission_group_repository.dart';
 import 'package:flutter_erp/app/data/repositories/permission_repository.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
+import 'package:flutter_erp/widgets/global_widgets/erp_settings_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
+import 'package:flutter_erp/widgets/global_widgets/erp_settings_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +11,7 @@ import '../controllers/users_controller.dart';
 
 class UsersView extends GetResponsiveView<UsersController> {
   UsersView({Key? key}) : super(key: key);
+
   @override
   Widget builder() {
     return ErpSettingsScaffold(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
-import 'package:flutter_erp/app/data/widgets/global_widgets/erp_settings_scaffold.dart';
+import 'package:flutter_erp/widgets/global_widgets/erp_settings_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +11,7 @@ import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetResponsiveView<ProfileController> {
   ProfileView({Key? key}) : super(key: key);
+
   @override
   Widget builder() {
     var user = Get.find<AuthService>().currentUser;
