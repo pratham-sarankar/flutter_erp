@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:flutter_erp/app/modules/classes/views/class_form_view.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,16 @@ class ClassesView extends GetResponsiveView<ClassesController> {
             title: "All Classes",
             repository: Get.find<ClassRepository>(),
             canAdd: Get.find<AuthService>().canAdd("Classes"),
+            onAdd: () async {
+              var result = await Get.dialog(const ClassFormView());
+              return result;
+            },
+            onEdit: (oldValue) async {
+              var result =
+                  await Get.dialog(const ClassFormView(), arguments: oldValue);
+              print(result);
+              return result ?? oldValue;
+            },
             onTap: (value) {
               Get.toNamed(
                 Routes.CLASS,

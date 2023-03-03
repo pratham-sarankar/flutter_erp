@@ -13,6 +13,7 @@ class ErpDialog extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final Widget child;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -26,23 +27,21 @@ class ErpDialog extends StatelessWidget {
         ),
         constraints: BoxConstraints(maxHeight: Get.height * 0.9),
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: context.textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: context.theme.colorScheme.onBackground,
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: context.textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: context.theme.colorScheme.onBackground,
               ),
-              const SizedBox(height: 22),
-              child,
-              _footer(),
-            ],
-          ),
+            ),
+            const SizedBox(height: 22),
+            child,
+            _footer(),
+          ],
         ),
       ),
     );

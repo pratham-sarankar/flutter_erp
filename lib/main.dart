@@ -8,6 +8,7 @@ import 'package:flutter_erp/app/data/services/ivr_service.dart';
 import 'package:flutter_erp/app/data/services/mail_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
+import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
 import 'package:flutter_erp/widgets/global_widgets/window_scaffold.dart';
 import 'package:get/get.dart';
@@ -29,14 +30,13 @@ void main() async {
   Get.create<BranchRepository>(() => BranchRepository());
   Get.lazyPut<BranchRepository>(() => BranchRepository());
   Get.lazyPut<UserRepository>(() => UserRepository());
-  Get.lazyPut<ModuleRepository>(() => ModuleRepository());
+  Get.create<ModuleRepository>(() => ModuleRepository());
   Get.put(IVRService());
   Get.put(MailService());
   await Get.putAsync(() => ToastService().init());
   await Get.putAsync(() => AuthService().init());
   await Get.putAsync(() => FileService().init());
   await Get.putAsync(() => RRuleService().init());
-
   await Get.find<ModuleRepository>().init();
   await Get.find<AuthService>().reloadUser();
   runApp(

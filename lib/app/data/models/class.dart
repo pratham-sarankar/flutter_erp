@@ -14,13 +14,13 @@ import '../services/auth_service.dart';
 class Class extends Resource {
   @override
   final int? id;
-  String? title;
-  String? description;
-  String? photoUrl;
+  String? title; //
+  String? description; //
+  String? photoUrl; //
   RecurrenceRule? schedule;
-  TimeOfDay? startTime;
-  TimeOfDay? endTime;
-  int? branchId;
+  TimeOfDay? startTime; //
+  TimeOfDay? endTime; //
+  int? branchId; //
   int? trainerId;
 
   Employee? trainer;
@@ -63,7 +63,7 @@ class Class extends Resource {
       title: map['title'],
       description: map['description'],
       photoUrl: map['photoUrl'],
-      branchId: branchId,
+      branchId: map['branch_id'],
       startTime: timeFromString(map['start_time']),
       endTime: timeFromString(map['end_time']),
       schedule: map['schedule'] == null
@@ -187,4 +187,9 @@ class Class extends Resource {
   @override
   Future<Uint8List> fileDownloader(String url) =>
       FileRepository.instance.imageDownloader(url);
+
+  @override
+  String toString() {
+    return toMap().toString();
+  }
 }
