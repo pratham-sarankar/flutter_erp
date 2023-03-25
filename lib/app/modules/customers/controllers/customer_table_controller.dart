@@ -1,25 +1,27 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SubscriptionTableController extends GetxController {
-  late SubscriptionDataSource source;
+class CustomerTableController extends GetxController {
+  late CustomersDataSource source;
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
+  late RxList<Customer> selectedCustomers;
 
   @override
   void onInit() {
-    source = SubscriptionDataSource();
+    source = CustomersDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-
+    selectedCustomers = <Customer>[].obs;
     super.onInit();
   }
 
@@ -45,59 +47,52 @@ class SubscriptionTableController extends GetxController {
   }
 }
 
-class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
-  List<String> selectedIds = [];
+class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
+  get selectedCustomers =>
+      Get.find<CustomerTableController>().selectedCustomers;
+
   @override
   DataRow? getRow(int index) {
-    var subscription = lastDetails?.rows[index];
+    var customer = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedIds.contains(subscription?.id.toString() ?? ""),
+      selected: selectedCustomers.contains(customer),
       onSelectChanged: (value) {
-        selectedRow(subscription?.id.toString() ?? "", value ?? false);
+        selectedRow(customer, value ?? false);
       },
       cells: [
-        DataCell(
-          Text(
-            subscription?.customer?.name ?? "",
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
         DataCell(Text(
-          subscription?.package?.classDetails?.title ?? "-",
+          customer?.username ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.package?.name ?? "-",
+          customer?.name ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.payment?.mode?.title ?? "-",
+          customer?.getEmail() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.getExpiringDate() ?? "-",
+          customer?.phoneNumber ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.getSubscribedDate() ?? "-",
+          customer?.getDateOfBirth() ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -108,13 +103,14 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   }
 
   @override
-  int get selectedRowCount => 0;
+  int get selectedRowCount =>
+      Get.find<CustomerTableController>().selectedCustomers.length;
 
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
+  void selectedRow(Customer? customer, bool newSelectState) {
+    if (selectedCustomers.contains(customer)) {
+      selectedCustomers.remove(customer);
     } else {
-      selectedIds.add(id);
+      selectedCustomers.add(customer);
     }
     notifyListeners();
   }
@@ -125,9 +121,9 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Subscription>> getNextPage(
+  Future<RemoteDataSourceDetails<Customer>> getNextPage(
       NextPageRequest pageRequest) async {
-    var response = await Get.find<SubscriptionRepository>().fetchWithCount(
+    var response = await Get.find<CustomerRepository>().fetchWithCount(
       offset: pageRequest.offset,
       limit: pageRequest.pageSize,
       queries: {
@@ -135,15 +131,10 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
         "order": sortingQuery,
       },
     );
-    print(response.total);
-    print(response.data.length);
-    print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isNotEmpty
-          ? response.data.length
-          : null,
+      filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
 
@@ -151,22 +142,19 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
     var columnName = "";
     switch (columnIndex) {
       case 0:
-        columnName = "customer";
+        columnName = "username";
         break;
       case 1:
-        columnName = "class";
+        columnName = "full_name";
         break;
       case 2:
-        columnName = "package";
+        columnName = "email";
         break;
       case 3:
-        columnName = "payment_mode";
+        columnName = "phone_number";
         break;
       case 4:
-        columnName = "expiry_date";
-        break;
-      case 5:
-        columnName = "subscribed_date";
+        columnName = "date_of_birth";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";

@@ -1,25 +1,28 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/models/subscription.dart';
-import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/data/repositories/class_repository.dart';
+import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rrule/rrule.dart';
 
-class SubscriptionTableController extends GetxController {
-  late SubscriptionDataSource source;
+import '../../../data/models/class.dart';
+
+class ClassesTableController extends GetxController {
+  late ClassesDataSource source;
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
+  late RxList<Class> selectedClasses;
 
   @override
   void onInit() {
-    source = SubscriptionDataSource();
+    source = ClassesDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-
+    selectedClasses = <Class>[].obs;
     super.onInit();
   }
 
@@ -45,59 +48,54 @@ class SubscriptionTableController extends GetxController {
   }
 }
 
-class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
-  List<String> selectedIds = [];
+class ClassesDataSource extends AdvancedDataTableSource<Class> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
+  get selectedClasses => Get.find<ClassesTableController>().selectedClasses;
+
   @override
   DataRow? getRow(int index) {
-    var subscription = lastDetails?.rows[index];
+    var classDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedIds.contains(subscription?.id.toString() ?? ""),
+      selected: selectedClasses.contains(classDetails),
       onSelectChanged: (value) {
-        selectedRow(subscription?.id.toString() ?? "", value ?? false);
+        selectedRow(classDetails, value ?? false);
       },
       cells: [
-        DataCell(
-          Text(
-            subscription?.customer?.name ?? "",
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
         DataCell(Text(
-          subscription?.package?.classDetails?.title ?? "-",
+          classDetails?.title ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.package?.name ?? "-",
+          classDetails?.trainer?.name ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.payment?.mode?.title ?? "-",
+          classDetails?.schedule == null
+              ? "-"
+              : Get.find<RRuleService>()
+                  .generateReadableText(classDetails!.schedule!),
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.getExpiringDate() ?? "-",
+          classDetails?.startTime?.format(Get.context!) ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          subscription?.getSubscribedDate() ?? "-",
+          classDetails?.endTime?.format(Get.context!) ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -108,13 +106,13 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   }
 
   @override
-  int get selectedRowCount => 0;
+  int get selectedRowCount => selectedClasses.length;
 
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
+  void selectedRow(Class? classDetails, bool newSelectState) {
+    if (selectedClasses.contains(classDetails)) {
+      selectedClasses.remove(classDetails);
     } else {
-      selectedIds.add(id);
+      selectedClasses.add(classDetails);
     }
     notifyListeners();
   }
@@ -125,9 +123,9 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Subscription>> getNextPage(
+  Future<RemoteDataSourceDetails<Class>> getNextPage(
       NextPageRequest pageRequest) async {
-    var response = await Get.find<SubscriptionRepository>().fetchWithCount(
+    var response = await Get.find<ClassRepository>().fetchWithCount(
       offset: pageRequest.offset,
       limit: pageRequest.pageSize,
       queries: {
@@ -135,15 +133,11 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
         "order": sortingQuery,
       },
     );
-    print(response.total);
-    print(response.data.length);
     print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isNotEmpty
-          ? response.data.length
-          : null,
+      filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
 
@@ -151,22 +145,16 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
     var columnName = "";
     switch (columnIndex) {
       case 0:
-        columnName = "customer";
+        columnName = "title";
         break;
       case 1:
-        columnName = "class";
-        break;
-      case 2:
-        columnName = "package";
+        columnName = "trainer";
         break;
       case 3:
-        columnName = "payment_mode";
+        columnName = "start_at";
         break;
       case 4:
-        columnName = "expiry_date";
-        break;
-      case 5:
-        columnName = "subscribed_date";
+        columnName = "end_at";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";

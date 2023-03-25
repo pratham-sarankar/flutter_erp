@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/widgets/customer_selection_form_field.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_dialog.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_search_field.dart';
@@ -9,8 +8,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
 
-class SubscriptionFormView extends GetView<SubscriptionFormController> {
-  const SubscriptionFormView({Key? key}) : super(key: key);
+class CustomerFormView extends GetView<CustomerFormView> {
+  const CustomerFormView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +18,7 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
       alignment: Alignment.center,
       child: Container(
         width: Get.width * 0.5,
+        height: Get.height * 0.5,
         decoration: BoxDecoration(
           color: context.theme.colorScheme.background,
           borderRadius: BorderRadius.circular(10),
@@ -30,7 +30,7 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Subscription",
+              "Add Customer",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,
@@ -39,7 +39,7 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
             const SizedBox(height: 22),
             Form(
               child: Column(
-                children:  [
+                children:   [
                   CustomerSelectionFormField(),
                 ],
               ),
