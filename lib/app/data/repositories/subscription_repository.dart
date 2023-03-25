@@ -3,6 +3,7 @@ import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:resource_manager/data/abstracts/repository.dart';
+import 'package:resource_manager/data/responses/fetch_response.dart';
 
 class SubscriptionRepository extends Repository<Subscription> {
   SubscriptionRepository() : super(path: "/subscription");
@@ -20,11 +21,27 @@ class SubscriptionRepository extends Repository<Subscription> {
   Future<List<Subscription>> fetch(
       {int limit = 100,
       int offset = 0,
-      Map<String, dynamic> queries = const {}}) {
+      Map<String, dynamic> queries = const {}}) async {
     var updatedQueries = {
       ...queries,
-      "class_id": Get.parameters['id'] ?? queries["class_id"],
+      "branch_id": Get.find<AuthService>().currentBranch.id,
     };
-    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
+    var response = await super
+        .fetch(limit: limit, offset: offset, queries: updatedQueries);
+    return response;
+  }
+
+  @override
+  Future<FetchResponse<Subscription>> fetchWithCount(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) async {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    FetchResponse<Subscription> response = await super
+        .fetchWithCount(limit: limit, offset: offset, queries: updatedQueries);
+    return response;
   }
 }

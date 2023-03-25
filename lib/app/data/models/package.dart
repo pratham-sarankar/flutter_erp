@@ -50,7 +50,6 @@ class Package extends Resource {
     return [
       Field("title", FieldType.name, label: "Title", isRequired: true),
       Field("price", FieldType.number, label: "Price", isRequired: true),
-      Field("discount", FieldType.number, label: "Discount", isRequired: false),
       Field(
         "duration_id",
         FieldType.dropdown,

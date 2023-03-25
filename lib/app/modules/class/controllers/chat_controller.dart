@@ -52,4 +52,14 @@ class ChatController extends GetxController
   bool isSelected(Subscription resource) {
     return selectedList.contains(resource);
   }
+
+  Future search(String value) async {
+    change(state, status: RxStatus.loading());
+    var subscriptions = await Get.find<SubscriptionRepository>()
+        .fetch(queries: {"search": value});
+    change(
+      subscriptions,
+      status: subscriptions.isEmpty ? RxStatus.empty() : RxStatus.success(),
+    );
+  }
 }

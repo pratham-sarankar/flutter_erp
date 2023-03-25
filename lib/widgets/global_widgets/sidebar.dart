@@ -323,10 +323,7 @@ class _BranchTile extends StatelessWidget {
         cursor: SystemMouseCursors.click,
         child: isCollapsed
             ? Center(
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: context.theme.primaryColor,
-                ),
+                child: Image.asset("assets/branch.png", width: 30),
               )
             : SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -348,10 +345,7 @@ class _BranchTile extends StatelessWidget {
                       SizedBox(
                         width: max(Get.width * 0.008, 13),
                       ),
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: context.theme.primaryColor,
-                      ),
+                      Image.asset("assets/branch.png", width: 30),
                       SizedBox(
                         width: max(Get.width * 0.007, 12),
                       ),

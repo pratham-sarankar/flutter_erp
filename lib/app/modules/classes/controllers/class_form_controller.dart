@@ -4,14 +4,14 @@ import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:get/get.dart';
 
 class ClassFormController extends GetxController with StateMixin<Class> {
-  late TextEditingController titleController;
-  late TextEditingController descriptionController;
   late GlobalKey<FormState> formKey;
 
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    change(Get.arguments ?? Get.find<ClassRepository>().empty);
+    change(Get.arguments ?? Get
+        .find<ClassRepository>()
+        .empty);
     super.onInit();
   }
 
@@ -27,7 +27,9 @@ class ClassFormController extends GetxController with StateMixin<Class> {
   }
 
   void updateClass(Class? Function(Class) updateClass) {
-    var update = updateClass(value ?? Get.find<ClassRepository>().empty);
+    var update = updateClass(value ?? Get
+        .find<ClassRepository>()
+        .empty);
     change(update,
         status: update == null ? RxStatus.error() : RxStatus.success());
   }

@@ -33,7 +33,8 @@ class Payment extends Resource {
     return Payment(
       id: map['id'],
       modeId: map['mode_id'],
-      amount: double.parse(map['amount'].toString()),
+      amount:
+          map['amount'] == null ? null : double.parse(map['amount'].toString()),
       customerId: map['customer_id'],
       description: map['description'],
       branchId: map['branch_id'],

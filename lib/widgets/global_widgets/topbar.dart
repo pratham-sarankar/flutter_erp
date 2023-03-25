@@ -10,7 +10,9 @@ import 'package:resource_manager/widgets/widgets.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key, required this.screen});
+
   final ResponsiveScreen screen;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -91,7 +93,8 @@ class TopBar extends StatelessWidget {
                 case "logout":
                   bool? sure = await showDialog(
                     context: context,
-                    builder: (context) => const ConfirmationDialog(
+                    builder: (context) =>
+                    const ConfirmationDialog(
                       message: "Are you sure you want to logout?",
                     ),
                   );
@@ -162,7 +165,10 @@ class TopBar extends StatelessWidget {
                     ],
                     image: DecorationImage(
                       image: NetworkImage(
-                          Get.find<AuthService>().currentUser.getPhotoUrl()),
+                          Get
+                              .find<AuthService>()
+                              .currentUser
+                              .getPhotoUrl()),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -174,7 +180,10 @@ class TopBar extends StatelessWidget {
                       SizedBox(
                         width: 100,
                         child: Text(
-                          Get.find<AuthService>().currentUser.getName(),
+                          Get
+                              .find<AuthService>()
+                              .currentUser
+                              .getName(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -207,6 +216,7 @@ class _TopBarButton extends StatefulWidget {
     required this.icon,
     this.boldIcon,
   });
+
   final IconData icon;
   final IconData? boldIcon;
 
@@ -241,7 +251,7 @@ class __TopBarButtonState extends State<_TopBarButton> {
         child: OutlinedButton(
           style: ButtonStyle(
             padding: MaterialStateProperty.resolveWith(
-              (states) {
+                  (states) {
                 return const EdgeInsets.all(20);
               },
             ),
@@ -251,7 +261,7 @@ class __TopBarButtonState extends State<_TopBarButton> {
           ),
           onPressed: () async {
             var result = await Get.dialog(ResourceDialog(resource: Customer()));
-            print(result);
+            (result);
             // Get.changeThemeMode(
             //     Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
           },

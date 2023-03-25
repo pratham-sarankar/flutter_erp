@@ -42,8 +42,8 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                 }
               },
               isExpandable:
-                  Get.find<AuthService>().canEdit("Permission Groups") &&
-                      (!data.isAdminGroup),
+              Get.find<AuthService>().canEdit("Permission Groups") &&
+                  (!data.isAdminGroup),
               header: Padding(
                 padding: const EdgeInsets.only(left: 18),
                 child: Row(
@@ -100,10 +100,17 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                           },
                           position: PopupMenuPosition.under,
                           itemBuilder: (context) {
-                            var modules = Get.find<ModuleRepository>()
+                            (Get
+                                .find<ModuleRepository>()
+                                .modules
+                                .length);
+                            var modules = Get
+                                .find<ModuleRepository>()
                                 .modules
                                 .where(
-                                    (module) => !data.modules.contains(module));
+                                    (module) => !data.modules.contains(module))
+                                .toList();
+                            (modules);
                             return [
                               for (var module in modules)
                                 PopupMenuItem(
@@ -145,7 +152,7 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                         ),
                       ),
                     if (Get.find<AuthService>()
-                            .canDelete("Permission Groups") &&
+                        .canDelete("Permission Groups") &&
                         (!data.isAdminGroup))
                       Padding(
                         padding: const EdgeInsets.only(right: 5, left: 10),
@@ -332,7 +339,7 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                               bool? sure = await Get.dialog(
                                   const ConfirmationDialog(
                                       message:
-                                          "Are you sure you want to perform this action?"));
+                                      "Are you sure you want to perform this action?"));
                               if (!(sure ?? false)) return;
                               tileController.updateState(() async {
                                 await Get.find<PermissionRepository>()

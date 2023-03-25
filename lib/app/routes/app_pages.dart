@@ -7,6 +7,8 @@ import '../data/middlewares/redirect_middleware.dart';
 import '../data/services/auth_service.dart';
 import '../modules/branches/bindings/branches_binding.dart';
 import '../modules/branches/views/branches_view.dart';
+import '../modules/call_log/bindings/call_log_binding.dart';
+import '../modules/call_log/views/call_log_view.dart';
 import '../modules/class/bindings/class_binding.dart';
 import '../modules/class/views/class_view.dart';
 import '../modules/classes/bindings/classes_binding.dart';
@@ -172,8 +174,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COUPON,
-      page: () =>  CouponView(),
+      page: () => CouponView(),
       binding: CouponBinding(),
+    ),
+    GetPage(
+      name: _Paths.CALL_LOG,
+      page: () => CallLogView(),
+      binding: CallLogBinding(),
     ),
   ];
 }

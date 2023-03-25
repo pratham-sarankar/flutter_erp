@@ -82,7 +82,7 @@ class MailDialog extends StatelessWidget {
                               ),
                             ),
                             prefixIconConstraints:
-                                const BoxConstraints(minWidth: 0, minHeight: 0),
+                            const BoxConstraints(minWidth: 0, minHeight: 0),
                           ),
                         ),
                         const SizedBox(height: 5),
@@ -93,7 +93,7 @@ class MailDialog extends StatelessWidget {
                             color: Colors.black,
                           ),
                           decoration:
-                              const InputDecoration(hintText: 'Subject'),
+                          const InputDecoration(hintText: 'Subject'),
                         ),
                         const SizedBox(height: 5),
                         Expanded(
@@ -151,20 +151,20 @@ class MailDialog extends StatelessWidget {
               ),
               child: controller.isLoading.value
                   ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 1.5,
-                      ),
-                    )
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 1.5,
+                ),
+              )
                   : const Text(
-                      "Send now",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                "Send now",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
           ],
         ),
@@ -198,7 +198,7 @@ class MailController extends GetxController {
     var addresses = mailController.text.split(', ').toList();
     var response = await Get.find<MailService>()
         .sendMail(addresses, subjectController.text, messageController.text);
-    print(response);
+    (response);
     isLoading.value = false;
     Get.back();
   }

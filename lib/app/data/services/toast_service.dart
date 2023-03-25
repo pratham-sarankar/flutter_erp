@@ -8,7 +8,7 @@ class ToastService extends GetxService {
     return this;
   }
 
-  void showToast(String message) {
+  void showErrorToast(String message) {
     Get.showSnackbar(
       GetSnackBar(
         messageText: Column(

@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+
   static const HOME = _Paths.HOME;
   static const EMPLOYEES = _Paths.EMPLOYEES;
   static const LOGIN = _Paths.LOGIN;
@@ -21,10 +22,12 @@ abstract class Routes {
   static const CLASS = _Paths.CLASS;
   static const SUBSCRIPTIONS = _Paths.SUBSCRIPTIONS;
   static const COUPON = _Paths.COUPON;
+  static const CALL_LOG = _Paths.CALL_LOG;
 }
 
 abstract class _Paths {
   _Paths._();
+
   static const HOME = '/';
   static const LOGIN = '/login';
   static const EMPLOYEES = '/employees';
@@ -43,4 +46,5 @@ abstract class _Paths {
   static const PERMISSION_GROUPS = '/settings/permission-groups';
   static const SUBSCRIPTIONS = '/subscriptions';
   static const COUPON = '/coupon';
+  static const CALL_LOG = '/call-log';
 }

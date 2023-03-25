@@ -30,12 +30,12 @@ void main() async {
   Get.create<BranchRepository>(() => BranchRepository());
   Get.lazyPut<BranchRepository>(() => BranchRepository());
   Get.lazyPut<UserRepository>(() => UserRepository());
-  Get.create<ModuleRepository>(() => ModuleRepository());
+  Get.lazyPut<ModuleRepository>(() => ModuleRepository());
   Get.put(IVRService());
   Get.put(MailService());
   await Get.putAsync(() => ToastService().init());
   await Get.putAsync(() => AuthService().init());
-  await Get.putAsync(() => FileService().init());
+  Get.create<FileService>(() => FileService());
   await Get.putAsync(() => RRuleService().init());
   await Get.find<ModuleRepository>().init();
   await Get.find<AuthService>().reloadUser();

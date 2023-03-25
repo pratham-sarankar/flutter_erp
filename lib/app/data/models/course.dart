@@ -35,7 +35,7 @@ class Course extends Resource<Course> {
       'description': description,
       'photoUrl': photoUrl,
       'branch_id': branchId,
-      'duration': (duration ?? "").toString(),
+      'duration': (duration ?? 0).toString(),
     };
   }
 
@@ -47,7 +47,9 @@ class Course extends Resource<Course> {
       description: map['description'],
       photoUrl: map['photoUrl'],
       branchId: map['branch_id'],
-      duration: double.parse((map['duration']).toString()),
+      duration: map['duration'] == null
+          ? null
+          : double.parse((map['duration']).toString()),
     );
   }
 

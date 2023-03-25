@@ -65,9 +65,10 @@ class _RecurringFormFieldState extends State<_RecurringFormField> {
   @override
   void initState() {
     super.initState();
-    var rrule = widget.state.value;
-    frequency = rrule?.frequency;
-    byWeekDays = rrule?.byWeekDays;
+    var rrule = widget.state.value ??
+        RecurrenceRule(frequency: Frequency.daily, byWeekDays: const {});
+    frequency = rrule.frequency;
+    byWeekDays = rrule.byWeekDays;
   }
 
   @override
@@ -129,37 +130,35 @@ class _RecurringFormFieldState extends State<_RecurringFormField> {
                 );
               }).toList(),
             ],
-            icon: Icon(Icons.arrow_drop_down_rounded,
-                size: 25,
-                color: widget.state.value == null ? Colors.grey : Colors.black),
-            iconSize: 14,
+            buttonStyleData: ButtonStyleData(
+              height: 35,
+              padding: const EdgeInsets.only(left: 5, right: 14),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: context.theme.outlinedButtonTheme.style!.side!
+                      .resolve({})!.color,
+                ),
+              ),
+              elevation: 0,
+            ),
             decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.zero,
               isDense: true,
             ),
-            buttonHeight: 35,
-            buttonPadding: const EdgeInsets.only(left: 5, right: 14),
-            buttonDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: context.theme.outlinedButtonTheme.style!.side!
-                    .resolve({})!.color,
+            dropdownStyleData: DropdownStyleData(
+              maxHeight: 200,
+              padding: null,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
               ),
+              elevation: 8,
             ),
-            buttonElevation: 0,
-            itemHeight: 40,
-            itemPadding: const EdgeInsets.only(left: 10, right: 10),
-            dropdownMaxHeight: 200,
-            dropdownPadding: null,
-            dropdownDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+            menuItemStyleData: MenuItemStyleData(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              height: 40,
             ),
-            dropdownElevation: 8,
-            scrollbarRadius: const Radius.circular(40),
-            scrollbarThickness: 6,
-            scrollbarAlwaysShow: true,
-            offset: const Offset(0, 0),
           ),
         ),
         if (widget.state.hasError)

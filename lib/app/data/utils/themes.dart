@@ -20,6 +20,7 @@ ThemeData lightTheme = ThemeData(
     surfaceVariant: const Color(0xfff8f9fb),
     onSurface: const Color(0xffa3acbf),
   ),
+  cardTheme: const CardTheme(elevation: 0),
   dataTableTheme: const DataTableThemeData(
     dataTextStyle: TextStyle(
       color: Color(0xff303030),

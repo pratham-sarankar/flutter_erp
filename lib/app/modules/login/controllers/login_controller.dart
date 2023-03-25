@@ -31,7 +31,7 @@ class LoginController extends GetxController {
       Get.offAllNamed(Routes.HOME);
     } on ApiException catch (e) {
       isLoading.value = false;
-      Get.find<ToastService>().showToast(e.message);
+      Get.find<ToastService>().showErrorToast(e.message);
     }
   }
 }

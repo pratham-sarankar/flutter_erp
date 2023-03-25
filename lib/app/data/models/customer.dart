@@ -149,20 +149,20 @@ class Customer extends Resource {
               data: "Call",
               onPressed: () {
                 if (phoneNumber != null) {
-                  Get.find<IVRService>()
-                      .initiateCall('8000924465', phoneNumber!);
+                  Get.find<IVRService>().initiateCall(phoneNumber!);
                 }
               },
             ),
             // if (Get.find<AuthService>().canEdit("Subscriptions"))
-              Cell(
-                isAction: true,
-                data: "Subscribe",
-                icon: Icons.edit,
-                onPressed: () {
-                  Get.find<TableController<Subscription>>().insertRow(initialData: {'customer_id':id});
-                },
-              ),
+            Cell(
+              isAction: true,
+              data: "Subscribe",
+              icon: Icons.edit,
+              onPressed: () {
+                Get.find<TableController<Subscription>>()
+                    .insertRow(initialData: {'customer_id': id});
+              },
+            ),
             if (Get.find<AuthService>().canEdit("Customers"))
               Cell(
                 isAction: true,

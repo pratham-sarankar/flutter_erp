@@ -22,7 +22,7 @@ class ClassesView extends GetResponsiveView<ClassesController> {
         backgroundColor: screen.context.theme.colorScheme.surfaceVariant,
         body: Container(
           margin:
-              const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
+          const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -36,8 +36,8 @@ class ClassesView extends GetResponsiveView<ClassesController> {
             },
             onEdit: (oldValue) async {
               var result =
-                  await Get.dialog(const ClassFormView(), arguments: oldValue);
-              print(result);
+              await Get.dialog(const ClassFormView(), arguments: oldValue);
+              (result);
               return result ?? oldValue;
             },
             onTap: (value) {

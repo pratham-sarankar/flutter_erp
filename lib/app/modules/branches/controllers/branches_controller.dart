@@ -33,7 +33,7 @@ class BranchesController extends GetxController {
     try {
       await Get.find<BranchRepository>().insert(branch);
     } on ApiException catch (e) {
-      Get.find<ToastService>().showToast(e.message);
+      Get.find<ToastService>().showErrorToast(e.message);
     }
     await refresh();
   }
@@ -44,7 +44,7 @@ class BranchesController extends GetxController {
     try {
       await Get.find<BranchRepository>().update(updatedBranch);
     } on ApiException catch (e) {
-      Get.find<ToastService>().showToast(e.message);
+      Get.find<ToastService>().showErrorToast(e.message);
     }
     await refresh();
   }
@@ -59,7 +59,7 @@ class BranchesController extends GetxController {
     try {
       await Get.find<BranchRepository>().destroy(branch);
     } on ApiException catch (e) {
-      Get.find<ToastService>().showToast(e.message);
+      Get.find<ToastService>().showErrorToast(e.message);
     }
     await refresh();
   }

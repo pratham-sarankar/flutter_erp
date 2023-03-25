@@ -135,13 +135,13 @@ class AuthService extends GetxService {
               boldIcon: IconlyBold.calendar,
               path: Routes.PAYMENT,
             ),
-          // if (canView("Subscriptions"))
-          SideBarDestination(
-            title: "Subscriptions",
-            icon: IconlyLight.notification,
-            boldIcon: IconlyBold.notification,
-            path: Routes.SUBSCRIPTIONS,
-          ),
+          if (canView("Subscriptions"))
+            SideBarDestination(
+              title: "Subscriptions",
+              icon: IconlyLight.notification,
+              boldIcon: IconlyBold.notification,
+              path: Routes.SUBSCRIPTIONS,
+            ),
         ],
       ),
       SideBarGroup(
@@ -174,6 +174,13 @@ class AuthService extends GetxService {
               icon: IconlyLight.document,
               boldIcon: IconlyBold.document,
               path: Routes.COURSES,
+            ),
+          if (canView("Courses"))
+            SideBarDestination(
+              title: "Call Logs",
+              icon: IconlyLight.call,
+              boldIcon: IconlyBold.call,
+              path: Routes.CALL_LOG,
             ),
         ],
       ),

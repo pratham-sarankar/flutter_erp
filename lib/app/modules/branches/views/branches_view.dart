@@ -101,25 +101,27 @@ class BranchesView extends GetResponsiveView<BranchesController> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Wrap(
-                      spacing: 15,
-                      children: controller.branches
-                          .map(
-                            (branch) => BranchCard(
-                              branch: branch,
-                              onUpdate: controller.updateBranch,
-                              onDelete: controller.deleteBranch,
-                              canDelete: (!branch.isMainBranch) &&
-                                  Get.find<AuthService>().canDelete("Branches"),
-                              canEdit:
-                                  Get.find<AuthService>().canEdit("Branches"),
-                            ),
-                          )
-                          .toList(),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 15,
+                        children: controller.branches
+                            .map(
+                              (branch) => BranchCard(
+                                branch: branch,
+                                onUpdate: controller.updateBranch,
+                                onDelete: controller.deleteBranch,
+                                canDelete: (!branch.isMainBranch) &&
+                                    Get.find<AuthService>()
+                                        .canDelete("Branches"),
+                                canEdit:
+                                    Get.find<AuthService>().canEdit("Branches"),
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             );

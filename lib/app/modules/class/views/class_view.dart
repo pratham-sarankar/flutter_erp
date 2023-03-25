@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
@@ -40,12 +41,12 @@ class ClassView extends GetResponsiveView<ClassController> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: screen.context.theme.primaryColorDark,
-                          borderRadius: BorderRadius.circular(12),
+                      Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Image.asset('assets/class.png', height: 160),
                         ),
                       ),
                       const SizedBox(width: 15),
@@ -116,7 +117,8 @@ class ClassView extends GetResponsiveView<ClassController> {
                   const SizedBox(height: 30),
                   Expanded(
                     child: DefaultTabController(
-                      length: 2,
+                      length: 3,
+                      initialIndex: 1,
                       child: Column(
                         children: [
                           Align(
@@ -128,7 +130,10 @@ class ClassView extends GetResponsiveView<ClassController> {
                                 ),
                                 Tab(
                                   child: Text("Members"),
-                                )
+                                ),
+                                Tab(
+                                  child: Text("Members"),
+                                ),
                               ],
                               isScrollable: true,
                               indicatorColor: Colors.grey.shade800,
@@ -193,6 +198,26 @@ class ClassView extends GetResponsiveView<ClassController> {
                                             ],
                                           ),
                                           const Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 20,
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Get.find<
+                                                        TableController<
+                                                            Subscription>>()
+                                                    .insertRow(initialData: {
+                                                  'package_id': data.id,
+                                                  'class_id': data.classId,
+                                                });
+                                              },
+                                              child: Icon(
+                                                CupertinoIcons.add,
+                                                color: Colors.blue.shade700,
+                                              ),
+                                            ),
+                                          ),
                                           if (Get.find<AuthService>()
                                               .canEdit("Designations"))
                                             Padding(
@@ -202,9 +227,10 @@ class ClassView extends GetResponsiveView<ClassController> {
                                                 onTap: () {
                                                   controller.updateTile(data);
                                                 },
-                                                child: Icon(Icons.edit,
-                                                    color:
-                                                        Colors.green.shade700),
+                                                child: Icon(
+                                                  Icons.edit,
+                                                  color: Colors.green.shade700,
+                                                ),
                                               ),
                                             ),
                                           if (Get.find<AuthService>()
@@ -216,8 +242,10 @@ class ClassView extends GetResponsiveView<ClassController> {
                                                 onTap: () {
                                                   controller.destroyTile(data);
                                                 },
-                                                child: Icon(Icons.delete,
-                                                    color: Colors.red.shade700),
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red.shade700,
+                                                ),
                                               ),
                                             ),
                                         ],
@@ -226,6 +254,7 @@ class ClassView extends GetResponsiveView<ClassController> {
                                   },
                                 ),
                                 const ChatView(),
+                                const Scaffold(),
                               ],
                             ),
                           )

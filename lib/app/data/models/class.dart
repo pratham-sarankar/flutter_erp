@@ -80,7 +80,6 @@ class Class extends Resource {
     return ResourceColumn(
       columns: [
         "Title",
-        "Description",
         "Trainer",
         "Schedule",
         "Starts at",
@@ -104,7 +103,6 @@ class Class extends Resource {
     return ResourceRow(
       cells: [
         Cell(data: title ?? "-"),
-        Cell(data: description ?? "-"),
         Cell(data: trainer?.getName() ?? "-"),
         Cell(
           data: schedule == null
