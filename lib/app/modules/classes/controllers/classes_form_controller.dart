@@ -3,7 +3,7 @@ import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:get/get.dart';
 
-class ClassFormController extends GetxController with StateMixin<Class> {
+class ClassesFormController extends GetxController with StateMixin<Class> {
   late GlobalKey<FormState> formKey;
 
   @override

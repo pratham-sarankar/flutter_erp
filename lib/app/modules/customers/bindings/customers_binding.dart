@@ -9,12 +9,20 @@ import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/repositories/payment_mode_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/modules/customers/controllers/customer_form_controller.dart';
+import 'package:flutter_erp/app/modules/customers/controllers/customer_table_controller.dart';
 
 import '../controllers/customers_controller.dart';
 
 class CustomersBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<CustomerFormController>(
+      () => CustomerFormController(),
+    );
+    Get.lazyPut<CustomerTableController>(
+      () => CustomerTableController(),
+    );
     Get.lazyPut<CustomersController>(() => CustomersController());
     Get.lazyPut<CustomerRepository>(() => CustomerRepository());
     Get.create<SubscriptionRepository>(() => SubscriptionRepository());

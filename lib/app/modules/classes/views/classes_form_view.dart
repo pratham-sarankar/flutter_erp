@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/services/file_service.dart';
-import 'package:flutter_erp/app/modules/classes/controllers/class_form_controller.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_recurring_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_time_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_dropdown_form_field.dart';
@@ -11,13 +10,15 @@ import 'package:flutter_erp/widgets/global_widgets/erp_dialog.dart';
 
 import 'package:get/get.dart';
 
-class ClassFormView extends StatelessWidget {
-  const ClassFormView({Key? key}) : super(key: key);
+import '../controllers/classes_form_controller.dart';
+
+class ClassesFormView extends StatelessWidget {
+  const ClassesFormView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: ClassFormController(),
+      init: ClassesFormController(),
       builder: (controller) {
         return ErpDialog(
           title: controller.getTitle(),
