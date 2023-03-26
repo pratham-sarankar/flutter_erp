@@ -36,8 +36,10 @@ class SubscriptionTableView
                     onRowsPerPageChanged: (newRowsPerPage) {
                       controller.setRowPerPage(newRowsPerPage);
                     },
+                    showCheckboxColumn: true,
                     sortAscending: controller.sortAscending.value,
                     sortColumnIndex: controller.sortColumnIndex.value,
+                    showHorizontalScrollbarAlways: true,
                     columns: [
                       DataColumn(
                         onSort: controller.sort,
@@ -144,6 +146,24 @@ class SubscriptionTableView
               child: Row(
                 children: const [
                   Icon(
+                    CupertinoIcons.refresh,
+                    size: 16,
+                  ),
+                  SizedBox(width: 5),
+                  Text("Refresh"),
+                ],
+              ),
+              onPressed: () {
+                controller.refresh();
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: TextButton(
+              child: Row(
+                children: const [
+                  Icon(
                     CupertinoIcons.add,
                     size: 16,
                   ),
@@ -151,11 +171,14 @@ class SubscriptionTableView
                   Text("Add new"),
                 ],
               ),
-              onPressed: () {
-                Get.dialog(
+              onPressed: () async {
+                var result = await Get.dialog(
                   const SubscriptionFormView(),
                   barrierDismissible: false,
                 );
+                if (result) {
+                  controller.refresh();
+                }
               },
             ),
           ),

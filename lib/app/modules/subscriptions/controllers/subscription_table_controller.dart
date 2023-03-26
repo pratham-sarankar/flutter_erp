@@ -19,7 +19,6 @@ class SubscriptionTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-
     super.onInit();
   }
 
@@ -35,6 +34,12 @@ class SubscriptionTableController extends GetxController {
   }
 
   @override
+  void refresh() {
+    source.setNextView();
+    super.refresh();
+  }
+
+  @override
   void onReady() {
     super.onReady();
   }
@@ -46,7 +51,6 @@ class SubscriptionTableController extends GetxController {
 }
 
 class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
-  List<String> selectedIds = [];
   String lastSearchTerm = '';
   String sortingQuery = '';
 
@@ -54,10 +58,6 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   DataRow? getRow(int index) {
     var subscription = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedIds.contains(subscription?.id.toString() ?? ""),
-      onSelectChanged: (value) {
-        selectedRow(subscription?.id.toString() ?? "", value ?? false);
-      },
       cells: [
         DataCell(
           Text(
@@ -108,16 +108,7 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   }
 
   @override
-  int get selectedRowCount => 0;
-
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
-    } else {
-      selectedIds.add(id);
-    }
-    notifyListeners();
-  }
+  bool get forceRemoteReload => true;
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -135,15 +126,10 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
         "order": sortingQuery,
       },
     );
-    print(response.total);
-    print(response.data.length);
-    print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isNotEmpty
-          ? response.data.length
-          : null,
+      filteredRows: lastSearchTerm.isNotEmpty ? response.data.length : null,
     );
   }
 
@@ -172,4 +158,7 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
     sortingQuery = "$columnName&DESC=${!ascending}";
     setNextView();
   }
+
+  @override
+  int get selectedRowCount => 0;
 }

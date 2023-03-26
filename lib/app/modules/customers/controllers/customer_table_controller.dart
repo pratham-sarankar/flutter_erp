@@ -106,6 +106,9 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
+  bool get forceRemoteReload => true;
+
+  @override
   int get selectedRowCount =>
       Get.find<CustomerTableController>().selectedCustomers.length;
 

@@ -39,8 +39,10 @@ class CustomerFormView extends GetView<CustomerFormView> {
             const SizedBox(height: 22),
             Form(
               child: Column(
-                children:   [
-                  CustomerSelectionFormField(),
+                children: [
+                  CustomerSelectionFormField(
+                    onSaved: (customer) {},
+                  ),
                 ],
               ),
             ),

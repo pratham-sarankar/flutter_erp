@@ -1,8 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
+import 'package:flutter_erp/app/modules/subscriptions/widgets/package_selection_form_field.dart';
 import 'package:flutter_erp/app/modules/subscriptions/widgets/customer_selection_form_field.dart';
+import 'package:flutter_erp/app/modules/subscriptions/widgets/payment_mode_selection_form_field.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_dialog.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_search_field.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -38,9 +41,31 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
             ),
             const SizedBox(height: 22),
             Form(
+              key: controller.formKey,
               child: Column(
-                children:  [
-                  CustomerSelectionFormField(),
+                children: [
+                  CustomerSelectionFormField(
+                    onSaved: (customer) {
+                      controller.subscription.customerId = customer?.id;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  PackageSelectionFormField(
+                    onSaved: (package) {
+                      controller.subscription.packageId = package?.id;
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return "Please select a package";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  PaymentModeSelectionFormField(
+                    onSaved: (paymentMode) {
+                      controller.subscription.modeId = paymentMode?.id;
+                    },
+                  ),
                 ],
               ),
             ),
@@ -56,55 +81,85 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
       children: [
         const SizedBox(height: 20),
         const Divider(),
-        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              style: ButtonStyle(
-                padding: const MaterialStatePropertyAll(
-                  EdgeInsets.symmetric(vertical: 18, horizontal: 35),
-                ),
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-                fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
-              ),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                padding: const MaterialStatePropertyAll(
-                  EdgeInsets.symmetric(vertical: 18, horizontal: 45),
-                ),
-                fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Obx(
+                  () => Text(
+                    controller.error.value,
+                    style: TextStyle(
+                      color: Get.theme?.colorScheme.error ?? Colors.red,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
-              child: const Text(
-                "Save",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back(
+                        result: false,
+                      );
+                    },
+                    style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 35),
+                      ),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                    ),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.submit();
+                    },
+                    style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 45),
+                      ),
+                      fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                    ),
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? const CupertinoActivityIndicator(
+                              color: Colors.white)
+                          : const Text(
+                              "Save",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ],

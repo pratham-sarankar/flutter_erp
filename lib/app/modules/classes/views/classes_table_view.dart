@@ -15,6 +15,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
 
   @override
   Widget builder() {
+    print("Classes : ${controller.selectedClasses.length}");
     return Scaffold(
       backgroundColor: screen.context.theme.colorScheme.surfaceVariant,
       body: Card(
@@ -28,7 +29,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
-                      () => AdvancedPaginatedDataTable(
+                  () => AdvancedPaginatedDataTable(
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
