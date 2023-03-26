@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomerSelectionFormField extends FormField<Customer> {
-  CustomerSelectionFormField({super.key, super.onSaved})
+  CustomerSelectionFormField({super.key, super.onSaved,  String? title})
       : super(builder: (state) {
           return GetBuilder(
             init: CustomerSelectionFieldController(),
@@ -14,7 +14,7 @@ class CustomerSelectionFormField extends FormField<Customer> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Search Customer"),
+                  Text(title??"Search Customer"),
                   const SizedBox(height: 8),
                   TypeAheadFormField<Customer>(
                     textFieldConfiguration: TextFieldConfiguration(

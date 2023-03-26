@@ -129,7 +129,7 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                       ),
                       onPressed: () {
                         Get.dialog(
-                          const CoursesFromView(),
+                          const CoursesFormView(),
                           barrierDismissible: false,
                         );
                       },
@@ -153,7 +153,7 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                     ),
                     onPressed: () {
                       Get.dialog(
-                        const CoursesFromView(),
+                        const CoursesFormView(),
                         barrierDismissible: false,
                       );
                     },

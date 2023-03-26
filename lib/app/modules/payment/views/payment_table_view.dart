@@ -24,12 +24,13 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
         ),
         child: Column(
           children: [
-            getHeader(controller),
+
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
-                      () => AdvancedPaginatedDataTable(
+                  () => AdvancedPaginatedDataTable(
                     addEmptyRows: false,
+                    header: getHeader(controller),
                     source: controller.source,
                     showFirstLastButtons: true,
                     rowsPerPage: controller.rowsPerPage.value,
@@ -87,7 +88,6 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
     );
   }
 
-
   Widget getHeader(PaymentTableController controller) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
@@ -121,6 +121,22 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
                       child: Row(
                         children: const [
                           Icon(
+                            CupertinoIcons.refresh,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Refresh"),
+                        ],
+                      ),
+                      onPressed: () async {
+                        controller.refresh();
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
                             CupertinoIcons.add,
                             size: 16,
                           ),
@@ -128,13 +144,16 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: () {
-                        Get.dialog(
+                      onPressed: () async {
+                        var result = await Get.dialog(
                           const PaymentFormView(),
                           barrierDismissible: false,
                         );
+                        if (result) {
+                          controller.refresh();
+                        }
                       },
-                    )
+                    ),
                   ],
                 );
               }

@@ -45,6 +45,12 @@ class PaymentTableController extends GetxController {
   }
 
   @override
+  void refresh() {
+    source.setNextView(force: true);
+    super.refresh();
+  }
+
+  @override
   void onReady() {
     super.onReady();
   }
@@ -123,7 +129,6 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
         "order": sortingQuery,
       },
     );
-    // print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
@@ -131,10 +136,10 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
     );
   }
 
-
   @override
-  void setNextView({int startIndex = 0}) {
+  void setNextView({int startIndex = 0,bool force = false}) {
     selectedPayment.value = <Payment>[];
+    forceRemoteReload = force;
     super.setNextView(startIndex: startIndex);
   }
 
@@ -163,4 +168,6 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
     sortingQuery = "$columnName&DESC=${!ascending}";
     setNextView();
   }
+
+
 }

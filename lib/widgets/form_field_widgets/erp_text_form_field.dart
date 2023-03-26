@@ -40,14 +40,11 @@ class ErpTextFormField extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Opacity(
-                    opacity: 0.8,
-                    child: Text(
-                      title ?? "",
-                      style: context.textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: context.theme.colorScheme.onBackground,
-                      ),
+                  Text(
+                    title ?? "",
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: context.theme.colorScheme.onBackground,
                     ),
                   ),
                   const SizedBox(width: 4),
