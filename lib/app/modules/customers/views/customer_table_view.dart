@@ -122,29 +122,55 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(width: 28,),
-          ErpSearchField(
-            onUpdate: (query) {
-              controller.source.filterServerSide(query);
-            },
-          ),
-          const Spacer(),
-          Obx(() {
-            if (controller.selectedCustomers.value.isEmpty) {
+          Expanded(
+            child: Obx(() {
+              if (controller.selectedCustomers.isEmpty) {
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    ErpSearchField(
+                      onUpdate: (query) {
+                        controller.source.filterServerSide(query);
+                      },
+                      controller: controller.searchController,
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
+                            CupertinoIcons.add,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Add new"),
+                        ],
+                      ),
+                      onPressed: () {
+                        Get.dialog(
+                          const CustomerFormView(),
+                          barrierDismissible: false,
+                        );
+                      },
+                    )
+                  ],
+                );
+              }
               return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
                   TextButton(
                     child: Row(
                       children: const [
                         Icon(
-                          CupertinoIcons.add,
+                          CupertinoIcons.delete,
                           size: 16,
                         ),
                         SizedBox(width: 5),
-                        Text("Add new"),
+                        Text("Delete"),
                       ],
                     ),
                     onPressed: () {
@@ -153,33 +179,11 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                         barrierDismissible: false,
                       );
                     },
-                  )
+                  ),
                 ],
               );
-            }
-            return Row(
-              children: [
-                TextButton(
-                  child: Row(
-                    children: const [
-                      Icon(
-                        CupertinoIcons.delete,
-                        size: 16,
-                      ),
-                      SizedBox(width: 5),
-                      Text("Delete"),
-                    ],
-                  ),
-                  onPressed: () {
-                    Get.dialog(
-                      const CustomerFormView(),
-                      barrierDismissible: false,
-                    );
-                  },
-                ),
-              ],
-            );
-          }),
+            }),
+          ),
         ],
       ),
     );

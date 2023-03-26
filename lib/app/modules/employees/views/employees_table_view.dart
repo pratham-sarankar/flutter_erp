@@ -7,11 +7,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../widgets/global_widgets/erp_search_field.dart';
-import '../controllers/classes_table_controller.dart';
-import 'classes_form_view.dart';
+import '../controllers/employees_table_controller.dart';
+import 'employees_form_view.dart';
 
-class ClassesTableView extends GetResponsiveView<ClassesTableController> {
-  ClassesTableView({Key? key}) : super(key: key);
+class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
+  EmployeesTableView({Key? key}) : super(key: key);
 
   @override
   Widget builder() {
@@ -41,9 +41,9 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                     sortColumnIndex: controller.sortColumnIndex.value,
                     columns: [
                       DataColumn(
-                        onSort: controller.sort,
+                         onSort: controller.sort,
                         label: Text(
-                          "Title",
+                          "Name",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -54,7 +54,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       DataColumn(
                         onSort: controller.sort,
                         label: Text(
-                          "Trainer",
+                          "Email",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -63,31 +63,30 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                         ),
                       ),
                       DataColumn(
+                        onSort: controller.sort,
+                        label: Text(
+                          "Phone Number",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        onSort: controller.sort,
+                        label: Text(
+                          "Date of birth",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ), DataColumn(
                         // onSort: controller.sort,
                         label: Text(
-                          "Schedule",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Start at",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Ends at",
+                          "Designation",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -109,14 +108,15 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
     );
   }
 
-  Widget getHeader(ClassesTableController controller) {
+
+  Widget getHeader(EmployeesTableController controller) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "All Classes",
+            "All Employees",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w500,
@@ -124,7 +124,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedClasses.isEmpty) {
+              if (controller.selectedEmployees.value.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -132,6 +132,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       width: 20,
                     ),
                     ErpSearchField(
+
                       onUpdate: (query) {
                         controller.source.filterServerSide(query);
                       },
@@ -151,7 +152,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       ),
                       onPressed: () {
                         Get.dialog(
-                          const ClassesFormView(),
+                          const EmployeesFormView(),
                           barrierDismissible: false,
                         );
                       },
@@ -175,7 +176,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                     ),
                     onPressed: () {
                       Get.dialog(
-                        const ClassesFormView(),
+                        const EmployeesFormView(),
                         barrierDismissible: false,
                       );
                     },
