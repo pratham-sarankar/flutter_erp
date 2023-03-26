@@ -120,6 +120,7 @@ class Payment extends Resource {
       "description": description,
       "amount": amount,
       'branch_id': branchId,
+      "mode_id":modeId,
     };
   }
 

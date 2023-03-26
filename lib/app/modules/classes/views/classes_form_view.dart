@@ -1,162 +1,230 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
-import 'package:flutter_erp/app/data/services/file_service.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_recurring_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/erp_time_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/erp_dropdown_form_field.dart';
+
 import 'package:flutter_erp/widgets/form_field_widgets/erp_text_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/image_form_field.dart';
-import 'package:flutter_erp/widgets/global_widgets/erp_dialog.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/erp_time_form_field.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/trainer_selection_form_field.dart';
 
 import 'package:get/get.dart';
 
 import '../controllers/classes_form_controller.dart';
 
-class ClassesFormView extends StatelessWidget {
+class ClassesFormView extends GetView<ClassesFormController> {
   const ClassesFormView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-      init: ClassesFormController(),
-      builder: (controller) {
-        return ErpDialog(
-          title: controller.getTitle(),
-          onCancel: () {
-            Get.back();
-          },
-          onSave: () async {
-            controller.saveAndClose();
-          },
-          child: Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Form(
-                  key: controller.formKey,
-                  child: Column(
-                    children: [
-                      ImageFormField(
-                        title: 'Image',
-                        initialValue: controller.getValue()?.photoUrl,
-                        uploader: Get.find<FileService>().imageUploader,
-                        downloader: Get.find<FileService>().imageDownloader,
-                        onSaved: (photoUrl) {
-                          controller.updateClass((oldValue) {
-                            oldValue.photoUrl = photoUrl;
-                            return oldValue;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ErpTextFormField(
-                        title: 'Title',
-                        initialValue: controller.getValue()?.title,
-                        isRequired: true,
-                        onSaved: (title) {
-                          controller.updateClass((oldValue) {
-                            oldValue.title = title;
-                            return oldValue;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ErpTextFormField(
-                        title: 'Description',
-                        initialValue: controller.getValue()?.description,
-                        isMultiline: true,
-                        onSaved: (description) {
-                          controller.updateClass((oldValue) {
-                            oldValue.description = description;
-                            return oldValue;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      alignment: Alignment.center,
+      child: Container(
+        width: Get.width * 0.5,
+        decoration: BoxDecoration(
+          color: context.theme.colorScheme.background,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        constraints: BoxConstraints(maxHeight: Get.height * 0.9),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Add Classes",
+              style: context.textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: context.theme.colorScheme.onBackground,
+              ),
+            ),
+            Flexible(
+              child: Form(
+                key: controller.formKey,
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ErpTextFormField(
+                      title: "Title",
+                      isRequired: true,
+                      onSaved: (value) {
+                        controller.classes.title = value;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TrainerSelectionFormField(
+                      onSaved: (newValue) {
+                        controller.classes.trainerId = newValue?.id;
+                      }, title: 'Trainer',
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ErpRecurringFormField(
+                      title: "Schedule",
+                      onSaved: (newValue) {
+                        controller.classes.schedule = newValue;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
                             child: ErpTimeFormField(
-                              title: "Start Time",
-                              isRequired: true,
-                              initialValue: controller.getValue()?.startTime,
-                              onSaved: (value) {
-                                controller.updateClass((oldValue) {
-                                  oldValue.startTime = value;
-                                  return oldValue;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
+                          title: "Start at",
+                          onSaved: (newValue) {
+                            controller.classes.startTime = newValue;
+                          },
+                        )),
+                        const SizedBox(width: 20),
+                        Expanded(
                             child: ErpTimeFormField(
-                              title: "End Time",
-                              isRequired: true,
-                              initialValue: controller.getValue()?.endTime,
-                              onSaved: (value) {
-                                controller.updateClass((oldValue) {
-                                  oldValue.endTime = value;
-                                  return oldValue;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      FutureBuilder(
-                        future: Get.find<EmployeeRepository>()
-                            .fetch(queries: {'designation_key': 'trainer'}),
-                        builder: (context, snapshot) {
-                          return ErpDropDownFormField(
-                            title: "Select Trainer",
-                            initialValue: controller.getValue()?.trainerId,
-                            isRequired: true,
-                            onSaved: (value) {
-                              controller.updateClass((oldValue) {
-                                oldValue.trainerId = value;
-                                return oldValue;
-                              });
-                            },
-                            items: [
-                              ...(snapshot.data ?? []).map(
-                                (employee) {
-                                  return DropdownMenuItem<int>(
-                                    value: employee.id,
-                                    child: Text(
-                                      employee.getName(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ).toList(),
-                            ],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ErpRecurringFormField(
-                        title: "Schedule",
-                        initialValue: controller.getValue()?.schedule,
-                        isRequired: true,
-                        onSaved: (value) {
-                          controller.updateClass((oldValue) {
-                            oldValue.schedule = value;
-                            return oldValue;
-                          });
-                        },
-                      ),
-                    ],
+                          title: "Ends at",
+                          onSaved: (newValue) {
+                            controller.classes.endTime = newValue;
+                          },
+                        )),
+                      ],
+                    ),
+                    //   const SizedBox(height: 20),
+                    //   ErpTextFormField(
+                    //     title: "Email",
+                    //     onSaved: (value) {
+                    //       controller.employee.email = value;
+                    //     },
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    //   Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: ErpTextFormField(
+                    //           title: "Phone Number",
+                    //           isRequired: true,
+                    //           onSaved: (value) {
+                    //             controller.employee.phoneNumber = value;
+                    //           },
+                    //         ),
+                    //       ),
+                    //       const SizedBox(height: 20),
+                    //       Expanded(
+                    //         child: ErpDateFormField(
+                    //           title: "Date of birth",
+                    //           onSaved: (value) {
+                    //             controller.employee.dob = value;
+                    //           },
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    //   DesignationSelectionFormField(
+                    //     onSaved: (newValue) {
+                    //       controller.employee.designationId = newValue?.id;
+                    //     },
+                    //   ),
+                  ],
+                ),
+              ),
+            ),
+            _footer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _footer() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Obx(
+                  () => Text(
+                    controller.error.value,
+                    style: TextStyle(
+                      color: Get.theme.colorScheme.error,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back(
+                        result: false,
+                      );
+                    },
+                    style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 35),
+                      ),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                    ),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.submit();
+                    },
+                    style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 45),
+                      ),
+                      fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                    ),
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? const CupertinoActivityIndicator(
+                              color: Colors.white)
+                          : const Text(
+                              "Save",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
     );
   }
 }
