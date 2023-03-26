@@ -1,29 +1,33 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/models/subscription.dart';
-import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/data/repositories/course_repository.dart';
+import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
+import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rrule/rrule.dart';
 
-class CustomerTableController extends GetxController {
-  late CustomersDataSource source;
+import '../../../data/models/course.dart';
+import '../../../data/models/employee.dart';
+
+class EmployeesTableController extends GetxController {
+  late EmployeesDataSource source;
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Customer> selectedCustomers;
+  late RxList<Employee> selectedEmployees;
   late TextEditingController searchController;
+
 
   @override
   void onInit() {
     searchController = TextEditingController();
-    source = CustomersDataSource();
+    source = EmployeesDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedCustomers = <Customer>[].obs;
+    selectedEmployees = <Employee>[].obs;
     super.onInit();
   }
 
@@ -49,53 +53,52 @@ class CustomerTableController extends GetxController {
   }
 }
 
-class CustomersDataSource extends AdvancedDataTableSource<Customer> {
+class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
-  get selectedCustomers =>
-      Get.find<CustomerTableController>().selectedCustomers;
-
+  get selectedEmployees => Get.find<EmployeesTableController>().selectedEmployees;
 
   @override
   DataRow? getRow(int index) {
-    var customer = lastDetails?.rows[index];
+    var employeeDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedCustomers.contains(customer),
+      selected: selectedEmployees.contains(employeeDetails),
       onSelectChanged: (value) {
-        selectedRow(customer, value ?? false);
+        selectedRow(employeeDetails, value ?? false);
       },
       cells: [
         DataCell(Text(
-          customer?.username ?? "-",
+          employeeDetails?.getName() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.name ?? "-",
+          employeeDetails?.getEmail() ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.getEmail() ?? "-",
+          employeeDetails?.getPhoneNumber() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.phoneNumber ?? "-",
+          employeeDetails?.dob?.timeZoneName?? "-",
+
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.getDateOfBirth() ?? "",
+          employeeDetails?.designation?.name?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -106,14 +109,13 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  int get selectedRowCount =>
-      Get.find<CustomerTableController>().selectedCustomers.length;
+  int get selectedRowCount => selectedEmployees.length;
 
-  void selectedRow(Customer? customer, bool newSelectState) {
-    if (selectedCustomers.contains(customer)) {
-      selectedCustomers.remove(customer);
+  void selectedRow(Employee? employeeDetails, bool newSelectState) {
+    if (selectedEmployees.contains(employeeDetails)) {
+      selectedEmployees.remove(employeeDetails);
     } else {
-      selectedCustomers.add(customer);
+      selectedEmployees.add(employeeDetails);
     }
     notifyListeners();
   }
@@ -124,9 +126,9 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Customer>> getNextPage(
+  Future<RemoteDataSourceDetails<Employee>> getNextPage(
       NextPageRequest pageRequest) async {
-    var response = await Get.find<CustomerRepository>().fetchWithCount(
+    var response = await Get.find<EmployeeRepository>().fetchWithCount(
       offset: pageRequest.offset,
       limit: pageRequest.pageSize,
       queries: {
@@ -134,6 +136,7 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
         "order": sortingQuery,
       },
     );
+    // print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
@@ -141,37 +144,39 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
     );
   }
 
+
   @override
   void setNextView({int startIndex = 0}) {
-    selectedCustomers.value = <Customer>[];
+    selectedEmployees.value = <Employee>[];
     super.setNextView(startIndex: startIndex);
   }
 
   @override
   bool requireRemoteReload() {
     if(lastSearchTerm.isNotEmpty){
-      return selectedCustomers.value.isEmpty;
+      return selectedEmployees.value.isEmpty;
     }
     return lastDetails?.filteredRows!=null;
   }
+
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";
     switch (columnIndex) {
       case 0:
-        columnName = "username";
-        break;
-      case 1:
         columnName = "full_name";
         break;
-      case 2:
+      case 1:
         columnName = "email";
         break;
       case 3:
         columnName = "phone_number";
         break;
       case 4:
-        columnName = "date_of_birth";
+        columnName = "Date_of_birth";
+        break;
+      case 5:
+        columnName = "designation";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";

@@ -1,29 +1,30 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/models/subscription.dart';
-import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/data/repositories/course_repository.dart';
+import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rrule/rrule.dart';
 
-class CustomerTableController extends GetxController {
-  late CustomersDataSource source;
+import '../../../data/models/course.dart';
+
+class CoursesTableController extends GetxController {
+  late CoursesDataSource source;
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Customer> selectedCustomers;
+  late RxList<Course> selectedCourses;
   late TextEditingController searchController;
 
   @override
   void onInit() {
     searchController = TextEditingController();
-    source = CustomersDataSource();
+    source = CoursesDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedCustomers = <Customer>[].obs;
+    selectedCourses = <Course>[].obs;
     super.onInit();
   }
 
@@ -49,53 +50,37 @@ class CustomerTableController extends GetxController {
   }
 }
 
-class CustomersDataSource extends AdvancedDataTableSource<Customer> {
+class CoursesDataSource extends AdvancedDataTableSource<Course> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
-  get selectedCustomers =>
-      Get.find<CustomerTableController>().selectedCustomers;
-
+  get selectedCourses => Get.find<CoursesTableController>().selectedCourses;
 
   @override
   DataRow? getRow(int index) {
-    var customer = lastDetails?.rows[index];
+    var courseDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedCustomers.contains(customer),
+      selected: selectedCourses.contains(courseDetails),
       onSelectChanged: (value) {
-        selectedRow(customer, value ?? false);
+        selectedRow(courseDetails, value ?? false);
       },
       cells: [
         DataCell(Text(
-          customer?.username ?? "-",
+          courseDetails?.title ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.name ?? "-",
+          courseDetails?.description ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.getEmail() ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        )),
-        DataCell(Text(
-          customer?.phoneNumber ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        )),
-        DataCell(Text(
-          customer?.getDateOfBirth() ?? "",
+          courseDetails?.duration.toString() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -106,14 +91,13 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  int get selectedRowCount =>
-      Get.find<CustomerTableController>().selectedCustomers.length;
+  int get selectedRowCount => selectedCourses.length;
 
-  void selectedRow(Customer? customer, bool newSelectState) {
-    if (selectedCustomers.contains(customer)) {
-      selectedCustomers.remove(customer);
+  void selectedRow(Course? courseDetails, bool newSelectState) {
+    if (selectedCourses.contains(courseDetails)) {
+      selectedCourses.remove(courseDetails);
     } else {
-      selectedCustomers.add(customer);
+      selectedCourses.add(courseDetails);
     }
     notifyListeners();
   }
@@ -124,9 +108,9 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Customer>> getNextPage(
+  Future<RemoteDataSourceDetails<Course>> getNextPage(
       NextPageRequest pageRequest) async {
-    var response = await Get.find<CustomerRepository>().fetchWithCount(
+    var response = await Get.find<CourseRepository>().fetchWithCount(
       offset: pageRequest.offset,
       limit: pageRequest.pageSize,
       queries: {
@@ -134,44 +118,39 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
         "order": sortingQuery,
       },
     );
+    // print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
       filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
-
   @override
   void setNextView({int startIndex = 0}) {
-    selectedCustomers.value = <Customer>[];
+    selectedCourses.value = <Course>[];
     super.setNextView(startIndex: startIndex);
   }
 
   @override
   bool requireRemoteReload() {
     if(lastSearchTerm.isNotEmpty){
-      return selectedCustomers.value.isEmpty;
+      return selectedCourses.value.isEmpty;
     }
     return lastDetails?.filteredRows!=null;
   }
+
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";
     switch (columnIndex) {
       case 0:
-        columnName = "username";
+        columnName = "title";
         break;
       case 1:
-        columnName = "full_name";
-        break;
-      case 2:
-        columnName = "email";
+        columnName = "description";
         break;
       case 3:
-        columnName = "phone_number";
-        break;
-      case 4:
-        columnName = "date_of_birth";
+        columnName = "duration";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";

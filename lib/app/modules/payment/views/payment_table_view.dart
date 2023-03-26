@@ -1,17 +1,17 @@
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/modules/payment/views/payment_form_view.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../widgets/global_widgets/erp_search_field.dart';
-import '../controllers/classes_table_controller.dart';
-import 'classes_form_view.dart';
+import '../controllers/payment_table_controller.dart';
 
-class ClassesTableView extends GetResponsiveView<ClassesTableController> {
-  ClassesTableView({Key? key}) : super(key: key);
+class PaymentTableView extends GetResponsiveView<PaymentTableController> {
+  PaymentTableView({Key? key}) : super(key: key);
 
   @override
   Widget builder() {
@@ -43,7 +43,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       DataColumn(
                         onSort: controller.sort,
                         label: Text(
-                          "Title",
+                          "Amount",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -54,18 +54,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       DataColumn(
                         onSort: controller.sort,
                         label: Text(
-                          "Trainer",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        // onSort: controller.sort,
-                        label: Text(
-                          "Schedule",
+                          "Description",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -76,18 +65,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       DataColumn(
                         onSort: controller.sort,
                         label: Text(
-                          "Start at",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Ends at",
+                          "Customer",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -109,14 +87,15 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
     );
   }
 
-  Widget getHeader(ClassesTableController controller) {
+
+  Widget getHeader(PaymentTableController controller) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "All Classes",
+            "All Payment",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w500,
@@ -124,7 +103,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedClasses.isEmpty) {
+              if (controller.selectedPayment.value.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -151,7 +130,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       ),
                       onPressed: () {
                         Get.dialog(
-                          const ClassesFormView(),
+                          const PaymentFormView(),
                           barrierDismissible: false,
                         );
                       },
@@ -175,7 +154,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                     ),
                     onPressed: () {
                       Get.dialog(
-                        const ClassesFormView(),
+                        const PaymentFormView(),
                         barrierDismissible: false,
                       );
                     },

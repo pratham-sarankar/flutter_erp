@@ -15,9 +15,11 @@ class ClassesTableController extends GetxController {
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
   late RxList<Class> selectedClasses;
+  late TextEditingController searchController;
 
   @override
   void onInit() {
+    searchController = TextEditingController();
     source = ClassesDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
@@ -133,12 +135,25 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
         "order": sortingQuery,
       },
     );
-    print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
       filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
+  }
+
+  @override
+  void setNextView({int startIndex = 0}) {
+    selectedClasses.value = <Class>[];
+    super.setNextView(startIndex: startIndex);
+  }
+
+  @override
+  bool requireRemoteReload() {
+    if (lastSearchTerm.isNotEmpty) {
+      return selectedClasses.value.isEmpty;
+    }
+    return lastDetails?.filteredRows != null;
   }
 
   void sort(int columnIndex, bool ascending) {

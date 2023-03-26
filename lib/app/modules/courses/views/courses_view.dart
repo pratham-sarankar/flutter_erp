@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
 
 import '../controllers/courses_controller.dart';
+import 'courses_table_view.dart';
 
 class CoursesView extends GetResponsiveView<CoursesController> {
   CoursesView({Key? key}) : super(key: key);
@@ -17,21 +18,7 @@ class CoursesView extends GetResponsiveView<CoursesController> {
     return ErpScaffold(
       path: Routes.COURSES,
       screen: screen,
-      body: Scaffold(
-        backgroundColor: screen.context.theme.colorScheme.surfaceVariant,
-        body: Container(
-          margin:
-              const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: ResourceTableView<Course>(
-            title: "All Courses",
-            repository: Get.find<CourseRepository>(),
-            canAdd: Get.find<AuthService>().canAdd("Courses"),
-          ),
-        ),
-      ),
+      body:CoursesTableView(),
     );
   }
 }

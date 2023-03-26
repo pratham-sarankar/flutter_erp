@@ -1,29 +1,35 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/app/data/models/customer.dart';
-import 'package:flutter_erp/app/data/models/subscription.dart';
-import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
-import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/data/repositories/course_repository.dart';
+import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
+import 'package:flutter_erp/app/data/repositories/payment_repository.dart';
+import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rrule/rrule.dart';
 
-class CustomerTableController extends GetxController {
-  late CustomersDataSource source;
+import '../../../data/models/course.dart';
+import '../../../data/models/employee.dart';
+import '../../../data/models/payment.dart';
+
+class PaymentTableController extends GetxController {
+  late PaymentDataSource source;
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Customer> selectedCustomers;
+  late RxList<Payment> selectedPayment;
   late TextEditingController searchController;
+
 
   @override
   void onInit() {
     searchController = TextEditingController();
-    source = CustomersDataSource();
+    source = PaymentDataSource();
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedCustomers = <Customer>[].obs;
+    selectedPayment = <Payment>[].obs;
     super.onInit();
   }
 
@@ -49,53 +55,37 @@ class CustomerTableController extends GetxController {
   }
 }
 
-class CustomersDataSource extends AdvancedDataTableSource<Customer> {
+class PaymentDataSource extends AdvancedDataTableSource<Payment> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
-  get selectedCustomers =>
-      Get.find<CustomerTableController>().selectedCustomers;
-
+  get selectedPayment => Get.find<PaymentTableController>().selectedPayment;
 
   @override
   DataRow? getRow(int index) {
-    var customer = lastDetails?.rows[index];
+    var paymentDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedCustomers.contains(customer),
+      selected: selectedPayment.contains(paymentDetails),
       onSelectChanged: (value) {
-        selectedRow(customer, value ?? false);
+        selectedRow(paymentDetails, value ?? false);
       },
       cells: [
         DataCell(Text(
-          customer?.username ?? "-",
+          paymentDetails?.amount?.toString() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.name ?? "-",
+          paymentDetails?.description ?? "",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          customer?.getEmail() ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        )),
-        DataCell(Text(
-          customer?.phoneNumber ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        )),
-        DataCell(Text(
-          customer?.getDateOfBirth() ?? "",
+          paymentDetails?.customer?.name ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -106,14 +96,13 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  int get selectedRowCount =>
-      Get.find<CustomerTableController>().selectedCustomers.length;
+  int get selectedRowCount => selectedPayment.length;
 
-  void selectedRow(Customer? customer, bool newSelectState) {
-    if (selectedCustomers.contains(customer)) {
-      selectedCustomers.remove(customer);
+  void selectedRow(Payment? paymentDetails, bool newSelectState) {
+    if (selectedPayment.contains(paymentDetails)) {
+      selectedPayment.remove(paymentDetails);
     } else {
-      selectedCustomers.add(customer);
+      selectedPayment.add(paymentDetails);
     }
     notifyListeners();
   }
@@ -124,9 +113,9 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Customer>> getNextPage(
+  Future<RemoteDataSourceDetails<Payment>> getNextPage(
       NextPageRequest pageRequest) async {
-    var response = await Get.find<CustomerRepository>().fetchWithCount(
+    var response = await Get.find<PaymentRepository>().fetchWithCount(
       offset: pageRequest.offset,
       limit: pageRequest.pageSize,
       queries: {
@@ -134,6 +123,7 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
         "order": sortingQuery,
       },
     );
+    // print(response.data);
     return RemoteDataSourceDetails(
       response.total,
       response.data,
@@ -141,37 +131,33 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
     );
   }
 
+
   @override
   void setNextView({int startIndex = 0}) {
-    selectedCustomers.value = <Customer>[];
+    selectedPayment.value = <Payment>[];
     super.setNextView(startIndex: startIndex);
   }
 
   @override
   bool requireRemoteReload() {
     if(lastSearchTerm.isNotEmpty){
-      return selectedCustomers.value.isEmpty;
+      return selectedPayment.value.isEmpty;
     }
     return lastDetails?.filteredRows!=null;
   }
+
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";
     switch (columnIndex) {
       case 0:
-        columnName = "username";
+        columnName = "amount";
         break;
       case 1:
-        columnName = "full_name";
-        break;
-      case 2:
-        columnName = "email";
+        columnName = "description";
         break;
       case 3:
-        columnName = "phone_number";
-        break;
-      case 4:
-        columnName = "date_of_birth";
+        columnName = "customer";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";
