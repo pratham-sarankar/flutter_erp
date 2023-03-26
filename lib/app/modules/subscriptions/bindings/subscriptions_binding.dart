@@ -12,10 +12,6 @@ class SubscriptionsBinding extends Bindings {
       () => SubscriptionTableController(),
       fenix: true,
     );
-    Get.lazyPut<SubscriptionFormController>(
-      () => SubscriptionFormController(),
-      fenix: true,
-    );
     Get.lazyPut<SubscriptionsController>(() => SubscriptionsController());
   }
 }

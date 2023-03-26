@@ -27,6 +27,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Add Payment",
@@ -40,7 +41,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
                     const SizedBox(
                       height: 20,
@@ -48,7 +49,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                     ErpTextFormField(
                       title: "Amount",
                       onSaved: (value) {
-                        controller.payment.amount=double.parse(value!);
+                        controller.payment.amount = double.parse(value!);
                       },
                       onValidate: (value) {
                         try {

@@ -134,12 +134,13 @@ class SubscriptionTableView
               fontWeight: FontWeight.w500,
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 20),
           ErpSearchField(
             onUpdate: (query) {
               controller.source.filterServerSide(query);
             },
           ),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: TextButton(

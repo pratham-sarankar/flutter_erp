@@ -18,9 +18,8 @@ class PaymentTableController extends GetxController {
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Payment> selectedPayment;
+  late RxList<int> selectedIds;
   late TextEditingController searchController;
-
 
   @override
   void onInit() {
@@ -29,7 +28,7 @@ class PaymentTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedPayment = <Payment>[].obs;
+    selectedIds = <int>[].obs;
     super.onInit();
   }
 
@@ -46,7 +45,7 @@ class PaymentTableController extends GetxController {
 
   @override
   void refresh() {
-    source.setNextView(force: true);
+    source.refresh();
     super.refresh();
   }
 
@@ -64,16 +63,17 @@ class PaymentTableController extends GetxController {
 class PaymentDataSource extends AdvancedDataTableSource<Payment> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+  bool remoteReload = false;
 
-  get selectedPayment => Get.find<PaymentTableController>().selectedPayment;
+  RxList<int> get selectedIds => Get.find<PaymentTableController>().selectedIds;
 
   @override
   DataRow? getRow(int index) {
     var paymentDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedPayment.contains(paymentDetails),
+      selected: selectedIds.contains(paymentDetails?.id),
       onSelectChanged: (value) {
-        selectedRow(paymentDetails, value ?? false);
+        selectedRow(paymentDetails?.id, value ?? false);
       },
       cells: [
         DataCell(Text(
@@ -102,13 +102,13 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
   }
 
   @override
-  int get selectedRowCount => selectedPayment.length;
+  int get selectedRowCount => selectedIds.length;
 
-  void selectedRow(Payment? paymentDetails, bool newSelectState) {
-    if (selectedPayment.contains(paymentDetails)) {
-      selectedPayment.remove(paymentDetails);
+  void selectedRow(int? id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
     } else {
-      selectedPayment.add(paymentDetails);
+      selectedIds.add(id!);
     }
     notifyListeners();
   }
@@ -116,6 +116,11 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
+  }
+
+  void refresh() {
+    setNextView();
+    notifyListeners();
   }
 
   @override
@@ -137,20 +142,20 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
   }
 
   @override
-  void setNextView({int startIndex = 0,bool force = false}) {
-    selectedPayment.value = <Payment>[];
-    forceRemoteReload = force;
+  void setNextView({int startIndex = 0}) {
+    selectedIds.value = <int>[];
+    remoteReload = true;
     super.setNextView(startIndex: startIndex);
+    remoteReload = false;
   }
 
   @override
   bool requireRemoteReload() {
-    if(lastSearchTerm.isNotEmpty){
-      return selectedPayment.value.isEmpty;
+    if (lastSearchTerm.isNotEmpty) {
+      return selectedIds.isEmpty;
     }
-    return lastDetails?.filteredRows!=null;
+    return remoteReload || lastDetails?.filteredRows != null;
   }
-
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";
@@ -168,6 +173,4 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
     sortingQuery = "$columnName&DESC=${!ascending}";
     setNextView();
   }
-
-
 }

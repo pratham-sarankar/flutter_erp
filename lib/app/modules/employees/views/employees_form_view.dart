@@ -35,6 +35,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Add Employee",
@@ -90,30 +91,22 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ErpTextFormField(
-                            title: "Phone Number",
-                            isRequired: true,
-                            onSaved: (value) {
-                              controller.employee.phoneNumber = value;
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 20,),
-                        Expanded(
-                        child:  DesignationSelectionFormField(
-                          onSaved: (newValue) {
-                            controller.employee.designationId = newValue?.id;
-                          },
-                        ),
-                        )
-                      ],
+                    ErpTextFormField(
+                      title: "Phone Number",
+                      isRequired: true,
+                      onSaved: (value) {
+                        controller.employee.phoneNumber = value;
+                      },
                     ),
                     const SizedBox(height: 20),
-                     ErpDateFormField(
+                    DesignationSelectionFormField(
+                      onSaved: (newValue) {
+                        controller.employee.designationId = newValue?.id;
+                      },
+                      isRequired: true,
+                    ),
+                    const SizedBox(height: 20),
+                    ErpDateFormField(
                       title: "Date of birth",
                       onSaved: (value) {
                         controller.employee.dob = value;

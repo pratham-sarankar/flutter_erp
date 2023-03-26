@@ -16,9 +16,8 @@ class EmployeesTableController extends GetxController {
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Employee> selectedEmployees;
+  late RxList<int> selectedIds;
   late TextEditingController searchController;
-
 
   @override
   void onInit() {
@@ -27,7 +26,7 @@ class EmployeesTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedEmployees = <Employee>[].obs;
+    selectedIds = <int>[].obs;
     super.onInit();
   }
 
@@ -48,6 +47,12 @@ class EmployeesTableController extends GetxController {
   }
 
   @override
+  void refresh() {
+    source.refresh();
+    super.refresh();
+  }
+
+  @override
   void onClose() {
     super.onClose();
   }
@@ -56,16 +61,17 @@ class EmployeesTableController extends GetxController {
 class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+  bool remoteReload = false;
 
-  get selectedEmployees => Get.find<EmployeesTableController>().selectedEmployees;
+  get selectedIds => Get.find<EmployeesTableController>().selectedIds;
 
   @override
   DataRow? getRow(int index) {
     var employeeDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedEmployees.contains(employeeDetails),
+      selected: selectedIds.contains(employeeDetails?.id),
       onSelectChanged: (value) {
-        selectedRow(employeeDetails, value ?? false);
+        selectedRow(employeeDetails?.id, value ?? false);
       },
       cells: [
         DataCell(Text(
@@ -90,15 +96,14 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
           ),
         )),
         DataCell(Text(
-          employeeDetails?.dob?.timeZoneName?? "-",
-
+          employeeDetails?.dob?.timeZoneName ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         )),
         DataCell(Text(
-          employeeDetails?.designation?.name?? "-",
+          employeeDetails?.designation?.name ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -109,13 +114,18 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
   }
 
   @override
-  int get selectedRowCount => selectedEmployees.length;
+  int get selectedRowCount => selectedIds.length;
 
-  void selectedRow(Employee? employeeDetails, bool newSelectState) {
-    if (selectedEmployees.contains(employeeDetails)) {
-      selectedEmployees.remove(employeeDetails);
+  void refresh() {
+    setNextView();
+    notifyListeners();
+  }
+
+  void selectedRow(int? id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
     } else {
-      selectedEmployees.add(employeeDetails);
+      selectedIds.add(id!);
     }
     notifyListeners();
   }
@@ -144,21 +154,21 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
     );
   }
 
-
   @override
   void setNextView({int startIndex = 0}) {
-    selectedEmployees.value = <Employee>[];
+    selectedIds.value = <int>[];
+    remoteReload = true;
     super.setNextView(startIndex: startIndex);
+    remoteReload = false;
   }
 
   @override
   bool requireRemoteReload() {
-    if(lastSearchTerm.isNotEmpty){
-      return selectedEmployees.value.isEmpty;
+    if (lastSearchTerm.isNotEmpty) {
+      return selectedIds.isEmpty;
     }
-    return lastDetails?.filteredRows!=null;
+    return remoteReload || lastDetails?.filteredRows != null;
   }
-
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";

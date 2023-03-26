@@ -24,13 +24,12 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
         ),
         child: Column(
           children: [
-
+            getHeader(controller),
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
                   () => AdvancedPaginatedDataTable(
                     addEmptyRows: false,
-                    header: getHeader(controller),
                     source: controller.source,
                     showFirstLastButtons: true,
                     rowsPerPage: controller.rowsPerPage.value,
@@ -103,7 +102,7 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedPayment.value.isEmpty) {
+              if (controller.selectedIds.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [

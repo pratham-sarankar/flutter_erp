@@ -87,7 +87,7 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Obx(
                   () => Text(
                     controller.error.value,

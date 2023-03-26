@@ -28,7 +28,7 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
-                      () => AdvancedPaginatedDataTable(
+                  () => AdvancedPaginatedDataTable(
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
@@ -41,7 +41,7 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                     sortColumnIndex: controller.sortColumnIndex.value,
                     columns: [
                       DataColumn(
-                         onSort: controller.sort,
+                        onSort: controller.sort,
                         label: Text(
                           "Name",
                           style: GoogleFonts.poppins(
@@ -83,7 +83,8 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ), DataColumn(
+                      ),
+                      DataColumn(
                         // onSort: controller.sort,
                         label: Text(
                           "Designation",
@@ -108,7 +109,6 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
     );
   }
 
-
   Widget getHeader(EmployeesTableController controller) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
@@ -124,7 +124,7 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedEmployees.value.isEmpty) {
+              if (controller.selectedIds.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -132,13 +132,28 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                       width: 20,
                     ),
                     ErpSearchField(
-
                       onUpdate: (query) {
                         controller.source.filterServerSide(query);
                       },
                       controller: controller.searchController,
                     ),
                     const Spacer(),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
+                            CupertinoIcons.refresh,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Refresh"),
+                        ],
+                      ),
+                      onPressed: () async {
+                        controller.refresh();
+                      },
+                    ),
+                    const SizedBox(width: 10),
                     TextButton(
                       child: Row(
                         children: const [
@@ -150,11 +165,14 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: () {
-                        Get.dialog(
+                      onPressed: () async {
+                        var result = await Get.dialog(
                           const EmployeesFormView(),
                           barrierDismissible: false,
                         );
+                        if (result != null) {
+                          controller.refresh();
+                        }
                       },
                     )
                   ],

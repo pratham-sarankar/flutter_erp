@@ -3,6 +3,7 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
@@ -14,7 +15,7 @@ class ClassesTableController extends GetxController {
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Class> selectedClasses;
+  late RxList<int> selectedIds;
   late TextEditingController searchController;
 
   @override
@@ -24,7 +25,7 @@ class ClassesTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedClasses = <Class>[].obs;
+    selectedIds = <int>[].obs;
     super.onInit();
   }
 
@@ -54,15 +55,22 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
   String lastSearchTerm = '';
   String sortingQuery = '';
 
-  get selectedClasses => Get.find<ClassesTableController>().selectedClasses;
+  RxList<int> get selectedIds => Get.find<ClassesTableController>().selectedIds;
 
   @override
   DataRow? getRow(int index) {
     var classDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedClasses.contains(classDetails),
+      selected: selectedIds.contains(classDetails?.id),
+      onLongPress: () {
+        selectedRow(classDetails!.id!, true);
+      },
       onSelectChanged: (value) {
-        selectedRow(classDetails, value ?? false);
+        if (selectedIds.isNotEmpty) {
+          selectedRow(classDetails!.id!, value ?? false);
+        } else {
+          Get.toNamed(Routes.CLASS, arguments: classDetails?.id);
+        }
       },
       cells: [
         DataCell(Text(
@@ -108,13 +116,13 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
   }
 
   @override
-  int get selectedRowCount => selectedClasses.length;
+  int get selectedRowCount => selectedIds.length;
 
-  void selectedRow(Class? classDetails, bool newSelectState) {
-    if (selectedClasses.contains(classDetails)) {
-      selectedClasses.remove(classDetails);
+  void selectedRow(int? id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
     } else {
-      selectedClasses.add(classDetails);
+      selectedIds.add(id!);
     }
     notifyListeners();
   }
@@ -144,14 +152,14 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
 
   @override
   void setNextView({int startIndex = 0}) {
-    selectedClasses.value = <Class>[];
+    selectedIds.value = <int>[];
     super.setNextView(startIndex: startIndex);
   }
 
   @override
   bool requireRemoteReload() {
     if (lastSearchTerm.isNotEmpty) {
-      return selectedClasses.value.isEmpty;
+      return selectedIds.isEmpty;
     }
     return lastDetails?.filteredRows != null;
   }

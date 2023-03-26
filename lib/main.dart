@@ -16,6 +16,8 @@ import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
+import 'package:flutter_erp/app/modules/employees/controllers/employees_form_controller.dart';
+import 'package:flutter_erp/app/modules/payment/controllers/payment_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_table_controller.dart';
 import 'package:flutter_erp/widgets/global_widgets/window_scaffold.dart';
@@ -40,14 +42,21 @@ void main() async {
   Get.create<BranchRepository>(() => BranchRepository());
   Get.create<PackageRepository>(() => PackageRepository());
   Get.create<CustomerRepository>(() => CustomerRepository());
-  Get.create<ClassRepository>(() => ClassRepository());
   Get.create<UserRepository>(() => UserRepository());
   Get.create<ModuleRepository>(() => ModuleRepository());
   Get.create<SubscriptionRepository>(() => SubscriptionRepository());
   Get.create<PaymentModeRepository>(() => PaymentModeRepository());
+  Get.create<ClassRepository>(() => ClassRepository());
   Get.create<CouponRepository>(() => CouponRepository());
 
-  
+  //Forms
+  Get.lazyPut<PaymentFormController>(() => PaymentFormController(),
+      fenix: true);
+  Get.lazyPut<SubscriptionFormController>(() => SubscriptionFormController(),
+      fenix: true);
+  Get.lazyPut<EmployeesFormController>(() => EmployeesFormController(),
+      fenix: true);
+
   Get.put(IVRService());
   Get.put(MailService());
   await Get.putAsync(() => ToastService().init());
