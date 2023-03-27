@@ -34,6 +34,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
+                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
                     rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {

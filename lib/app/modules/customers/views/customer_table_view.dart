@@ -34,6 +34,7 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
+                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
                     rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {
