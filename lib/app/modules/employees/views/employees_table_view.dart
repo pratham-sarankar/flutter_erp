@@ -1,6 +1,8 @@
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
+import 'package:flutter_erp/widgets/dialogs/deletion_dialog.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -192,11 +194,24 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                         Text("Delete"),
                       ],
                     ),
-                    onPressed: () {
-                      Get.dialog(
-                        const EmployeesFormView(),
+                    onPressed: () async {
+                      var result = await Get.dialog(
+                        DeletionDialog(
+                          onDelete: () async {
+                            await Get.find<EmployeeRepository>()
+                                .destroyMany(controller.selectedIds);
+                            try {
+                              return true;
+                            } catch (e) {
+                              return false;
+                            }
+                          },
+                        ),
                         barrierDismissible: false,
                       );
+                      if (result) {
+                        controller.refresh();
+                      }
                     },
                   ),
                 ],
