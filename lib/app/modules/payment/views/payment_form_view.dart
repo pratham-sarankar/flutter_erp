@@ -48,6 +48,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                     ),
                     ErpTextFormField(
                       title: "Amount",
+                      isRequired: true,
                       onSaved: (value) {
                         controller.payment.amount = double.parse(value!);
                       },

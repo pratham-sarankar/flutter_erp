@@ -45,6 +45,7 @@ class CoursesFromController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       error.value = e.toString();
+      rethrow;
     }
   }
 
