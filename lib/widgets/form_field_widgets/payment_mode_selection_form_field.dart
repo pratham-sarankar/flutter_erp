@@ -6,11 +6,16 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PaymentModeSelectionFormField extends FormField<PaymentMode> {
-  PaymentModeSelectionFormField({super.key, super.onSaved})
-      : super(
+  PaymentModeSelectionFormField({
+    super.key,
+    super.onSaved,
+    super.initialValue,
+  }) : super(
           builder: (state) {
             return GetBuilder(
-              init: PaymentModeSelectionFieldController(),
+              init: PaymentModeSelectionFieldController(
+                initialValue: initialValue?.name,
+              ),
               builder: (controller) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,15 +123,22 @@ class PaymentModeSelectionFormField extends FormField<PaymentMode> {
 
 class PaymentModeSelectionFieldController extends GetxController {
   late TextEditingController searchController;
+  final String? initialValue;
+
+  PaymentModeSelectionFieldController({this.initialValue});
 
   @override
   void onInit() {
-    searchController = TextEditingController();
+    searchController = TextEditingController(
+      text: initialValue,
+    );
     super.onInit();
   }
 
   Future<List<PaymentMode>> getPaymentModes(String pattern) async {
-    var result = await Get.find<PaymentModeRepository>().fetch();
+    var result = await Get.find<PaymentModeRepository>().fetch(queries: {
+      "search": pattern,
+    });
     return result;
   }
 }

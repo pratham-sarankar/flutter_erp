@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/course_repository.dart';
 import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/data/utils/extensions/datetime.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
@@ -96,7 +97,7 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
           ),
         )),
         DataCell(Text(
-          employeeDetails?.dob?.timeZoneName ?? "-",
+          employeeDetails?.getDateOfBirth() ?? "-",
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w400,

@@ -105,7 +105,12 @@ class Customer extends Resource {
   }
 
   @override
-  String get name => "${firstName ?? ""} ${lastName ?? ""}";
+  String get name {
+    if (firstName == null || lastName == null) {
+      return username ?? email ?? phoneNumber ?? "";
+    }
+    return "${firstName ?? ""} ${lastName ?? ""}";
+  }
 
   @override
   bool get isEmpty => id == null;

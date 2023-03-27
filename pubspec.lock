@@ -717,7 +717,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "74b993fc78e9f18672024cf5776be2d051bc9ed6"
+      resolved-ref: d6d16b8436699259f817e7913bbbf6fd91cce82c
       url: "https://github.com/pratham-sarankar/resource_manager.git"
     source: git
     version: "0.0.1"

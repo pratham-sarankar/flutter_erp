@@ -5,6 +5,7 @@ import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/modules/class/views/package_view.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_scaffold.dart';
 import 'package:flutter_erp/app/modules/class/views/chat_view.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
@@ -117,8 +118,8 @@ class ClassView extends GetResponsiveView<ClassController> {
                   const SizedBox(height: 30),
                   Expanded(
                     child: DefaultTabController(
-                      length: 3,
-                      initialIndex: 1,
+                      length: 2,
+                      initialIndex: 0,
                       child: Column(
                         children: [
                           Align(
@@ -127,9 +128,6 @@ class ClassView extends GetResponsiveView<ClassController> {
                               tabs: const [
                                 Tab(
                                   child: Text("Packages"),
-                                ),
-                                Tab(
-                                  child: Text("Members"),
                                 ),
                                 Tab(
                                   child: Text("Members"),
@@ -151,110 +149,8 @@ class ClassView extends GetResponsiveView<ClassController> {
                           Expanded(
                             child: TabBarView(
                               children: [
-                                ResourceListView(
-                                  repository: Get.find<PackageRepository>(),
-                                  title: "Packages",
-                                  description:
-                                      "Add, Update or Delete the packages of this class.",
-                                  canAdd: Get.find<AuthService>()
-                                      .canAdd("Designations"),
-                                  tileBuilder: (controller, data) {
-                                    return Container(
-                                      width: Get.width,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Colors.grey.shade200,
-                                            width: 1.5,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                data.title ?? "-",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 1.2,
-                                                  color: Colors.grey.shade900,
-                                                ),
-                                              ),
-                                              Text(
-                                                "₹${data.price}",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.grey.shade700,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              right: 20,
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Get.find<
-                                                        TableController<
-                                                            Subscription>>()
-                                                    .insertRow(initialData: {
-                                                  'package_id': data.id,
-                                                  'class_id': data.classId,
-                                                });
-                                              },
-                                              child: Icon(
-                                                CupertinoIcons.add,
-                                                color: Colors.blue.shade700,
-                                              ),
-                                            ),
-                                          ),
-                                          if (Get.find<AuthService>()
-                                              .canEdit("Designations"))
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  controller.updateTile(data);
-                                                },
-                                                child: Icon(
-                                                  Icons.edit,
-                                                  color: Colors.green.shade700,
-                                                ),
-                                              ),
-                                            ),
-                                          if (Get.find<AuthService>()
-                                              .canDelete("Designations"))
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20, left: 10),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  controller.destroyTile(data);
-                                                },
-                                                child: Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red.shade700,
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
+                                PackageView(),
                                 const ChatView(),
-                                const Scaffold(),
                               ],
                             ),
                           )

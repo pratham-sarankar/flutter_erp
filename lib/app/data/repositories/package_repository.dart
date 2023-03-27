@@ -16,16 +16,4 @@ class PackageRepository extends Repository<Package> {
   Package get empty {
     return Package(classId: int.parse(Get.parameters['id'] ?? "0"));
   }
-
-  @override
-  Future<List<Package>> fetch(
-      {int limit = 100,
-      int offset = 0,
-      Map<String, dynamic> queries = const {}}) {
-    var updatedQueries = {
-      ...queries,
-      "classId": Get.parameters['id'] ?? queries["classId"],
-    };
-    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
-  }
 }

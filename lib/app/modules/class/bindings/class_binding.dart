@@ -11,12 +11,16 @@ import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/repositories/payment_mode_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/modules/class/controllers/chat_controller.dart';
+import 'package:flutter_erp/app/modules/class/controllers/package_controller.dart';
 
 import '../controllers/class_controller.dart';
 
 class ClassBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<PackageController>(
+      () => PackageController(),
+    );
     Get.lazyPut<ChatController>(
       () => ChatController(),
     );

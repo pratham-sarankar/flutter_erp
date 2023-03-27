@@ -156,7 +156,9 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                         controller.refresh();
                       },
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     TextButton(
                       child: Row(
                         children: const [
@@ -168,8 +170,8 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: ()async {
-                       var result= await Get.dialog(
+                      onPressed: () async {
+                        var result = await Get.dialog(
                           const ClassesFormView(),
                           barrierDismissible: false,
                         );
