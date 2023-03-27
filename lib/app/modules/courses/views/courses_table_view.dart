@@ -102,7 +102,7 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedCourses.value.isEmpty) {
+              if (controller.selectedIds.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -120,6 +120,22 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                       child: Row(
                         children: const [
                           Icon(
+                            CupertinoIcons.refresh,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Refresh"),
+                        ],
+                      ),
+                      onPressed: () async {
+                        controller.refresh();
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
                             CupertinoIcons.add,
                             size: 16,
                           ),
@@ -127,11 +143,14 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: () {
-                        Get.dialog(
+                      onPressed: ()async {
+                        var reault=await Get.dialog(
                           const CoursesFormView(),
                           barrierDismissible: false,
                         );
+                        if(reault){
+                          controller.refresh();
+                        }
                       },
                     )
                   ],

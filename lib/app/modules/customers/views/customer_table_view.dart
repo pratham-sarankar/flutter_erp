@@ -124,7 +124,7 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
           ),
           Expanded(
             child: Obx(() {
-              if (controller.selectedCustomers.isEmpty) {
+              if (controller.selectedIds.isEmpty) {
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -142,6 +142,22 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                       child: Row(
                         children: const [
                           Icon(
+                            CupertinoIcons.refresh,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Refresh"),
+                        ],
+                      ),
+                      onPressed: () async {
+                        controller.refresh();
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
                             CupertinoIcons.add,
                             size: 16,
                           ),
@@ -149,11 +165,14 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: () {
-                        Get.dialog(
+                      onPressed: ()async {
+                        var result= await Get.dialog(
                           const CustomerFormView(),
                           barrierDismissible: false,
                         );
+                        if(result){
+                          controller.refresh();
+                        }
                       },
                     )
                   ],

@@ -142,6 +142,22 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                       child: Row(
                         children: const [
                           Icon(
+                            CupertinoIcons.refresh,
+                            size: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Refresh"),
+                        ],
+                      ),
+                      onPressed: () async {
+                        controller.refresh();
+                      },
+                    ),
+                    const SizedBox(width: 10,),
+                    TextButton(
+                      child: Row(
+                        children: const [
+                          Icon(
                             CupertinoIcons.add,
                             size: 16,
                           ),
@@ -149,11 +165,14 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: () {
-                        Get.dialog(
+                      onPressed: ()async {
+                       var result= await Get.dialog(
                           const ClassesFormView(),
                           barrierDismissible: false,
                         );
+                        if (result) {
+                          controller.refresh();
+                        }
                       },
                     )
                   ],

@@ -3,7 +3,6 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
-import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
@@ -41,6 +40,13 @@ class ClassesTableController extends GetxController {
   }
 
   @override
+  void refresh() {
+    source.refresh();
+    super.refresh();
+  }
+
+
+  @override
   void onReady() {
     super.onReady();
   }
@@ -54,6 +60,8 @@ class ClassesTableController extends GetxController {
 class ClassesDataSource extends AdvancedDataTableSource<Class> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+  bool remoteReload = false;
+
 
   RxList<int> get selectedIds => Get.find<ClassesTableController>().selectedIds;
 
@@ -62,15 +70,8 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
     var classDetails = lastDetails?.rows[index];
     return DataRow(
       selected: selectedIds.contains(classDetails?.id),
-      onLongPress: () {
-        selectedRow(classDetails!.id!, true);
-      },
       onSelectChanged: (value) {
-        if (selectedIds.isNotEmpty) {
-          selectedRow(classDetails!.id!, value ?? false);
-        } else {
-          Get.toNamed(Routes.CLASS, arguments: classDetails?.id);
-        }
+        selectedRow(classDetails?.id, value ?? false);
       },
       cells: [
         DataCell(Text(
@@ -132,6 +133,12 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
     setNextView();
   }
 
+  void refresh() {
+    setNextView();
+    notifyListeners();
+  }
+
+
   @override
   Future<RemoteDataSourceDetails<Class>> getNextPage(
       NextPageRequest pageRequest) async {
@@ -153,15 +160,16 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
   @override
   void setNextView({int startIndex = 0}) {
     selectedIds.value = <int>[];
+    remoteReload = true;
     super.setNextView(startIndex: startIndex);
+    remoteReload = false;
   }
-
   @override
   bool requireRemoteReload() {
     if (lastSearchTerm.isNotEmpty) {
       return selectedIds.isEmpty;
     }
-    return lastDetails?.filteredRows != null;
+    return remoteReload || lastDetails?.filteredRows != null;
   }
 
   void sort(int columnIndex, bool ascending) {

@@ -2,10 +2,8 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/course_repository.dart';
-import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rrule/rrule.dart';
 
 import '../../../data/models/course.dart';
 
@@ -14,7 +12,7 @@ class CoursesTableController extends GetxController {
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Course> selectedCourses;
+  late RxList<int> selectedIds;
   late TextEditingController searchController;
 
   @override
@@ -24,7 +22,7 @@ class CoursesTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedCourses = <Course>[].obs;
+    selectedIds = <int>[].obs;
     super.onInit();
   }
 
@@ -40,6 +38,13 @@ class CoursesTableController extends GetxController {
   }
 
   @override
+  void refresh() {
+    source.refresh();
+    super.refresh();
+  }
+
+
+  @override
   void onReady() {
     super.onReady();
   }
@@ -53,16 +58,18 @@ class CoursesTableController extends GetxController {
 class CoursesDataSource extends AdvancedDataTableSource<Course> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+  bool remoteReload = false;
 
-  get selectedCourses => Get.find<CoursesTableController>().selectedCourses;
+
+  RxList<int> get selectedIds => Get.find<CoursesTableController>().selectedIds;
 
   @override
   DataRow? getRow(int index) {
     var courseDetails = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedCourses.contains(courseDetails),
+      selected: selectedIds.contains(courseDetails?.id),
       onSelectChanged: (value) {
-        selectedRow(courseDetails, value ?? false);
+        selectedRow(courseDetails?.id, value ?? false);
       },
       cells: [
         DataCell(Text(
@@ -91,21 +98,26 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
   }
 
   @override
-  int get selectedRowCount => selectedCourses.length;
+  int get selectedRowCount => selectedIds.length;
 
-  void selectedRow(Course? courseDetails, bool newSelectState) {
-    if (selectedCourses.contains(courseDetails)) {
-      selectedCourses.remove(courseDetails);
+  void selectedRow(int? id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
     } else {
-      selectedCourses.add(courseDetails);
+      selectedIds.add(id!);
     }
     notifyListeners();
   }
-
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
   }
+
+  void refresh() {
+    setNextView();
+    notifyListeners();
+  }
+
 
   @override
   Future<RemoteDataSourceDetails<Course>> getNextPage(
@@ -125,18 +137,22 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
       filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
+
+
   @override
   void setNextView({int startIndex = 0}) {
-    selectedCourses.value = <Course>[];
+    selectedIds.value = <int>[];
+    remoteReload = true;
     super.setNextView(startIndex: startIndex);
+    remoteReload = false;
   }
 
   @override
   bool requireRemoteReload() {
-    if(lastSearchTerm.isNotEmpty){
-      return selectedCourses.value.isEmpty;
+    if (lastSearchTerm.isNotEmpty) {
+      return selectedIds.isEmpty;
     }
-    return lastDetails?.filteredRows!=null;
+    return remoteReload || lastDetails?.filteredRows != null;
   }
 
 

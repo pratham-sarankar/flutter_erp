@@ -13,7 +13,7 @@ class CustomerTableController extends GetxController {
   late RxInt rowsPerPage;
   late RxBool sortAscending;
   late RxInt sortColumnIndex;
-  late RxList<Customer> selectedCustomers;
+  late RxList<int> selectedIds;
   late TextEditingController searchController;
 
   @override
@@ -23,7 +23,7 @@ class CustomerTableController extends GetxController {
     rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage.obs;
     sortAscending = true.obs;
     sortColumnIndex = 0.obs;
-    selectedCustomers = <Customer>[].obs;
+    selectedIds = <int>[].obs;
     super.onInit();
   }
 
@@ -36,6 +36,12 @@ class CustomerTableController extends GetxController {
     sortAscending.value = ascending;
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
+  }
+
+  @override
+  void refresh() {
+    source.refresh();
+    super.refresh();
   }
 
   @override
@@ -52,18 +58,20 @@ class CustomerTableController extends GetxController {
 class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+  bool remoteReload=false;
 
-  get selectedCustomers =>
-      Get.find<CustomerTableController>().selectedCustomers;
+
+  RxList<int> get selectedIds =>
+      Get.find<CustomerTableController>().selectedIds;
 
 
   @override
   DataRow? getRow(int index) {
     var customer = lastDetails?.rows[index];
     return DataRow(
-      selected: selectedCustomers.contains(customer),
+      selected: selectedIds.contains(customer?.id),
       onSelectChanged: (value) {
-        selectedRow(customer, value ?? false);
+        selectedRow(customer?.id, value ?? false);
       },
       cells: [
         DataCell(Text(
@@ -110,20 +118,26 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
 
   @override
   int get selectedRowCount =>
-      Get.find<CustomerTableController>().selectedCustomers.length;
+      Get.find<CustomerTableController>().selectedIds.length;
 
-  void selectedRow(Customer? customer, bool newSelectState) {
-    if (selectedCustomers.contains(customer)) {
-      selectedCustomers.remove(customer);
+  void selectedRow(int? id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
     } else {
-      selectedCustomers.add(customer);
+      selectedIds.add(id!);
     }
     notifyListeners();
   }
 
+
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
+  }
+
+  void refresh() {
+    setNextView();
+    notifyListeners();
   }
 
   @override
@@ -146,16 +160,19 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
 
   @override
   void setNextView({int startIndex = 0}) {
-    selectedCustomers.value = <Customer>[];
+    selectedIds.value = <int>[];
+    remoteReload = true;
     super.setNextView(startIndex: startIndex);
+    remoteReload = false;
   }
+
 
   @override
   bool requireRemoteReload() {
     if(lastSearchTerm.isNotEmpty){
-      return selectedCustomers.value.isEmpty;
+      return selectedIds.isEmpty;
     }
-    return lastDetails?.filteredRows!=null;
+    return remoteReload || lastDetails?.filteredRows!=null;
   }
 
   void sort(int columnIndex, bool ascending) {
