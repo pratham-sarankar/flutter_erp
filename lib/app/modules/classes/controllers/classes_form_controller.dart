@@ -17,6 +17,8 @@ class ClassesFormController extends GetxController {
   late RxBool isLoading;
   late RxString error;
 
+  bool get isUpdating => Get.arguments != null;
+
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
@@ -31,12 +33,17 @@ class ClassesFormController extends GetxController {
     super.onReady();
   }
 
+
   void submit() async {
     try {
       isLoading.value = true;
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState!.save();
-        await Get.find<ClassRepository>().insert(classes);
+        if (isUpdating) {
+          await Get.find<ClassRepository>().update(classes);
+        } else {
+          await Get.find<ClassRepository>().insert(classes);
+        }
         Get.back(result: true);
       }
       isLoading.value = false;
@@ -45,7 +52,6 @@ class ClassesFormController extends GetxController {
       error.value = e.toString();
     }
   }
-
   @override
   void onClose() {
     super.onClose();

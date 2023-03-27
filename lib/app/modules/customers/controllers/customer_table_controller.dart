@@ -5,8 +5,11 @@ import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/modules/customers/views/customer_form_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../widgets/dialogs/deletion_dialog.dart';
 
 class CustomerTableController extends GetxController {
   late CustomersDataSource source;
@@ -107,6 +110,86 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
             fontWeight: FontWeight.w400,
           ),
         )),
+        DataCell(
+          PopupMenuButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 10,
+            offset: const Offset(0, 20),
+            onSelected: (value) async {
+              switch (value) {
+                case "edit":
+                  var result = await Get.dialog(
+                    const CustomerFormView(),
+                    arguments: customer,
+                    barrierDismissible: false,
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+                case "delete":
+                  var result = await Get.dialog(
+                    DeletionDialog(
+                      onDelete: () async {
+                        await Get.find<CustomerRepository>()
+                            .destroy(customer!);
+                        return true;
+                      },
+                    ),
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+              }
+            },
+            itemBuilder: (context) {
+              return <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: "edit",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.green.shade600,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Edit",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(height: 1),
+                PopupMenuItem(
+                  value: "delete",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red.shade700,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Delete",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ];
+            },
+            padding: EdgeInsets.zero,
+            child: const Icon(Icons.more_vert, color: Colors.black, size: 22),
+          ),
+        ),
       ],
     );
   }

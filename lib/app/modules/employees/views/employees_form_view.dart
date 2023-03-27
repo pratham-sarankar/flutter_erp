@@ -53,6 +53,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                   children: [
                     const SizedBox(height: 22),
                     ImageFormField(
+                      initialValue: controller.employee.photoUrl,
                       title: "Image",
                       uploader: Get.find<FileService>().uploadFile,
                       downloader: Get.find<FileService>().imageDownloader,
@@ -67,6 +68,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                       children: [
                         Expanded(
                           child: ErpTextFormField(
+                            initialValue: controller.employee.firstName,
                             title: "First Name",
                             onSaved: (value) {
                               controller.employee.firstName =
@@ -77,6 +79,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                         const SizedBox(width: 20),
                         Expanded(
                           child: ErpTextFormField(
+                            initialValue: controller.employee.lastName,
                             title: "Last Name",
                             onSaved: (value) {
                               controller.employee.lastName =
@@ -89,6 +92,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     const SizedBox(height: 20),
                     ErpTextFormField(
                       title: "Email",
+                      initialValue: controller.employee.email,
                       onSaved: (value) {
                         controller.employee.email =
                             (value?.isEmpty ?? true) ? null : value;
@@ -97,6 +101,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     const SizedBox(height: 20),
                     ErpTextFormField(
                       title: "Phone Number",
+                      initialValue: controller.employee.phoneNumber,
                       isRequired: true,
                       onSaved: (value) {
                         controller.employee.phoneNumber =
@@ -105,6 +110,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     ),
                     const SizedBox(height: 20),
                     DesignationSelectionFormField(
+                      initialValue: controller.employee.lastName,
                       title: "Select Designation",
                       onSaved: (value) {
                         controller.employee.designationId =
@@ -114,6 +120,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     ),
                     const SizedBox(height: 20),
                     ErpDateFormField(
+                      initialValue: controller.employee.dob,
                       title: "Date of birth",
                       onSaved: (value) {
                         controller.employee.dob = value;

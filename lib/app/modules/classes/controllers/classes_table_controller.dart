@@ -3,11 +3,13 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/modules/classes/views/classes_form_view.dart';
 import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
 
+import '../../../../widgets/dialogs/deletion_dialog.dart';
 import '../../../data/models/class.dart';
 
 class ClassesTableController extends GetxController {
@@ -117,7 +119,88 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
-        )),
+        ),
+        ),
+        DataCell(
+          PopupMenuButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 10,
+            offset: const Offset(0, 20),
+            onSelected: (value) async {
+              switch (value) {
+                case "edit":
+                  var result = await Get.dialog(
+                    const ClassesFormView(),
+                    arguments: classDetails,
+                    barrierDismissible: false,
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+                case "delete":
+                  var result = await Get.dialog(
+                    DeletionDialog(
+                      onDelete: () async {
+                        await Get.find<ClassRepository>()
+                            .destroy(classDetails!);
+                        return true;
+                      },
+                    ),
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+              }
+            },
+            itemBuilder: (context) {
+              return <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: "edit",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.green.shade600,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Edit",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(height: 1),
+                PopupMenuItem(
+                  value: "delete",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red.shade700,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Delete",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ];
+            },
+            padding: EdgeInsets.zero,
+            child: const Icon(Icons.more_vert, color: Colors.black, size: 22),
+          ),
+        ),
       ],
     );
   }

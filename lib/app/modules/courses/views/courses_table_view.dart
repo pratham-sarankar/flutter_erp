@@ -76,6 +76,17 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                           ),
                         ),
                       ),
+                      DataColumn(
+                        numeric: true,
+                        label: Text(
+                          "",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ],
                     loadingWidget: () => const Center(
                       child: CupertinoActivityIndicator(),

@@ -14,11 +14,13 @@ class DesignationSelectionFormField extends FormField<Designation> {
       {super.key,
       super.onSaved,
       required String? title,
-      this.isRequired = false})
+      this.isRequired = false, String? initialValue})
       : super(
           builder: (state) {
             return GetBuilder(
-              init: DesignationSelectionFieldController(),
+              init: DesignationSelectionFieldController(
+                  initialValue: initialValue,
+              ),
               builder: (controller) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,16 +139,22 @@ class DesignationSelectionFormField extends FormField<Designation> {
 }
 
 class DesignationSelectionFieldController extends GetxController {
-  final designationController = TextEditingController();
+  late final TextEditingController designationController;
   final customer = Rx<Customer?>(null);
+  final String? initialValue;
+
+
+  DesignationSelectionFieldController({this.initialValue});
+
 
   @override
   void onInit() {
     super.onInit();
-    designationController.addListener(() {
-      customer.value = null;
-    });
+    designationController=TextEditingController(
+      text: initialValue);
   }
+
+
 
   Future<List<Designation>> getDesignations(String pattern) async {
     final designations = await Get.find<DesignationRepository>().fetch(
