@@ -17,6 +17,8 @@ class EmployeesFormController extends GetxController {
   late RxBool isLoading;
   late RxString error;
 
+  bool get isUpdating => Get.arguments != null;
+
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
@@ -36,14 +38,17 @@ class EmployeesFormController extends GetxController {
       isLoading.value = true;
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState!.save();
-        await Get.find<EmployeeRepository>().insert(employee);
+        if (isUpdating) {
+          await Get.find<EmployeeRepository>().update(employee);
+        } else {
+          await Get.find<EmployeeRepository>().insert(employee);
+        }
         Get.back(result: true);
       }
       isLoading.value = false;
-    } on ApiException catch (e) {
+    } catch (e) {
       isLoading.value = false;
       error.value = e.toString();
-      rethrow;
     }
   }
 

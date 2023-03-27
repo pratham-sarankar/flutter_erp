@@ -13,6 +13,9 @@ class CustomerFormController extends GetxController {
   late RxBool isLoading;
   late RxString error;
 
+  bool get isUpdating => Get.arguments != null;
+
+
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
@@ -32,7 +35,11 @@ class CustomerFormController extends GetxController {
       isLoading.value = true;
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState!.save();
-        await Get.find<CustomerRepository>().insert(customer);
+        if (isUpdating) {
+          await Get.find<CustomerRepository>().update(customer);
+        } else {
+          await Get.find<CustomerRepository>().insert(customer);
+        }
         Get.back(result: true);
       }
       isLoading.value = false;

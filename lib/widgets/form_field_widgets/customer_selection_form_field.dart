@@ -14,7 +14,8 @@ class CustomerSelectionFormField extends FormField<Customer> {
   }) : super(builder: (state) {
           return GetBuilder(
             init: CustomerSelectionFieldController(
-                initialValue: initialValue?.name),
+                initialValue: initialValue?.name
+            ),
             builder: (controller) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

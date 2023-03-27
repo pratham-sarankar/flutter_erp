@@ -50,6 +50,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     ),
                     ErpTextFormField(
                       title: "Title",
+                      initialValue: controller.course.title,
                       isRequired: true,
                       onSaved: (value) {
                         controller.course.title =
@@ -61,6 +62,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     ),
                     ErpTextFormField(
                       title: "Description",
+                      initialValue: controller.course.description,
                       onSaved: (value) {
                         controller.course.description =
                             (value?.isEmpty ?? true) ? null : value;
@@ -72,6 +74,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     ),
                     ErpTextFormField(
                       title: "Duration",
+                      initialValue: controller.course.duration.toString(),
                       isRequired: true,
                       onSaved: (value) {
                         controller.course.duration = double.parse(value!);

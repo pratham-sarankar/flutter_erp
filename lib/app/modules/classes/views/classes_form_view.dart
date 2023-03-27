@@ -49,6 +49,7 @@ class ClassesFormView extends GetView<ClassesFormController> {
                     ),
                     ErpTextFormField(
                       title: "Title",
+                      initialValue: controller.classes.title,
                       isRequired: true,
                       onSaved: (value) {
                         controller.classes.title =
@@ -63,12 +64,14 @@ class ClassesFormView extends GetView<ClassesFormController> {
                         controller.classes.trainerId = newValue?.id;
                       },
                       title: 'Trainer',
+                      initialValue: controller.classes.trainer,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     ErpRecurringFormField(
                       title: "Schedule",
+                      initialValue: controller.classes.schedule,
                       onSaved: (newValue) {
                         controller.classes.schedule = newValue;
                       },
@@ -80,6 +83,7 @@ class ClassesFormView extends GetView<ClassesFormController> {
                         Expanded(
                             child: ErpTimeFormField(
                           title: "Start at",
+                          initialValue: controller.classes.startTime,
                           onSaved: (newValue) {
                             controller.classes.startTime = newValue;
                           },
@@ -88,48 +92,13 @@ class ClassesFormView extends GetView<ClassesFormController> {
                         Expanded(
                             child: ErpTimeFormField(
                           title: "Ends at",
+                          initialValue: controller.classes.endTime,
                           onSaved: (newValue) {
                             controller.classes.endTime = newValue;
                           },
                         )),
                       ],
                     ),
-                    //   const SizedBox(height: 20),
-                    //   ErpTextFormField(
-                    //     title: "Email",
-                    //     onSaved: (value) {
-                    //       controller.employee.email = value;
-                    //     },
-                    //   ),
-                    //   const SizedBox(height: 20),
-                    //   Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: ErpTextFormField(
-                    //           title: "Phone Number",
-                    //           isRequired: true,
-                    //           onSaved: (value) {
-                    //             controller.employee.phoneNumber = value;
-                    //           },
-                    //         ),
-                    //       ),
-                    //       const SizedBox(height: 20),
-                    //       Expanded(
-                    //         child: ErpDateFormField(
-                    //           title: "Date of birth",
-                    //           onSaved: (value) {
-                    //             controller.employee.dob = value;
-                    //           },
-                    //         ),
-                    //       )
-                    //     ],
-                    //   ),
-                    //   const SizedBox(height: 20),
-                    //   DesignationSelectionFormField(
-                    //     onSaved: (newValue) {
-                    //       controller.employee.designationId = newValue?.id;
-                    //     },
-                    //   ),
                   ],
                 ),
               ),

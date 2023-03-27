@@ -34,6 +34,7 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
+                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
                     rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {
@@ -90,6 +91,17 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                         // onSort: controller.sort,
                         label: Text(
                           "Designation",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        numeric: true,
+                        label: Text(
+                          "",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,

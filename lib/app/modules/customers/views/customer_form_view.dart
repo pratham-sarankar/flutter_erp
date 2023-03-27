@@ -60,6 +60,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                       children: [
                         Expanded(
                           child: ErpTextFormField(
+                            initialValue: controller.customer.firstName,
                             title: "First Name",
                             onSaved: (value) {
                               controller.customer.firstName =
@@ -71,6 +72,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                         Expanded(
                           child: ErpTextFormField(
                             title: "Last Name",
+                            initialValue: controller.customer.lastName,
                             onSaved: (value) {
                               controller.customer.lastName =
                                   (value?.isEmpty ?? true) ? null : value;
@@ -82,6 +84,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                     const SizedBox(height: 20),
                     ErpTextFormField(
                       title: "Username",
+                      initialValue: controller.customer.username,
                       onSaved: (value) {
                         controller.customer.username =
                             (value?.isEmpty ?? true) ? null : value;
@@ -90,6 +93,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                     const SizedBox(height: 20),
                     ErpTextFormField(
                       title: "Email",
+                      initialValue: controller.customer.email,
                       onSaved: (value) {
                         controller.customer.email =
                             (value?.isEmpty ?? true) ? null : value;
@@ -102,6 +106,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                         Expanded(
                           child: ErpTextFormField(
                             title: "Phone number",
+                            initialValue: controller.customer.phoneNumber,
                             isRequired: true,
                             onSaved: (value) {
                               controller.customer.phoneNumber =
@@ -111,6 +116,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                         ),
                         const SizedBox(width: 20),
                         ErpDateFormField(
+                          initialValue: controller.customer.dob,
                           title: "Date of birth",
                           onSaved: (value) {
                             controller.customer.dob = value;
@@ -120,6 +126,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                     ),
                     const SizedBox(height: 20),
                     ErpPasswordFormField(
+                      initialValue: controller.customer.password,
                       isRequired: true,
                       title: "Password",
                       onSaved: (value) {
