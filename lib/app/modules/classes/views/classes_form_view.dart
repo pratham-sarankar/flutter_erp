@@ -51,7 +51,8 @@ class ClassesFormView extends GetView<ClassesFormController> {
                       title: "Title",
                       isRequired: true,
                       onSaved: (value) {
-                        controller.classes.title = value;
+                        controller.classes.title =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(

@@ -52,7 +52,8 @@ class CoursesFormView extends GetView<CoursesFromController> {
                       title: "Title",
                       isRequired: true,
                       onSaved: (value) {
-                        controller.course.title = value;
+                        controller.course.title =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(
@@ -61,7 +62,9 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     ErpTextFormField(
                       title: "Description",
                       onSaved: (value) {
-                        controller.course.description = value;
+                        controller.course.description =
+                            (value?.isEmpty ?? true) ? null : value;
+                        ;
                       },
                     ),
                     const SizedBox(
@@ -69,6 +72,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     ),
                     ErpTextFormField(
                       title: "Duration",
+                      isRequired: true,
                       onSaved: (value) {
                         controller.course.duration = double.parse(value!);
                       },
@@ -77,7 +81,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                           double.parse(value ?? "");
                           return null;
                         } catch (e) {
-                          return "Invalid amount";
+                          return "Invalid Duration";
                         }
                       },
                     ),
