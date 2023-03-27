@@ -12,6 +12,7 @@ import '../../../data/models/employee.dart';
 
 class ClassesFormController extends GetxController {
   late GlobalKey<FormState> formKey;
+
   // late Subscription subscription;
   late Class classes;
   late RxBool isLoading;
@@ -22,7 +23,8 @@ class ClassesFormController extends GetxController {
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    classes = Class(branchId: Get.find<AuthService>().currentBranch.id);
+    classes = Get.arguments ??
+        Class(branchId: Get.find<AuthService>().currentBranch.id);
     isLoading = false.obs;
     error = "".obs;
     super.onInit();
@@ -32,7 +34,6 @@ class ClassesFormController extends GetxController {
   void onReady() {
     super.onReady();
   }
-
 
   void submit() async {
     try {
@@ -52,6 +53,7 @@ class ClassesFormController extends GetxController {
       error.value = e.toString();
     }
   }
+
   @override
   void onClose() {
     super.onClose();

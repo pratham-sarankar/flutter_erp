@@ -22,7 +22,8 @@ class EmployeesFormController extends GetxController {
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    employee = Employee(branchId: Get.find<AuthService>().currentBranch.id);
+    employee = Get.arguments ??
+        Employee(branchId: Get.find<AuthService>().currentBranch.id);
     isLoading = false.obs;
     error = "".obs;
     super.onInit();

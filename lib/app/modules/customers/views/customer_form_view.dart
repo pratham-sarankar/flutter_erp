@@ -32,7 +32,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Customer",
+              controller.isUpdating ? "Update Customer" : "Add Customer",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,

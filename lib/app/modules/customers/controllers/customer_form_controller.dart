@@ -8,6 +8,7 @@ import '../../../data/models/customer.dart';
 
 class CustomerFormController extends GetxController {
   late GlobalKey<FormState> formKey;
+
   // late Subscription subscription;
   late Customer customer;
   late RxBool isLoading;
@@ -15,11 +16,11 @@ class CustomerFormController extends GetxController {
 
   bool get isUpdating => Get.arguments != null;
 
-
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    customer = Customer(branchId: Get.find<AuthService>().currentBranch.id);
+    customer = Get.arguments ??
+        Customer(branchId: Get.find<AuthService>().currentBranch.id);
     isLoading = false.obs;
     error = "".obs;
     super.onInit();

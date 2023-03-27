@@ -32,7 +32,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Courses",
+              controller.isUpdating ? "Update Course" : "Add Course",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,

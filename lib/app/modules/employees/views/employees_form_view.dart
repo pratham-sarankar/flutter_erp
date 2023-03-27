@@ -38,7 +38,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Employee",
+              controller.isUpdating ? "Update Employee" : "Add Employee",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,

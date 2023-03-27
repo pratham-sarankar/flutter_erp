@@ -14,6 +14,7 @@ import '../../../data/models/employee.dart';
 
 class CoursesFromController extends GetxController {
   late GlobalKey<FormState> formKey;
+
   // late Subscription subscription;
   late Course course;
   late RxBool isLoading;
@@ -21,11 +22,11 @@ class CoursesFromController extends GetxController {
 
   bool get isUpdating => Get.arguments != null;
 
-
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    course = Course(branchId: Get.find<AuthService>().currentBranch.id);
+    course = Get.arguments ??
+        Course(branchId: Get.find<AuthService>().currentBranch.id);
     isLoading = false.obs;
     error = "".obs;
     super.onInit();
