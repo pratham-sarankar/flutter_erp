@@ -1,12 +1,14 @@
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/repositories/payment_repository.dart';
 import 'package:flutter_erp/app/modules/payment/views/payment_form_view.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../widgets/dialogs/deletion_dialog.dart';
 import '../../../../widgets/global_widgets/erp_search_field.dart';
 import '../controllers/payment_table_controller.dart';
 
@@ -170,11 +172,20 @@ class PaymentTableView extends GetResponsiveView<PaymentTableController> {
                         Text("Delete"),
                       ],
                     ),
-                    onPressed: () {
-                      Get.dialog(
-                        const PaymentFormView(),
+                    onPressed: () async {
+                      var result = await Get.dialog(
+                        DeletionDialog(
+                          onDelete: () async {
+                            await Get.find<PaymentRepository>()
+                                .destroyMany(controller.selectedIds);
+                            return true;
+                          },
+                        ),
                         barrierDismissible: false,
                       );
+                      if (result) {
+                        controller.refresh();
+                      }
                     },
                   ),
                 ],
