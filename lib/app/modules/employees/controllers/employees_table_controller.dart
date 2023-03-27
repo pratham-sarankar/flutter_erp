@@ -150,7 +150,6 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
 
@@ -167,7 +166,7 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
     if (lastSearchTerm.isNotEmpty) {
       return selectedIds.isEmpty;
     }
-    return remoteReload || lastDetails?.filteredRows != null;
+    return remoteReload;
   }
 
   void sort(int columnIndex, bool ascending) {

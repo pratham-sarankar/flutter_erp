@@ -12,7 +12,6 @@ class ClassesBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ClassesTableController>(() => ClassesTableController());
-    Get.lazyPut<ClassesFormController>(() => ClassesFormController());
     Get.lazyPut<ClassesController>(() => ClassesController());
     Get.lazyPut<ClassRepository>(() => ClassRepository());
     Get.create<EmployeeRepository>(() => EmployeeRepository());

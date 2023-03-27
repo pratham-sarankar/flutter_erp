@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:resource_manager/data/utils/extensions/validator_extension.dart';
 
 class ErpDateFormField extends FormField<DateTime> {
-  final String title;
+  final String? title;
   final bool isRequired;
   final String? Function(String?)? onValidate;
 
@@ -15,7 +15,7 @@ class ErpDateFormField extends FormField<DateTime> {
     super.key,
     super.onSaved,
     super.initialValue,
-    required this.title,
+    this.title,
     this.isRequired = false,
     this.onValidate,
   }) : super(
@@ -39,7 +39,7 @@ class _ErpDateFormField extends StatelessWidget {
       this.isRequired = false,
       required this.state})
       : super(key: key);
-  final String title;
+  final String? title;
   final bool isRequired;
   final FormFieldState<DateTime> state;
 
@@ -48,31 +48,32 @@ class _ErpDateFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Column(
           children: [
-            Opacity(
-              opacity: 0.8,
-              child: Text(
-                title,
-                style: Get.context!.textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: Get.context!.theme.colorScheme.onBackground,
+            Row(
+              children: [
+                Text(
+                  title ?? "Select Date",
+                  style: context.textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: context.theme.colorScheme.onBackground,
+                  ),
                 ),
-              ),
+                const SizedBox(width: 4),
+                if (isRequired)
+                  Text(
+                    "*",
+                    style: context.textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.red,
+                      height: 1,
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(width: 4),
-            if (isRequired)
-              Text(
-                "*",
-                style: Get.context!.textTheme.titleMedium!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.red,
-                  height: 1,
-                ),
-              ),
+            const SizedBox(height: 10),
           ],
         ),
-        const SizedBox(height: 10),
         TextButton(
           onPressed: () async {
             DateTime? result = await showDatePicker(

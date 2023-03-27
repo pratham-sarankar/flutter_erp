@@ -17,9 +17,6 @@ import '../controllers/customers_controller.dart';
 class CustomersBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CustomerFormController>(
-      () => CustomerFormController(),
-    );
     Get.lazyPut<CustomerTableController>(
       () => CustomerTableController(),
     );
@@ -30,7 +27,5 @@ class CustomersBinding extends Bindings {
     Get.create<PackageRepository>(() => PackageRepository());
     Get.create<CouponRepository>(() => CouponRepository());
     Get.create<PaymentModeRepository>(() => PaymentModeRepository());
-    Get.create<TableController<Subscription>>(() =>
-        TableController<Subscription>(Get.find<SubscriptionRepository>()));
   }
 }

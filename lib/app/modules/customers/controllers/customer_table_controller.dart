@@ -58,12 +58,10 @@ class CustomerTableController extends GetxController {
 class CustomersDataSource extends AdvancedDataTableSource<Customer> {
   String lastSearchTerm = '';
   String sortingQuery = '';
-  bool remoteReload=false;
-
+  bool remoteReload = false;
 
   RxList<int> get selectedIds =>
       Get.find<CustomerTableController>().selectedIds;
-
 
   @override
   DataRow? getRow(int index) {
@@ -129,7 +127,6 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
     notifyListeners();
   }
 
-
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
@@ -154,7 +151,6 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
 
@@ -166,13 +162,12 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
     remoteReload = false;
   }
 
-
   @override
   bool requireRemoteReload() {
-    if(lastSearchTerm.isNotEmpty){
+    if (lastSearchTerm.isNotEmpty) {
       return selectedIds.isEmpty;
     }
-    return remoteReload || lastDetails?.filteredRows!=null;
+    return remoteReload;
   }
 
   void sort(int columnIndex, bool ascending) {

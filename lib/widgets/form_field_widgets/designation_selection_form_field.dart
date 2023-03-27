@@ -11,7 +11,10 @@ class DesignationSelectionFormField extends FormField<Designation> {
   final bool isRequired;
 
   DesignationSelectionFormField(
-      {super.key, super.onSaved, this.isRequired = false})
+      {super.key,
+      super.onSaved,
+      required String? title,
+      this.isRequired = false})
       : super(
           builder: (state) {
             return GetBuilder(
@@ -20,8 +23,32 @@ class DesignationSelectionFormField extends FormField<Designation> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Select Designation"),
-                    const SizedBox(height: 8),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              title ?? "Select Designation",
+                              style: Get.textTheme.bodyLarge!.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Get.theme.colorScheme.onBackground,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            if (isRequired)
+                              Text(
+                                "*",
+                                style: Get.textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.red,
+                                  height: 1,
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                     TypeAheadFormField<Designation>(
                       textFieldConfiguration: TextFieldConfiguration(
                         controller: controller.designationController,

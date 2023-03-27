@@ -100,6 +100,7 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     ),
                     const SizedBox(height: 20),
                     DesignationSelectionFormField(
+                      title: "Select Designation",
                       onSaved: (newValue) {
                         controller.employee.designationId = newValue?.id;
                       },

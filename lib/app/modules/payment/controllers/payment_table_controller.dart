@@ -76,13 +76,15 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
         selectedRow(paymentDetails?.id, value ?? false);
       },
       cells: [
-        DataCell(Text(
-          paymentDetails?.amount?.toString() ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        DataCell(
+          Text(
+            paymentDetails?.amount?.toString() ?? "-",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        )),
+        ),
         DataCell(Text(
           paymentDetails?.description ?? "",
           style: GoogleFonts.poppins(

@@ -28,6 +28,7 @@ class ClassesFormView extends GetView<ClassesFormController> {
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Add Classes",
@@ -41,7 +42,7 @@ class ClassesFormView extends GetView<ClassesFormController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
                     const SizedBox(
                       height: 20,
@@ -59,7 +60,8 @@ class ClassesFormView extends GetView<ClassesFormController> {
                     TrainerSelectionFormField(
                       onSaved: (newValue) {
                         controller.classes.trainerId = newValue?.id;
-                      }, title: 'Trainer',
+                      },
+                      title: 'Trainer',
                     ),
                     const SizedBox(
                       height: 20,

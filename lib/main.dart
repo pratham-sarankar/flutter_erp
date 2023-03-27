@@ -16,6 +16,9 @@ import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
+import 'package:flutter_erp/app/modules/classes/controllers/classes_form_controller.dart';
+import 'package:flutter_erp/app/modules/courses/controllers/courses_from_controller.dart';
+import 'package:flutter_erp/app/modules/customers/controllers/customer_form_controller.dart';
 import 'package:flutter_erp/app/modules/employees/controllers/employees_form_controller.dart';
 import 'package:flutter_erp/app/modules/payment/controllers/payment_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
@@ -55,6 +58,12 @@ void main() async {
   Get.lazyPut<SubscriptionFormController>(() => SubscriptionFormController(),
       fenix: true);
   Get.lazyPut<EmployeesFormController>(() => EmployeesFormController(),
+      fenix: true);
+  Get.lazyPut<CustomerFormController>(() => CustomerFormController(),
+      fenix: true);
+  Get.lazyPut<CoursesFromController>(() => CoursesFromController(),
+      fenix: true);
+  Get.lazyPut<ClassesFormController>(() => ClassesFormController(),
       fenix: true);
 
   Get.put(IVRService());

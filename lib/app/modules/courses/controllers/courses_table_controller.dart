@@ -43,7 +43,6 @@ class CoursesTableController extends GetxController {
     super.refresh();
   }
 
-
   @override
   void onReady() {
     super.onReady();
@@ -59,7 +58,6 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
   String lastSearchTerm = '';
   String sortingQuery = '';
   bool remoteReload = false;
-
 
   RxList<int> get selectedIds => Get.find<CoursesTableController>().selectedIds;
 
@@ -108,6 +106,7 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
     }
     notifyListeners();
   }
+
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
@@ -117,7 +116,6 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
     setNextView();
     notifyListeners();
   }
-
 
   @override
   Future<RemoteDataSourceDetails<Course>> getNextPage(
@@ -134,10 +132,8 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
     return RemoteDataSourceDetails(
       response.total,
       response.data,
-      filteredRows: lastSearchTerm.isEmpty ? null : response.data.length,
     );
   }
-
 
   @override
   void setNextView({int startIndex = 0}) {
@@ -152,9 +148,8 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
     if (lastSearchTerm.isNotEmpty) {
       return selectedIds.isEmpty;
     }
-    return remoteReload || lastDetails?.filteredRows != null;
+    return remoteReload;
   }
-
 
   void sort(int columnIndex, bool ascending) {
     var columnName = "";

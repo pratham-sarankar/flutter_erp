@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_date_form_field.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/erp_password_form_field.dart';
 
 import 'package:flutter_erp/widgets/form_field_widgets/erp_text_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/image_form_field.dart';
@@ -28,6 +29,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Add Customer",
@@ -41,61 +43,88 @@ class CustomerFormView extends GetView<CustomerFormController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
+                    const SizedBox(height: 20),
                     ImageFormField(
                       title: "Image",
                       uploader: Get.find<FileService>().uploadFile,
                       downloader: Get.find<FileService>().imageDownloader,
-                      onSaved: (newValue) {
-                        controller.customer.photoUrl = newValue;
+                      onSaved: (value) {
+                        controller.customer.photoUrl =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
-                        const SizedBox(height: 25,),
+                    const SizedBox(height: 20),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: ErpTextFormField(
-                            title: "Username",
-                            isRequired: true,
+                            title: "First Name",
                             onSaved: (value) {
-                              controller.customer.username = value;
+                              controller.customer.firstName =
+                                  (value?.isEmpty ?? true) ? null : value;
                             },
                           ),
                         ),
                         const SizedBox(width: 20),
                         Expanded(
                           child: ErpTextFormField(
-                            title: "FullName",
+                            title: "Last Name",
                             onSaved: (value) {
-                              controller.customer.firstName = value;
+                              controller.customer.lastName =
+                                  (value?.isEmpty ?? true) ? null : value;
                             },
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                    const SizedBox(height: 20),
+                    ErpTextFormField(
+                      title: "Username",
+                      onSaved: (value) {
+                        controller.customer.username =
+                            (value?.isEmpty ?? true) ? null : value;
+                      },
                     ),
+                    const SizedBox(height: 20),
                     ErpTextFormField(
                       title: "Email",
-                      onSaved: (newValue) {
-                        controller.customer.email = newValue;
+                      onSaved: (value) {
+                        controller.customer.email =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(height: 20),
-                    ErpTextFormField(
-                      title: "Phone number",
-                      onSaved: (newValue) {
-                        controller.customer.phoneNumber = newValue;
-                      },
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ErpTextFormField(
+                            title: "Phone number",
+                            isRequired: true,
+                            onSaved: (value) {
+                              controller.customer.phoneNumber =
+                                  (value?.isEmpty ?? true) ? null : value;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        ErpDateFormField(
+                          title: "Date of birth",
+                          onSaved: (value) {
+                            controller.customer.dob = value;
+                          },
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
-                    ErpDateFormField(
-                      title: "Date of birth",
-                      onSaved: (newValue) {
-                        controller.customer.dob = newValue;
+                    ErpPasswordFormField(
+                      isRequired: true,
+                      title: "Password",
+                      onSaved: (value) {
+                        controller.customer.password =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                   ],

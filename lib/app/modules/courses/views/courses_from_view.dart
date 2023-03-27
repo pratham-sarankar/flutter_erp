@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 
 import '../controllers/courses_from_controller.dart';
 
-
 class CoursesFormView extends GetView<CoursesFromController> {
   const CoursesFormView({Key? key}) : super(key: key);
 
@@ -30,6 +29,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Add Courses",
@@ -43,7 +43,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
                     const SizedBox(
                       height: 20,
@@ -58,19 +58,19 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     const SizedBox(
                       height: 20,
                     ),
-                  ErpTextFormField(
-                    title: "Description",
-                    onSaved: (value) {
-                      controller.course.description=value;
-                    },
-                  ),
+                    ErpTextFormField(
+                      title: "Description",
+                      onSaved: (value) {
+                        controller.course.description = value;
+                      },
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
                     ErpTextFormField(
                       title: "Duration",
                       onSaved: (value) {
-                        controller.course.duration=double.parse(value!);
+                        controller.course.duration = double.parse(value!);
                       },
                       onValidate: (value) {
                         try {
@@ -106,7 +106,7 @@ class CoursesFormView extends GetView<CoursesFromController> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Obx(
-                      () => Text(
+                  () => Text(
                     controller.error.value,
                     style: TextStyle(
                       color: Get.theme.colorScheme.error,
@@ -162,16 +162,16 @@ class CoursesFormView extends GetView<CoursesFromController> {
                       ),
                     ),
                     child: Obx(
-                          () => controller.isLoading.value
+                      () => controller.isLoading.value
                           ? const CupertinoActivityIndicator(
-                          color: Colors.white)
+                              color: Colors.white)
                           : const Text(
-                        "Save",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                              "Save",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                     ),
                   ),
                 ],
