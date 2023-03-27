@@ -157,7 +157,8 @@ class PackageSelectionFormField extends FormField<Package> {
                         );
                       },
                     ),
-                    if (state.hasError)
+                    if (state.hasError &&
+                        controller.classController.text.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(left: 10, top: 10),
                         child: Text(

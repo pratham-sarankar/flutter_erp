@@ -6,15 +6,20 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomerSelectionFormField extends FormField<Customer> {
-  CustomerSelectionFormField({super.key, super.onSaved,  String? title})
-      : super(builder: (state) {
+  CustomerSelectionFormField({
+    super.key,
+    super.onSaved,
+    super.initialValue,
+    String? title,
+  }) : super(builder: (state) {
           return GetBuilder(
-            init: CustomerSelectionFieldController(),
+            init: CustomerSelectionFieldController(
+                initialValue: initialValue?.name),
             builder: (controller) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title??"Search Customer"),
+                  Text(title ?? "Search Customer"),
                   const SizedBox(height: 8),
                   TypeAheadFormField<Customer>(
                     textFieldConfiguration: TextFieldConfiguration(
@@ -116,15 +121,17 @@ class CustomerSelectionFormField extends FormField<Customer> {
 }
 
 class CustomerSelectionFieldController extends GetxController {
-  final customerController = TextEditingController();
+  late final TextEditingController customerController;
+
   final customer = Rx<Customer?>(null);
+  final String? initialValue;
+
+  CustomerSelectionFieldController({this.initialValue});
 
   @override
   void onInit() {
     super.onInit();
-    customerController.addListener(() {
-      customer.value = null;
-    });
+    customerController = TextEditingController(text: initialValue);
   }
 
   Future<List<Customer>> getCustomers(String pattern) async {

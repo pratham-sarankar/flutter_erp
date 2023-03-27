@@ -49,15 +49,16 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
                     const SizedBox(height: 22),
                     ImageFormField(
                       title: "Image",
                       uploader: Get.find<FileService>().uploadFile,
                       downloader: Get.find<FileService>().imageDownloader,
-                      onSaved: (newValue) {
-                        controller.employee.photoUrl = newValue;
+                      onSaved: (value) {
+                        controller.employee.photoUrl =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(height: 20),
@@ -68,7 +69,8 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                           child: ErpTextFormField(
                             title: "First Name",
                             onSaved: (value) {
-                              controller.employee.firstName = value;
+                              controller.employee.firstName =
+                                  (value?.isEmpty ?? true) ? null : value;
                             },
                           ),
                         ),
@@ -77,7 +79,8 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                           child: ErpTextFormField(
                             title: "Last Name",
                             onSaved: (value) {
-                              controller.employee.lastName = value;
+                              controller.employee.lastName =
+                                  (value?.isEmpty ?? true) ? null : value;
                             },
                           ),
                         ),
@@ -87,7 +90,8 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     ErpTextFormField(
                       title: "Email",
                       onSaved: (value) {
-                        controller.employee.email = value;
+                        controller.employee.email =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(height: 20),
@@ -95,14 +99,16 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                       title: "Phone Number",
                       isRequired: true,
                       onSaved: (value) {
-                        controller.employee.phoneNumber = value;
+                        controller.employee.phoneNumber =
+                            (value?.isEmpty ?? true) ? null : value;
                       },
                     ),
                     const SizedBox(height: 20),
                     DesignationSelectionFormField(
                       title: "Select Designation",
-                      onSaved: (newValue) {
-                        controller.employee.designationId = newValue?.id;
+                      onSaved: (value) {
+                        controller.employee.designationId =
+                            (value?.isEmpty ?? true) ? null : value?.id;
                       },
                       isRequired: true,
                     ),

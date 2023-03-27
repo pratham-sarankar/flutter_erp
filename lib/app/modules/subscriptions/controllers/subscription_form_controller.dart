@@ -34,6 +34,7 @@ class SubscriptionFormController extends GetxController {
         await Get.find<SubscriptionRepository>().insert(subscription);
         Get.back(result: true);
       }
+      isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
       error.value = e.toString();

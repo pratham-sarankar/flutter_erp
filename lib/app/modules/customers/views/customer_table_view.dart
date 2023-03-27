@@ -34,7 +34,6 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
-                    rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {
                       controller.setRowPerPage(newRowsPerPage);
@@ -167,12 +166,12 @@ class CustomerTableView extends GetResponsiveView<CustomerTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: ()async {
-                        var result= await Get.dialog(
+                      onPressed: () async {
+                        var result = await Get.dialog(
                           const CustomerFormView(),
                           barrierDismissible: false,
                         );
-                        if(result){
+                        if (result) {
                           controller.refresh();
                         }
                       },

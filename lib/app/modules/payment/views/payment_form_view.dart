@@ -30,7 +30,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Payment",
+              controller.isUpdating ? "Update Payment" : "Add Payment",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,
@@ -49,6 +49,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                     ErpTextFormField(
                       title: "Amount",
                       isRequired: true,
+                      initialValue: controller.payment.amount?.toString() ?? "",
                       onSaved: (value) {
                         controller.payment.amount = double.parse(value!);
                       },
@@ -65,6 +66,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                       height: 20,
                     ),
                     PaymentModeSelectionFormField(
+                      initialValue: controller.payment.mode,
                       onSaved: (value) {
                         controller.payment.modeId = value?.id;
                       },
@@ -74,6 +76,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                     ),
                     CustomerSelectionFormField(
                       title: "Select Customer",
+                      initialValue: controller.payment.customer,
                       onSaved: (value) {
                         controller.payment.customerId = value?.id;
                       },
@@ -83,6 +86,7 @@ class PaymentFormView extends GetView<PaymentFormController> {
                     ),
                     ErpTextFormField(
                       title: "Description",
+                      initialValue: controller.payment.description,
                       onSaved: (value) {
                         controller.payment.description = value;
                       },

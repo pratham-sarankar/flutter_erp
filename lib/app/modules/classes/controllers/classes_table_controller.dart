@@ -3,6 +3,7 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
@@ -68,8 +69,15 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
     var classDetails = lastDetails?.rows[index];
     return DataRow(
       selected: selectedIds.contains(classDetails?.id),
+      onLongPress: () {
+        selectedRow(classDetails?.id, true);
+      },
       onSelectChanged: (value) {
-        selectedRow(classDetails?.id, value ?? false);
+        if (selectedIds.isEmpty) {
+          Get.toNamed(Routes.CLASS, parameters: {"id": "${classDetails?.id}"});
+        } else {
+          selectedRow(classDetails?.id, value ?? false);
+        }
       },
       cells: [
         DataCell(Text(

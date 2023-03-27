@@ -34,6 +34,7 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
+                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
                     rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {
@@ -155,7 +156,9 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                         controller.refresh();
                       },
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     TextButton(
                       child: Row(
                         children: const [
@@ -167,8 +170,8 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: ()async {
-                       var result= await Get.dialog(
+                      onPressed: () async {
+                        var result = await Get.dialog(
                           const ClassesFormView(),
                           barrierDismissible: false,
                         );

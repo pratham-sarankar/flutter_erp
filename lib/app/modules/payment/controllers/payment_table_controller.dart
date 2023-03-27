@@ -1,10 +1,15 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/course_repository.dart';
 import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/repositories/payment_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
+import 'package:flutter_erp/app/modules/payment/controllers/payment_form_controller.dart';
+import 'package:flutter_erp/app/modules/payment/views/payment_form_view.dart';
+import 'package:flutter_erp/widgets/dialogs/deletion_dialog.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rrule/rrule.dart';
@@ -92,13 +97,95 @@ class PaymentDataSource extends AdvancedDataTableSource<Payment> {
             fontWeight: FontWeight.w400,
           ),
         )),
-        DataCell(Text(
-          paymentDetails?.customer?.name ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        DataCell(
+          Text(
+            paymentDetails?.customer?.name ?? "-",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        )),
+        ),
+        DataCell(
+          PopupMenuButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 10,
+            offset: const Offset(0, 20),
+            onSelected: (value) async {
+              switch (value) {
+                case "edit":
+                  var result = await Get.dialog(
+                    const PaymentFormView(),
+                    arguments: paymentDetails,
+                    barrierDismissible: false,
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+                case "delete":
+                  var result = await Get.dialog(
+                    DeletionDialog(
+                      onDelete: () async {
+                        await Get.find<PaymentRepository>()
+                            .destroy(paymentDetails!);
+                        return true;
+                      },
+                    ),
+                  );
+                  if (result) {
+                    refresh();
+                  }
+                  break;
+              }
+            },
+            itemBuilder: (context) {
+              return <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: "edit",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.green.shade600,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Edit",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(height: 1),
+                PopupMenuItem(
+                  value: "delete",
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red.shade700,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Delete",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ];
+            },
+            padding: EdgeInsets.zero,
+            child: const Icon(Icons.more_vert, color: Colors.black, size: 22),
+          ),
+        ),
       ],
     );
   }
