@@ -200,11 +200,7 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                           onDelete: () async {
                             await Get.find<EmployeeRepository>()
                                 .destroyMany(controller.selectedIds);
-                            try {
-                              return true;
-                            } catch (e) {
-                              return false;
-                            }
+                            return true;
                           },
                         ),
                         barrierDismissible: false,

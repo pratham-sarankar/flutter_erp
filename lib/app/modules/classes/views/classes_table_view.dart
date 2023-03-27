@@ -1,11 +1,13 @@
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../widgets/dialogs/deletion_dialog.dart';
 import '../../../../widgets/global_widgets/erp_search_field.dart';
 import '../controllers/classes_table_controller.dart';
 import 'classes_form_view.dart';
@@ -192,11 +194,20 @@ class ClassesTableView extends GetResponsiveView<ClassesTableController> {
                         Text("Delete"),
                       ],
                     ),
-                    onPressed: () {
-                      Get.dialog(
-                        const ClassesFormView(),
+                    onPressed: () async {
+                      var result = await Get.dialog(
+                        DeletionDialog(
+                          onDelete: () async {
+                            await Get.find<ClassRepository>()
+                                .destroyMany(controller.selectedIds);
+                            return true;
+                          },
+                        ),
                         barrierDismissible: false,
                       );
+                      if (result) {
+                        controller.refresh();
+                      }
                     },
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/data/data.dart';
 
 class DeletionDialog extends StatelessWidget {
   const DeletionDialog({Key? key, required this.onDelete}) : super(key: key);
@@ -14,7 +15,7 @@ class DeletionDialog extends StatelessWidget {
           backgroundColor: Colors.transparent,
           alignment: Alignment.center,
           child: Container(
-            width: 400,
+            width: Get.width*0.4,
             decoration: BoxDecoration(
               color: context.theme.colorScheme.background,
               borderRadius: BorderRadius.circular(10),
@@ -155,7 +156,7 @@ class DeletionController extends GetxController {
       isLoading.value = false;
       Get.back(result:result);
     }catch(e){
-      rethrow;
+      error.value = e.toString();
     }
   }
 }
