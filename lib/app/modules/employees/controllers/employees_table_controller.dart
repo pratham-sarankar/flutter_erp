@@ -43,6 +43,15 @@ class EmployeesTableController extends GetxController {
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
   }
+  void insertNew() async {
+    var result = await Get.dialog(
+      const EmployeesFormView(),
+      barrierDismissible: false,
+    );
+    if (result) {
+      refresh();
+    }
+  }
 
   @override
   void onReady() {
@@ -50,10 +59,11 @@ class EmployeesTableController extends GetxController {
   }
 
   @override
-  void refresh() {
+  Future<void> refresh()async {
     source.refresh();
     super.refresh();
   }
+
 
   @override
   void onClose() {

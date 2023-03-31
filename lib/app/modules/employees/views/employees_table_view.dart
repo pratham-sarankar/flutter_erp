@@ -20,104 +20,108 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
     return Scaffold(
       backgroundColor: screen.context.theme.colorScheme.surfaceVariant,
       body: Card(
-        margin: const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
+        margin: screen.isPhone
+            ? EdgeInsets.zero
+            : const EdgeInsets.only(right: 16, left: 16, top: 22, bottom: 22),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          children: [
-            getHeader(controller),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Obx(
-                  () => AdvancedPaginatedDataTable(
-                    addEmptyRows: false,
-                    source: controller.source,
-                    showFirstLastButtons: true,
-                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
-                    rowsPerPage: controller.rowsPerPage.value,
-                    availableRowsPerPage: const [2, 10, 40, 50, 100],
-                    onRowsPerPageChanged: (newRowsPerPage) {
-                      controller.setRowPerPage(newRowsPerPage);
-                    },
-                    sortAscending: controller.sortAscending.value,
-                    sortColumnIndex: controller.sortColumnIndex.value,
-                    columns: [
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Name",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+        child: RefreshIndicator(
+          onRefresh: controller.refresh,
+          child: ListView(
+            children: [
+              if (!screen.isPhone) getHeader(controller),
+              Obx(
+                () => AdvancedPaginatedDataTable(
+                  addEmptyRows: false,
+                  source: controller.source,
+                  showFirstLastButtons: true,
+                  showHorizontalScrollbarAlways: !screen.isPhone,
+                  showCheckboxColumn: controller.selectedIds.isNotEmpty,
+                  rowsPerPage: controller.rowsPerPage.value,
+                  availableRowsPerPage: const [2, 10, 40, 50, 100],
+                  onRowsPerPageChanged: (newRowsPerPage) {
+                    controller.setRowPerPage(newRowsPerPage);
+                  },
+                  checkboxHorizontalMargin: 0,
+                  sortAscending: controller.sortAscending.value,
+                  sortColumnIndex: controller.sortColumnIndex.value,
+                  horizontalMargin: 14,
+                  columns: [
+                    DataColumn(
+                      onSort: controller.sort,
+                      label: Text(
+                        "Name",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Email",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Phone Number",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: controller.sort,
-                        label: Text(
-                          "Date of birth",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        // onSort: controller.sort,
-                        label: Text(
-                          "Designation",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        numeric: true,
-                        label: Text(
-                          "",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                    loadingWidget: () => const Center(
-                      child: CupertinoActivityIndicator(),
                     ),
+                    DataColumn(
+                      onSort: controller.sort,
+                      label: Text(
+                        "Email",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      onSort: controller.sort,
+                      label: Text(
+                        "Phone Number",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      onSort: controller.sort,
+                      label: Text(
+                        "Date of birth",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      // onSort: controller.sort,
+                      label: Text(
+                        "Designation",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      numeric: true,
+                      label: Text(
+                        "",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                  loadingWidget: () => const Center(
+                    child: CupertinoActivityIndicator(),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

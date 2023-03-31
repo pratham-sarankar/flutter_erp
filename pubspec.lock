@@ -715,9 +715,11 @@ packages:
   resource_manager:
     dependency: "direct main"
     description:
-      path: "/Users/prathamsarankar/Documents/packages/resource_manager"
-      relative: false
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "74b993fc78e9f18672024cf5776be2d051bc9ed6"
+      url: "https://github.com/pratham-sarankar/resource_manager"
+    source: git
     version: "0.0.1"
   rrule:
     dependency: "direct main"
@@ -997,5 +999,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.3.0"

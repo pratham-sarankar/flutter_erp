@@ -43,8 +43,17 @@ class ClassesTableController extends GetxController {
     source.sort(columnIndex, ascending);
   }
 
+  void insertNew() async {
+    var result = await Get.dialog(
+      const ClassesFormView(),
+      barrierDismissible: false,
+    );
+    if (result) {
+      refresh();
+    }
+  }
   @override
-  void refresh() {
+  Future<void> refresh()async {
     source.refresh();
     super.refresh();
   }

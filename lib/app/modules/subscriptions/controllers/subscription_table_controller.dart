@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/modules/subscriptions/views/subscription_form_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,12 +33,23 @@ class SubscriptionTableController extends GetxController {
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
   }
+  void insertNew() async {
+    var result = await Get.dialog(
+      const SubscriptionFormView(),
+      barrierDismissible: false,
+    );
+    if (result) {
+      refresh();
+    }
+  }
+
 
   @override
-  void refresh() {
-    source.setNextView();
+  Future<void> refresh() async{
+    source.refresh();
     super.refresh();
   }
+
 
   @override
   void onReady() {
@@ -53,6 +65,12 @@ class SubscriptionTableController extends GetxController {
 class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
   String lastSearchTerm = '';
   String sortingQuery = '';
+
+
+  void refresh() {
+    setNextView();
+    notifyListeners();
+  }
 
   @override
   DataRow? getRow(int index) {
@@ -114,6 +132,7 @@ class SubscriptionDataSource extends AdvancedDataTableSource<Subscription> {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
   }
+
 
   @override
   Future<RemoteDataSourceDetails<Subscription>> getNextPage(

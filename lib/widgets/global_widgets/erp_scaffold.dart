@@ -3,19 +3,24 @@ import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/widgets/global_widgets/sidebar.dart';
 import 'package:flutter_erp/widgets/global_widgets/topbar.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ErpScaffold extends StatelessWidget {
   const ErpScaffold(
-      {Key? key, required this.path, required this.screen, required this.body})
+      {Key? key,
+      required this.path,
+      this.appBar,
+      required this.screen,
+      required this.body})
       : super(key: key);
   final String path;
   final ResponsiveScreen screen;
   final Widget body;
-
+  final PreferredSizeWidget? appBar;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: screen.isPhone ? AppBar() : null,
+      appBar: screen.isPhone ? appBar ?? AppBar() : null,
       drawer: screen.isPhone ? _sideBar() : null,
       body: getBody(screen),
     );
