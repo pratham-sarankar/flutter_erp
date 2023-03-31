@@ -9,6 +9,7 @@ class DashboardWidget extends StatelessWidget {
     required this.data,
     this.description,
   });
+
   final ResponsiveScreen screen;
   final String title;
   final String data;
@@ -54,7 +55,7 @@ class DashboardWidget extends StatelessWidget {
                   color: screen.context.theme.colorScheme.secondary,
                 ),
               ),
-              screen.isDesktop ? description ?? Container() : Container(),
+              description ?? Container(),
             ],
           )
         ],

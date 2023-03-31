@@ -14,8 +14,9 @@ class SubscriptionFormController extends GetxController {
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    subscription =
+    subscription = Get.arguments ??
         Subscription(branchId: Get.find<AuthService>().currentBranch.id);
+    print("Initialized subscription to ${subscription}");
     isLoading = false.obs;
     error = "".obs;
     super.onInit();

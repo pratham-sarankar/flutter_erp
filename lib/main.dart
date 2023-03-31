@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/repositories/coupon_repository.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
+import 'package:flutter_erp/app/data/repositories/employee_repository.dart';
 import 'package:flutter_erp/app/data/repositories/module_repository.dart';
+import 'package:flutter_erp/app/data/repositories/package_duration_repository.dart';
 import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/repositories/payment_mode_repository.dart';
+import 'package:flutter_erp/app/data/repositories/payment_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/repositories/user_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
@@ -16,6 +21,7 @@ import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
+import 'package:flutter_erp/app/modules/class/controllers/package_form_controller.dart';
 import 'package:flutter_erp/app/modules/classes/controllers/classes_form_controller.dart';
 import 'package:flutter_erp/app/modules/courses/controllers/courses_from_controller.dart';
 import 'package:flutter_erp/app/modules/customers/controllers/customer_form_controller.dart';
@@ -23,6 +29,7 @@ import 'package:flutter_erp/app/modules/employees/controllers/employees_form_con
 import 'package:flutter_erp/app/modules/payment/controllers/payment_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_table_controller.dart';
+import 'package:flutter_erp/app/modules/users/controllers/user_form_controller.dart';
 import 'package:flutter_erp/widgets/global_widgets/window_scaffold.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -32,11 +39,18 @@ import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  doWhenWindowReady(() {
-    final win = appWindow;
-    win.maximize();
-    win.show();
-  });
+
+  if (GetPlatform.isWindows ||
+      GetPlatform.isLinux ||
+      GetPlatform.isMacOS ||
+      GetPlatform.isFuchsia) {
+    doWhenWindowReady(() {
+      final win = appWindow;
+      win.maximize();
+      win.show();
+    });
+  }
+
   if (GetPlatform.isWeb) {
     setPathUrlStrategy();
   }
@@ -51,6 +65,9 @@ void main() async {
   Get.create<PaymentModeRepository>(() => PaymentModeRepository());
   Get.create<ClassRepository>(() => ClassRepository());
   Get.create<CouponRepository>(() => CouponRepository());
+  Get.create<PackageDurationRepository>(() => PackageDurationRepository());
+  Get.create<PaymentRepository>(() => PaymentRepository());
+  Get.create<EmployeeRepository>(() => EmployeeRepository());
 
   //Forms
   Get.lazyPut<PaymentFormController>(() => PaymentFormController(),
@@ -65,6 +82,9 @@ void main() async {
       fenix: true);
   Get.lazyPut<ClassesFormController>(() => ClassesFormController(),
       fenix: true);
+  Get.lazyPut<PackageFormController>(() => PackageFormController(),
+      fenix: true);
+  Get.lazyPut<UserFormController>(() => UserFormController(), fenix: true);
 
   Get.put(IVRService());
   Get.put(MailService());

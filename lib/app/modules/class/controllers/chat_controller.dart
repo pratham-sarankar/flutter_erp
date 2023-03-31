@@ -1,42 +1,58 @@
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
+import 'package:flutter_erp/app/data/repositories/class_repository.dart';
+import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/widgets/dialogs/mail_dialog.dart';
 import 'package:get/get.dart';
+import 'package:resource_manager/data/responses/fetch_response.dart';
 
-class ChatController extends GetxController
-    with StateMixin<List<Subscription>> {
-  late RxList<Subscription> selectedList;
-
-  RxBool get canMail => selectedList.isNotEmpty.obs;
-
-  RxBool get canSelectAll => RxBool(selectedList.length != value?.length);
+class ChatController extends GetxController with StateMixin<List<Customer>> {
+  late RxList<Customer> selectedCustomers;
 
   @override
   void onInit() {
-    selectedList = <Subscription>[].obs;
     initialize();
+    selectedCustomers = <Customer>[].obs;
     super.onInit();
   }
 
   void initialize() async {
-    var subscriptions = await Get.find<SubscriptionRepository>().fetch();
-    change(subscriptions,
-        status: subscriptions.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change([], status: RxStatus.loading());
+    int id = int.parse(Get.parameters['id'].toString());
+    FetchResponse<Customer> response =
+        await Get.find<ClassRepository>().fetchMembers(id);
+    change(
+      response.data,
+      status: response.total == 0 ? RxStatus.empty() : RxStatus.success(),
+    );
   }
 
-  void select(Subscription subscription) async {
-    if (selectedList.contains(subscription)) {
-      selectedList.remove(subscription);
+  void select(Customer customer) {
+    if (selectedCustomers.contains(customer)) {
+      selectedCustomers.remove(customer);
     } else {
-      selectedList.add(subscription);
+      selectedCustomers.add(customer);
     }
   }
 
-  void selectAll() async {
-    selectedList.value = List.from(value ?? []);
+  void search(String key) async {
+    change([], status: RxStatus.loading());
+    int id = int.parse(Get.parameters['id'].toString());
+    FetchResponse<Customer> response =
+        await Get.find<ClassRepository>().fetchMembers(id, search: key);
+    change(
+      response.data,
+      status: response.total == 0 ? RxStatus.empty() : RxStatus.success(),
+    );
   }
 
-  void deSelectAll() async {
-    selectedList.value = [];
+  void mail() async {
+    List<String> mails = selectedCustomers
+        .where((e) => e.email != null)
+        .map<String>((e) => e.email!)
+        .toList();
+    await Get.dialog(MailDialog(initialMails: mails));
   }
 
   @override
@@ -47,19 +63,5 @@ class ChatController extends GetxController
   @override
   void onClose() {
     super.onClose();
-  }
-
-  bool isSelected(Subscription resource) {
-    return selectedList.contains(resource);
-  }
-
-  Future search(String value) async {
-    change(state, status: RxStatus.loading());
-    var subscriptions = await Get.find<SubscriptionRepository>()
-        .fetch(queries: {"search": value});
-    change(
-      subscriptions,
-      status: subscriptions.isEmpty ? RxStatus.empty() : RxStatus.success(),
-    );
   }
 }

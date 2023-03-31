@@ -11,8 +11,6 @@ import '../../../data/models/employee.dart';
 
 class EmployeesFormController extends GetxController {
   late GlobalKey<FormState> formKey;
-
-  // late Subscription subscription;
   late Employee employee;
   late RxBool isLoading;
   late RxString error;

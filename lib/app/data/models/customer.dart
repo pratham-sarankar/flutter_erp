@@ -214,4 +214,6 @@ class Customer extends Resource {
   @override
   Future<Uint8List> fileDownloader(String key) =>
       FileRepository.instance.imageDownloader(key);
+
+
 }

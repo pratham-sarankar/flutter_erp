@@ -30,11 +30,11 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
         canAdd: Get.find<AuthService>().canAdd("Permission Groups"),
         tileBuilder: (tileController, data) {
           return Card(
-            elevation: 10,
+            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            shadowColor: Colors.grey.shade400,
+            shadowColor: Colors.grey.shade100,
             child: PlusAccordion(
               onChanged: (isExpanded) {
                 if (isExpanded) {
@@ -42,8 +42,8 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                 }
               },
               isExpandable:
-              Get.find<AuthService>().canEdit("Permission Groups") &&
-                  (!data.isAdminGroup),
+                  Get.find<AuthService>().canEdit("Permission Groups") &&
+                      (!data.isAdminGroup),
               header: Padding(
                 padding: const EdgeInsets.only(left: 18),
                 child: Row(
@@ -100,12 +100,8 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                           },
                           position: PopupMenuPosition.under,
                           itemBuilder: (context) {
-                            (Get
-                                .find<ModuleRepository>()
-                                .modules
-                                .length);
-                            var modules = Get
-                                .find<ModuleRepository>()
+                            (Get.find<ModuleRepository>().modules.length);
+                            var modules = Get.find<ModuleRepository>()
                                 .modules
                                 .where(
                                     (module) => !data.modules.contains(module))
@@ -152,7 +148,7 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                         ),
                       ),
                     if (Get.find<AuthService>()
-                        .canDelete("Permission Groups") &&
+                            .canDelete("Permission Groups") &&
                         (!data.isAdminGroup))
                       Padding(
                         padding: const EdgeInsets.only(right: 5, left: 10),
@@ -339,7 +335,7 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                               bool? sure = await Get.dialog(
                                   const ConfirmationDialog(
                                       message:
-                                      "Are you sure you want to perform this action?"));
+                                          "Are you sure you want to perform this action?"));
                               if (!(sure ?? false)) return;
                               tileController.updateState(() async {
                                 await Get.find<PermissionRepository>()

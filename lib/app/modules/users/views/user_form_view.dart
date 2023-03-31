@@ -1,18 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/erp_recurring_form_field.dart';
-
+import 'package:flutter_erp/app/modules/users/controllers/user_form_controller.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/employee_selection_form_field.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/erp_password_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_text_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/erp_time_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/image_form_field.dart';
-import 'package:flutter_erp/widgets/form_field_widgets/trainer_selection_form_field.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/permission_group_selection_form_field.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/classes_form_controller.dart';
-
-class ClassesFormView extends GetView<ClassesFormController> {
-  const ClassesFormView({Key? key}) : super(key: key);
+class UserFormView extends GetView<UserFormController> {
+  const UserFormView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class ClassesFormView extends GetView<ClassesFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              controller.isUpdating ? "Update Class" : "Add Class",
+              controller.isUpdating ? "Update User" : "Add User",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,
@@ -45,70 +42,44 @@ class ClassesFormView extends GetView<ClassesFormController> {
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
-                    const SizedBox(height: 22),
-                    ImageFormField(
-                      initialValue: controller.classes.photoUrl,
-                      title: "Image",
+                    const SizedBox(height: 20),
+                    EmployeeSelectionFormField(
+                      initialValue: controller.user.employee,
+                      title: "Select Employee",
                       onSaved: (value) {
-                        controller.classes.photoUrl =
-                            (value?.isEmpty ?? true) ? null : value;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ErpTextFormField(
-                      title: "Title",
-                      initialValue: controller.classes.title,
-                      isRequired: true,
-                      onSaved: (value) {
-                        controller.classes.title =
-                            (value?.isEmpty ?? true) ? null : value;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TrainerSelectionFormField(
-                      onSaved: (newValue) {
-                        controller.classes.trainerId = newValue?.id;
-                      },
-                      title: 'Trainer',
-                      initialValue: controller.classes.trainer,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ErpRecurringFormField(
-                      title: "Schedule",
-                      initialValue: controller.classes.schedule,
-                      onSaved: (newValue) {
-                        controller.classes.schedule = newValue;
+                        controller.user.employeeId = value?.id;
                       },
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            child: ErpTimeFormField(
-                          title: "Start at",
-                          initialValue: controller.classes.startTime,
-                          onSaved: (newValue) {
-                            controller.classes.startTime = newValue;
-                          },
-                        )),
-                        const SizedBox(width: 20),
-                        Expanded(
-                            child: ErpTimeFormField(
-                          title: "Ends at",
-                          initialValue: controller.classes.endTime,
-                          onSaved: (newValue) {
-                            controller.classes.endTime = newValue;
-                          },
-                        )),
-                      ],
+                    PermissionGroupSelectionFormField(
+                      initialValue: controller.user.permissionGroup,
+                      title: "Permission Group",
+                      isRequired: true,
+                      onSaved: (value) {
+                        controller.user.groupId =
+                            (value?.isEmpty ?? true) ? null : value?.id;
+                      },
                     ),
+                    const SizedBox(height: 20),
+                    ErpTextFormField(
+                      title: "Username",
+                      initialValue: controller.user.username,
+                      onSaved: (value) {
+                        controller.user.username =
+                            (value?.isEmpty ?? true) ? null : value;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ErpPasswordFormField(
+                      title: "Password",
+                      initialValue: controller.user.password,
+                      isRequired: !controller.isUpdating,
+                      onSaved: (value) {
+                        controller.user.password =
+                            (value?.isEmpty ?? true) ? null : value;
+                      },
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/utils/extensions/form_validator.dart';
 import 'package:form_validator/form_validator.dart';
@@ -84,19 +85,35 @@ class _ErpPasswordFormFieldState extends State<ErpPasswordFormField> {
           ),
           enabled: widget.enabled,
           onFieldSubmitted: widget.onSubmitted,
-          cursorHeight: 18,
+          // cursorHeight: 50,
           decoration: InputDecoration(
             isDense: true,
             isCollapsed: true,
-            contentPadding: const EdgeInsets.all(10),
+            contentPadding:
+                const EdgeInsets.only(bottom: 0, left: 10, right: 10, top: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             hintText: widget.hintText,
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isObscure = !isObscure;
+                });
+              },
+              child: isObscure
+                  ? const Icon(
+                      Icons.visibility_off,
+                      color: Colors.grey,
+                    )
+                  : const Icon(
+                      Icons.visibility,
+                      color: Colors.grey,
+                    ),
+            ),
           ),
           obscureText: isObscure,
           maxLines: widget.isMultiline ? null : 1,
-          
           onTap: () {},
           onSaved: widget.onSaved,
           validator: ValidationBuilder(optional: !widget.isRequired)

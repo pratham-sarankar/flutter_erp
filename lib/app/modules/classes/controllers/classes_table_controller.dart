@@ -1,5 +1,6 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/class_repository.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
@@ -82,12 +83,24 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
         }
       },
       cells: [
-        DataCell(Text(
-          classDetails?.title ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+        DataCell(Row(
+          children: [
+            if (classDetails?.getPhotoUrl() != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundImage: NetworkImage(classDetails!.getPhotoUrl()!),
+                ),
+              ),
+            Text(
+              classDetails?.title ?? "-",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
         )),
         DataCell(Text(
           classDetails?.trainer?.name ?? "",
@@ -113,13 +126,14 @@ class ClassesDataSource extends AdvancedDataTableSource<Class> {
             fontWeight: FontWeight.w400,
           ),
         )),
-        DataCell(Text(
-          classDetails?.endTime?.format(Get.context!) ?? "",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        DataCell(
+          Text(
+            classDetails?.endTime?.format(Get.context!) ?? "",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
         ),
         DataCell(
           PopupMenuButton(

@@ -43,13 +43,13 @@ class CustomerFormView extends GetView<CustomerFormController> {
                 key: controller.formKey,
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 1),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   children: [
                     const SizedBox(height: 20),
                     ImageFormField(
                       title: "Image",
-                      uploader: Get.find<FileService>().uploadFile,
-                      downloader: Get.find<FileService>().imageDownloader,
+                      initialValue: controller.customer.photoUrl,
                       onSaved: (value) {
                         controller.customer.photoUrl =
                             (value?.isEmpty ?? true) ? null : value;
@@ -127,7 +127,7 @@ class CustomerFormView extends GetView<CustomerFormController> {
                     const SizedBox(height: 20),
                     ErpPasswordFormField(
                       initialValue: controller.customer.password,
-                      isRequired: true,
+                      isRequired: !controller.isUpdating,
                       title: "Password",
                       onSaved: (value) {
                         controller.customer.password =

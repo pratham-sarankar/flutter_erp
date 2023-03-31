@@ -20,6 +20,10 @@ class ClassView extends GetResponsiveView<ClassController> {
   ClassView({Key? key}) : super(key: key);
 
   @override
+  ClassController get controller =>
+      Get.find<ClassController>(tag: Get.parameters['id']);
+
+  @override
   Widget builder() {
     return ErpScaffold(
       path: Routes.CLASSES,
@@ -43,12 +47,18 @@ class ClassView extends GetResponsiveView<ClassController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Card(
-                        elevation: 10,
-                        shadowColor: Colors.grey,
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Image.asset('assets/class.png', height: 160),
+                        elevation: 5,
+                        shadowColor: Colors.grey.shade100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        child: value?.getPhotoUrl() == null
+                            ? Padding(
+                                padding: const EdgeInsets.all(15),
+                                child:
+                                    Image.asset("assets/class.png", width: 160),
+                              )
+                            : Image.network(value!.getPhotoUrl()!, width: 200),
                       ),
                       const SizedBox(width: 15),
                       Expanded(

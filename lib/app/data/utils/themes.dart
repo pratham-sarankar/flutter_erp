@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightTheme = ThemeData(
@@ -24,6 +25,18 @@ ThemeData lightTheme = ThemeData(
   dataTableTheme: const DataTableThemeData(
     dataTextStyle: TextStyle(
       color: Color(0xff303030),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.white,
+    elevation: 0,
+    iconTheme: IconThemeData(
+      color: Color(0xff303030),
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
     ),
   ),
   extensions: [

@@ -1,11 +1,15 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/modules/customers/views/customer_form_view.dart';
+import 'package:flutter_erp/app/modules/subscriptions/views/subscription_form_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -75,12 +79,24 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
         selectedRow(customer?.id, value ?? false);
       },
       cells: [
-        DataCell(Text(
-          customer?.username ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+        DataCell(Row(
+          children: [
+            if (customer?.getPhotoUrl() != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundImage: NetworkImage(customer!.getPhotoUrl()!),
+                ),
+              ),
+            Text(
+              customer?.username ?? "-",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
         )),
         DataCell(Text(
           customer?.name ?? "-",
@@ -119,6 +135,22 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
             offset: const Offset(0, 20),
             onSelected: (value) async {
               switch (value) {
+                case "add_subscription":
+                  var result = await Get.dialog(
+                    const SubscriptionFormView(),
+                    arguments: Subscription(
+                      customer: customer,
+                      customerId: customer?.id,
+                      branchId: Get.find<AuthService>().currentBranch.id,
+                    ),
+                    barrierDismissible: false,
+                  );
+                  if (result) {
+                    refresh();
+                    Get.find<ToastService>()
+                        .showSuccessToast("Subscription added successfully.");
+                  }
+                  break;
                 case "edit":
                   var result = await Get.dialog(
                     const CustomerFormView(),
@@ -133,8 +165,7 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
                   var result = await Get.dialog(
                     DeletionDialog(
                       onDelete: () async {
-                        await Get.find<CustomerRepository>()
-                            .destroy(customer!);
+                        await Get.find<CustomerRepository>().destroy(customer!);
                         return true;
                       },
                     ),
@@ -147,6 +178,24 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
             },
             itemBuilder: (context) {
               return <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: "add_subscription",
+                  height: 35,
+                  child: Row(
+                    children: const [
+                      Icon(
+                        CupertinoIcons.add,
+                        size: 18,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Add Subscription",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
                 PopupMenuItem(
                   value: "edit",
                   height: 35,

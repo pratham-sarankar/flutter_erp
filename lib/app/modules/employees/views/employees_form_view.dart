@@ -55,8 +55,6 @@ class EmployeesFormView extends GetView<EmployeesFormController> {
                     ImageFormField(
                       initialValue: controller.employee.photoUrl,
                       title: "Image",
-                      uploader: Get.find<FileService>().uploadFile,
-                      downloader: Get.find<FileService>().imageDownloader,
                       onSaved: (value) {
                         controller.employee.photoUrl =
                             (value?.isEmpty ?? true) ? null : value;

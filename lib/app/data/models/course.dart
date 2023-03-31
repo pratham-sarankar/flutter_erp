@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/file_repository.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
 
 import '../services/auth_service.dart';
@@ -12,6 +13,8 @@ class Course extends Resource<Course> {
   final int? id;
   String? title;
   String? description;
+  DateTime? startingDate;
+  double? price;
   String? photoUrl;
   double? duration;
   int? branchId;
@@ -21,8 +24,10 @@ class Course extends Resource<Course> {
     this.title,
     this.description,
     this.photoUrl,
+    this.price,
     this.duration,
     this.branchId,
+    this.startingDate,
   });
 
   bool get hasPhoto => photoUrl != null;
@@ -36,7 +41,15 @@ class Course extends Resource<Course> {
       'photoUrl': photoUrl,
       'branch_id': branchId,
       'duration': (duration ?? 0).toString(),
+      "starting_date": startingDate == null ? null : getStartingDate(),
+      'price': (price ?? 0).toString(),
     };
+  }
+
+  String getStartingDate() {
+    return startingDate == null
+        ? "-"
+        : DateFormat('d MMM y').format(startingDate!);
   }
 
   @override
@@ -47,10 +60,21 @@ class Course extends Resource<Course> {
       description: map['description'],
       photoUrl: map['photoUrl'],
       branchId: map['branch_id'],
+      startingDate: map['starting_date'] == null
+          ? null
+          : DateTime.tryParse(map['starting_date']),
+      price:
+          map['price'] == null ? null : double.parse((map['price']).toString()),
       duration: map['duration'] == null
           ? null
           : double.parse((map['duration']).toString()),
     );
+  }
+
+  String getDateOfBirth() {
+    return startingDate == null
+        ? "-"
+        : DateFormat('d MMM y').format(startingDate!);
   }
 
   @override

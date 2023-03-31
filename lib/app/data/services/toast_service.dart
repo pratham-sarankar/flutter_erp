@@ -45,6 +45,49 @@ class ToastService extends GetxService {
           },
           icon: const Icon(Icons.close, color: Colors.black, size: 18),
         ),
+        duration: const Duration(milliseconds: 1000),
+      ),
+    );
+  }
+
+  void showSuccessToast(String message) {
+    Get.showSnackbar(
+      GetSnackBar(
+        messageText: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Success',
+              style: GoogleFonts.poppins(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+                height: 1,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              message,
+              style: GoogleFonts.poppins(
+                  color: Colors.black, fontSize: 13, height: 1),
+            ),
+          ],
+        ),
+        snackPosition: SnackPosition.TOP,
+        snackStyle: SnackStyle.FLOATING,
+        maxWidth: 300,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        margin: const EdgeInsets.only(top: 10),
+        backgroundColor: Colors.white,
+        borderColor: Colors.black,
+        borderRadius: 8,
+        mainButton: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.close, color: Colors.black, size: 18),
+        ),
+        duration: const Duration(milliseconds: 1000),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_erp/app/data/models/user.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/data/utils/keys.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
@@ -31,16 +32,19 @@ class UserRepository extends Repository<User> {
     await Get.find<AuthService>().saveData(branchKey, branch);
   }
 
-  Future<void> updatePassword(String password, String newPassword) async {
-    Response response = await put(
-      "/password",
-      jsonEncode({"password": password, "newPassword": newPassword}),
-    );
-    var data = response.body[dataKey];
-    var user = data[userKey];
-    var token = data[tokenKey];
-    await Get.find<AuthService>().saveToken(token);
-    await Get.find<AuthService>().saveData(userKey, user);
+  Future<bool> updatePassword(String password, String newPassword) async {
+    try {
+      Response response = await put(
+        "/password",
+        jsonEncode({"password": password, "newPassword": newPassword}),
+      );
+      var data = response.body[dataKey];
+      var token = data[tokenKey];
+      await Get.find<AuthService>().saveToken(token);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override

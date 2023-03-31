@@ -34,6 +34,7 @@ class PackageDuration extends Resource {
   @override
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "title": title,
       "days": days,
     };

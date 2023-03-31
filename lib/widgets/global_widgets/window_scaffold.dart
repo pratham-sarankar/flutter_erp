@@ -11,14 +11,17 @@ class WindowScaffold extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          WindowTitleBarBox(
-            child: Row(
-              children: [
-                Expanded(child: MoveWindow()),
-                const WindowButtons(),
-              ],
+          if (GetPlatform.isLinux ||
+              GetPlatform.isMacOS ||
+              GetPlatform.isWindows)
+            WindowTitleBarBox(
+              child: Row(
+                children: [
+                  Expanded(child: MoveWindow()),
+                  const WindowButtons(),
+                ],
+              ),
             ),
-          ),
           const Divider(),
           Expanded(child: child!),
         ],

@@ -93,8 +93,7 @@ class TopBar extends StatelessWidget {
                 case "logout":
                   bool? sure = await showDialog(
                     context: context,
-                    builder: (context) =>
-                    const ConfirmationDialog(
+                    builder: (context) => const ConfirmationDialog(
                       message: "Are you sure you want to logout?",
                     ),
                   );
@@ -145,7 +144,6 @@ class TopBar extends StatelessWidget {
             elevation: 10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-
               children: [
                 SizedBox(
                   width: Get.width * 0.015,
@@ -159,16 +157,13 @@ class TopBar extends StatelessWidget {
                       BoxShadow(
                         offset: const Offset(0, 0),
                         blurRadius: 10,
-                        spreadRadius: 2,
+                        spreadRadius: 0,
                         color: context.theme.shadowColor,
                       ),
                     ],
                     image: DecorationImage(
                       image: NetworkImage(
-                          Get
-                              .find<AuthService>()
-                              .currentUser
-                              .getPhotoUrl()),
+                          Get.find<AuthService>().currentUser.getPhotoUrl()),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -177,22 +172,17 @@ class TopBar extends StatelessWidget {
                   Row(
                     children: [
                       SizedBox(width: Get.width * 0.01),
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          Get
-                              .find<AuthService>()
-                              .currentUser
-                              .getName(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: context.theme.colorScheme.secondary,
-                          ),
+                      Text(
+                        Get.find<AuthService>().currentUser.getName(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: context.theme.colorScheme.secondary,
                         ),
                       ),
+                      SizedBox(width: Get.width * 0.01),
                     ],
                   ),
                 SizedBox(width: Get.width * 0.01),
@@ -251,7 +241,7 @@ class __TopBarButtonState extends State<_TopBarButton> {
         child: OutlinedButton(
           style: ButtonStyle(
             padding: MaterialStateProperty.resolveWith(
-                  (states) {
+              (states) {
                 return const EdgeInsets.all(20);
               },
             ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_settings_scaffold.dart';
@@ -159,20 +160,14 @@ class ProfileView extends GetResponsiveView<ProfileController> {
                         onPressed: () {
                           controller.updatePassword();
                         },
-                        child: controller.isLoading.value
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 3),
-                                child: Text("Save"),
-                              ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 3),
+                          child: controller.isLoading.value
+                              ? const CupertinoActivityIndicator(
+                                  color: Colors.white)
+                              : const Text("Save"),
+                        ),
                       ),
                     )
                   ],

@@ -77,12 +77,25 @@ class EmployeesDataSource extends AdvancedDataTableSource<Employee> {
         selectedRow(employeeDetails?.id, value ?? false);
       },
       cells: [
-        DataCell(Text(
-          employeeDetails?.getName() ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+        DataCell(Row(
+          children: [
+            if (employeeDetails?.getPhotoUrl() != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundImage:
+                      NetworkImage(employeeDetails!.getPhotoUrl()!),
+                ),
+              ),
+            Text(
+              employeeDetails?.getName() ?? "-",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
         )),
         DataCell(Text(
           employeeDetails?.getEmail() ?? "",

@@ -5,6 +5,7 @@ import 'package:flutter_erp/widgets/form_field_widgets/erp_recurring_form_field.
 
 import 'package:flutter_erp/widgets/form_field_widgets/erp_text_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_time_form_field.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/image_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/trainer_selection_form_field.dart';
 
 import 'package:get/get.dart';
@@ -45,6 +46,15 @@ class CoursesFormView extends GetView<CoursesFromController> {
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: 1),
                   children: [
+                    const SizedBox(height: 22),
+                    ImageFormField(
+                      initialValue: controller.course.photoUrl,
+                      title: "Image",
+                      onSaved: (value) {
+                        controller.course.photoUrl =
+                            (value?.isEmpty ?? true) ? null : value;
+                      },
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -66,25 +76,60 @@ class CoursesFormView extends GetView<CoursesFromController> {
                       onSaved: (value) {
                         controller.course.description =
                             (value?.isEmpty ?? true) ? null : value;
-                        ;
                       },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ErpDateFormField(
+                          initialValue: controller.course.startingDate,
+                          title: "Start Date",
+                          isRequired: true,
+                          onSaved: (value) {
+                            controller.course.startingDate = value;
+                          },
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ErpTextFormField(
+                            title: "Duration (in hours)",
+                            initialValue:
+                                controller.course.duration?.toString() ?? "",
+                            isRequired: true,
+                            onSaved: (value) {
+                              controller.course.duration = double.parse(value!);
+                            },
+                            onValidate: (value) {
+                              try {
+                                double.parse(value ?? "");
+                                return null;
+                              } catch (e) {
+                                return "Invalid Duration";
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     ErpTextFormField(
-                      title: "Duration",
-                      initialValue: controller.course.duration.toString(),
+                      title: "Price",
+                      initialValue: controller.course.price?.toString() ?? "",
                       isRequired: true,
                       onSaved: (value) {
-                        controller.course.duration = double.parse(value!);
+                        controller.course.price = double.parse(value!);
                       },
                       onValidate: (value) {
                         try {
                           double.parse(value ?? "");
                           return null;
                         } catch (e) {
-                          return "Invalid Duration";
+                          return "Invalid Price";
                         }
                       },
                     ),

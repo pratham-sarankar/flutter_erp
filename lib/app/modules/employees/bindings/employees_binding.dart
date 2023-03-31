@@ -11,11 +11,8 @@ import '../controllers/employees_table_controller.dart';
 class EmployeesBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<EmployeesTableController>(
-      () => EmployeesTableController(),
-    );
+    Get.lazyPut<EmployeesTableController>(() => EmployeesTableController());
     Get.lazyPut<EmployeesController>(() => EmployeesController());
-    Get.lazyPut<EmployeeRepository>(() => EmployeeRepository());
     Get.create<DesignationRepository>(() => DesignationRepository());
     Get.create<UserRepository>(() => UserRepository());
   }

@@ -1,4 +1,5 @@
 import 'package:flutter_erp/app/data/models/class.dart';
+import 'package:flutter_erp/app/data/models/package_duration.dart';
 import 'package:flutter_erp/app/data/repositories/package_duration_repository.dart';
 import 'package:get/get.dart';
 import 'package:resource_manager/data/abstracts/resource.dart';
@@ -13,6 +14,7 @@ class Package extends Resource {
 
   double? discount;
   Class? classDetails;
+  PackageDuration? duration;
 
   Package({
     this.id,
@@ -22,7 +24,13 @@ class Package extends Resource {
     this.price,
     this.discount,
     this.classDetails,
+    this.duration,
   });
+
+  @override
+  String toString() {
+    return 'Package{id: $id, classId: $classId, durationId: $durationId, title: $title, price: $price, discount: $discount, classDetails: $classDetails, duration: $duration}';
+  }
 
   @override
   Package fromMap(Map<String, dynamic> map) {
@@ -34,6 +42,9 @@ class Package extends Resource {
       price: double.parse((map['price'] ?? 0).toString()),
       discount: double.parse((map['discount'] ?? 0).toString()),
       classDetails: map['class'] == null ? null : Class().fromMap(map['class']),
+      duration: map['duration'] == null
+          ? null
+          : PackageDuration().fromMap(map['duration']),
     );
   }
 

@@ -15,35 +15,43 @@ class ErpScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: !screen.isDesktop
-          ? Stack(
-              children: [
-                FocusScope(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 80),
-                    child: _body(),
-                  ),
-                ),
-                FocusScope(
-                  autofocus: true,
-                  child: _sideBar(isCollapsed: true),
-                ),
-              ],
-            )
-          : Row(
-              children: [
-                FocusScope(
-                  autofocus: true,
-                  child: _sideBar(),
-                ),
-                Expanded(
-                  child: FocusScope(
-                    child: _body(),
-                  ),
-                ),
-              ],
+      appBar: screen.isPhone ? AppBar() : null,
+      drawer: screen.isPhone ? _sideBar() : null,
+      body: getBody(screen),
+    );
+  }
+
+  Widget getBody(ResponsiveScreen screen) {
+    if (screen.isPhone) {
+      return _body(withTopbar: false);
+    } else if (screen.isTablet) {
+      return Stack(
+        children: [
+          FocusScope(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 80),
+              child: _body(),
             ),
+          ),
+          FocusScope(
+            autofocus: true,
+            child: _sideBar(isCollapsed: true),
+          ),
+        ],
+      );
+    }
+    return Row(
+      children: [
+        FocusScope(
+          autofocus: true,
+          child: _sideBar(),
+        ),
+        Expanded(
+          child: FocusScope(
+            child: _body(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -63,14 +71,15 @@ class ErpScaffold extends StatelessWidget {
     );
   }
 
-  Widget _body() {
+  Widget _body({bool withTopbar = true}) {
     return Container(
       color: Colors.white.withOpacity(0.2),
       child: Column(
         children: [
-          FocusScope(
-            child: TopBar(screen: screen),
-          ),
+          if (withTopbar)
+            FocusScope(
+              child: TopBar(screen: screen),
+            ),
           Expanded(
             child: body,
           ),

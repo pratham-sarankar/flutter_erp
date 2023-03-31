@@ -30,12 +30,12 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
-                      () => AdvancedPaginatedDataTable(
+                  () => AdvancedPaginatedDataTable(
                     addEmptyRows: false,
                     source: controller.source,
                     showFirstLastButtons: true,
-                        showCheckboxColumn: controller.selectedIds.isNotEmpty,
-                        rowsPerPage: controller.rowsPerPage.value,
+                    showCheckboxColumn: controller.selectedIds.isNotEmpty,
+                    rowsPerPage: controller.rowsPerPage.value,
                     availableRowsPerPage: const [2, 10, 40, 50, 100],
                     onRowsPerPageChanged: (newRowsPerPage) {
                       controller.setRowPerPage(newRowsPerPage);
@@ -69,6 +69,28 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                         onSort: controller.sort,
                         label: Text(
                           "Duration",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        onSort: controller.sort,
+                        label: Text(
+                          "Start Date",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        onSort: controller.sort,
+                        label: Text(
+                          "Price",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.black,
@@ -157,12 +179,12 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                           Text("Add new"),
                         ],
                       ),
-                      onPressed: ()async {
-                        var reault=await Get.dialog(
+                      onPressed: () async {
+                        var reault = await Get.dialog(
                           const CoursesFormView(),
                           barrierDismissible: false,
                         );
-                        if(reault){
+                        if (reault) {
                           controller.refresh();
                         }
                       },

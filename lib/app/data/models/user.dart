@@ -9,6 +9,7 @@ import 'package:resource_manager/widgets/resource_table_view.dart';
 class User extends Resource<User> {
   @override
   final int? id;
+
   @override
   String? get name => username;
 

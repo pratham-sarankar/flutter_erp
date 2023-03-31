@@ -1,4 +1,5 @@
 import 'package:flutter_erp/app/data/models/class.dart';
+import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:resource_manager/data/responses/fetch_response.dart';
@@ -30,11 +31,26 @@ class ClassRepository extends Repository<Class> {
   }
 
   @override
-  Future<FetchResponse<Class>> fetchWithCount({int limit = 100, int offset = 0, Map<String, dynamic> queries = const {}}) {
+  Future<FetchResponse<Class>> fetchWithCount(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) {
     var updatedQueries = {
       ...queries,
       "branch_id": Get.find<AuthService>().currentBranch.id,
     };
-    return super.fetchWithCount(limit: limit,offset: offset,queries: updatedQueries);
+    return super
+        .fetchWithCount(limit: limit, offset: offset, queries: updatedQueries);
+  }
+
+  Future<FetchResponse<Customer>> fetchMembers(int id,
+      {String search = ""}) async {
+    Response response = await get("/$id/members?search=$search");
+    var data = response.body['data']['rows'];
+    var count = response.body['data']['count'];
+    return FetchResponse(
+      data: data.map<Customer>((e) => Customer().fromMap(e)).toList(),
+      total: count,
+    );
   }
 }

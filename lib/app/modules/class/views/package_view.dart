@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/package.dart';
+import 'package:flutter_erp/app/data/models/subscription.dart';
+import 'package:flutter_erp/app/data/repositories/package_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
+import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/modules/class/controllers/package_controller.dart';
+import 'package:flutter_erp/app/modules/class/views/package_form_view.dart';
+import 'package:flutter_erp/app/modules/subscriptions/views/subscription_form_view.dart';
+import 'package:flutter_erp/widgets/dialogs/deletion_dialog.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +16,10 @@ import 'package:resource_manager/resource_manager.dart';
 
 class PackageView extends GetView<PackageController> {
   const PackageView({Key? key}) : super(key: key);
+
+  @override
+  PackageController get controller =>
+      Get.find<PackageController>(tag: Get.parameters["id"]);
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +151,21 @@ class PackageView extends GetView<PackageController> {
               right: 20,
             ),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                var result = await Get.dialog(
+                  const SubscriptionFormView(),
+                  arguments: Subscription(
+                    package: data,
+                    packageId: data.id,
+                    classId: data.classId,
+                    branchId: Get.find<AuthService>().currentBranch.id,
+                  ),
+                );
+                if (result) {
+                  Get.find<ToastService>()
+                      .showSuccessToast("Subscription added successfully.");
+                }
+              },
               child: Icon(
                 CupertinoIcons.add,
                 color: Colors.blue.shade700,
@@ -152,7 +176,15 @@ class PackageView extends GetView<PackageController> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  var result = await Get.dialog(
+                    const PackageFormView(),
+                    arguments: data,
+                  );
+                  if (result) {
+                    controller.reload();
+                  }
+                },
                 child: Icon(
                   Icons.edit,
                   color: Colors.green.shade700,
@@ -163,7 +195,19 @@ class PackageView extends GetView<PackageController> {
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 10),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  var result = await Get.dialog(
+                    DeletionDialog(
+                      onDelete: () async {
+                        await Get.find<PackageRepository>().destroy(data);
+                        return true;
+                      },
+                    ),
+                  );
+                  if (result) {
+                    controller.reload();
+                  }
+                },
                 child: Icon(
                   Icons.delete,
                   color: Colors.red.shade700,

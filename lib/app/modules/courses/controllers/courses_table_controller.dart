@@ -72,13 +72,28 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
         selectedRow(courseDetails?.id, value ?? false);
       },
       cells: [
-        DataCell(Text(
-          courseDetails?.title ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        DataCell(
+          Row(
+            children: [
+              if (courseDetails?.getPhotoUrl() != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: CircleAvatar(
+                    radius: 15,
+                    backgroundImage:
+                        NetworkImage(courseDetails!.getPhotoUrl()!),
+                  ),
+                ),
+              Text(
+                courseDetails?.title ?? "-",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
           ),
-        )),
+        ),
         DataCell(Text(
           courseDetails?.description ?? "",
           style: GoogleFonts.poppins(
@@ -86,13 +101,32 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
             fontWeight: FontWeight.w400,
           ),
         )),
-        DataCell(Text(
-          courseDetails?.duration.toString() ?? "-",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        DataCell(
+          Text(
+            courseDetails?.duration.toString() ?? "-",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
+        DataCell(
+          Text(
+            courseDetails?.getStartingDate() ?? "-",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+        DataCell(
+          Text(
+            courseDetails?.price?.toString() ?? "-",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
         DataCell(
           PopupMenuButton(
@@ -243,8 +277,14 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
       case 1:
         columnName = "description";
         break;
-      case 3:
+      case 2:
         columnName = "duration";
+        break;
+      case 3:
+        columnName = "starting_date";
+        break;
+      case 4:
+        columnName = "price";
         break;
     }
     sortingQuery = "$columnName&DESC=${!ascending}";

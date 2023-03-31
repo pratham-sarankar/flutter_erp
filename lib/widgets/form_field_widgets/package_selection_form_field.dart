@@ -9,11 +9,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PackageSelectionFormField extends FormField<Package> {
-  PackageSelectionFormField({super.key, super.onSaved, super.validator})
+  PackageSelectionFormField(
+      {super.key, super.onSaved, super.validator, super.initialValue})
       : super(
           builder: (state) {
             return GetBuilder(
-              init: PackageSelectionFieldController(),
+              init: PackageSelectionFieldController(initialValue: initialValue),
               builder: (controller) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,17 +179,32 @@ class PackageSelectionFormField extends FormField<Package> {
 }
 
 class PackageSelectionFieldController extends GetxController {
-  final classController = TextEditingController();
+  late final TextEditingController classController;
   late RxList<Package> packages;
   late RxBool loadingPackages;
   late Rx<Package> selectedPackage;
+  final Package? initialValue;
+
+  PackageSelectionFieldController({this.initialValue});
 
   @override
   void onInit() {
+    classController =
+        TextEditingController(text: initialValue?.classDetails?.name);
+    _initializeClass();
     loadingPackages = false.obs;
     packages = RxList<Package>([]);
     selectedPackage = Get.find<PackageRepository>().empty.obs;
     super.onInit();
+  }
+
+  void _initializeClass() async {
+    if (initialValue?.classId != null) {
+      final id = initialValue!.classId!;
+      var result = await Get.find<ClassRepository>().fetchOne(id);
+      await onChanged(result);
+      selectPackage(initialValue!);
+    }
   }
 
   Future<List<Class>> getClasses(String pattern) async {
@@ -205,7 +221,7 @@ class PackageSelectionFieldController extends GetxController {
     await Future.delayed(const Duration(milliseconds: 700));
     final packages = await Get.find<PackageRepository>().fetch(
       queries: {
-        "classId": suggestion.id,
+        "class_id": suggestion.id,
       },
     );
     loadingPackages.value = false;
