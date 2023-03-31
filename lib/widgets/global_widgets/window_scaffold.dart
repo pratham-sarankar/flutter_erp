@@ -9,23 +9,22 @@ class WindowScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          if (GetPlatform.isLinux ||
-              GetPlatform.isMacOS ||
-              GetPlatform.isWindows)
-            WindowTitleBarBox(
-              child: Row(
-                children: [
-                  Expanded(child: MoveWindow()),
-                  const WindowButtons(),
-                ],
-              ),
-            ),
-          const Divider(),
-          Expanded(child: child!),
-        ],
-      ),
+      body: GetPlatform.isLinux || GetPlatform.isMacOS || GetPlatform.isWindows
+          ? Column(
+              children: [
+                WindowTitleBarBox(
+                  child: Row(
+                    children: [
+                      Expanded(child: MoveWindow()),
+                      const WindowButtons(),
+                    ],
+                  ),
+                ),
+                const Divider(),
+                Expanded(child: child!),
+              ],
+            )
+          : child,
     );
   }
 }

@@ -2,7 +2,9 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/repositories/course_repository.dart';
+import 'package:flutter_erp/app/modules/courses/controllers/courses_from_controller.dart';
 import 'package:flutter_erp/app/modules/courses/views/courses_from_view.dart';
+import 'package:flutter_erp/app/modules/courses/views/courses_table_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -38,12 +40,21 @@ class CoursesTableController extends GetxController {
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
   }
-
+  void insertNew() async {
+    var result = await Get.dialog(
+      const CoursesFormView(),
+      barrierDismissible: false,
+    );
+    if (result) {
+      refresh();
+    }
+  }
   @override
-  void refresh() {
+  Future<void> refresh()async {
     source.refresh();
     super.refresh();
   }
+
 
   @override
   void onReady() {

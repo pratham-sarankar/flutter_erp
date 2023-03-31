@@ -27,17 +27,14 @@ ThemeData lightTheme = ThemeData(
       color: Color(0xff303030),
     ),
   ),
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.white,
-    elevation: 0,
-    iconTheme: IconThemeData(
-      color: Color(0xff303030),
-    ),
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.light,
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-    ),
+  appBarTheme: AppBarTheme(
+    // backgroundColor: Colors.white,
+    titleTextStyle: GoogleFonts.poppins(fontSize:19),
+    actionsIconTheme: const IconThemeData(
+      size: 20,
+    )
+    ,
+    titleSpacing: 0,
   ),
   extensions: [
     const MembershipColors(
