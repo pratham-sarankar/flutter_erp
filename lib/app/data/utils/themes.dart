@@ -29,11 +29,10 @@ ThemeData lightTheme = ThemeData(
   ),
   appBarTheme: AppBarTheme(
     // backgroundColor: Colors.white,
-    titleTextStyle: GoogleFonts.poppins(fontSize:19),
+    titleTextStyle: GoogleFonts.poppins(fontSize: 19),
     actionsIconTheme: const IconThemeData(
       size: 20,
-    )
-    ,
+    ),
     titleSpacing: 0,
   ),
   extensions: [

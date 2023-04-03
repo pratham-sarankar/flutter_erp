@@ -23,6 +23,8 @@ abstract class Routes {
   static const SUBSCRIPTIONS = _Paths.SUBSCRIPTIONS;
   static const COUPON = _Paths.COUPON;
   static const CALL_LOG = _Paths.CALL_LOG;
+  static const QR_CODE = _Paths.QR_CODE;
+  static const PURCHASES = _Paths.PURCHASES;
 }
 
 abstract class _Paths {
@@ -47,4 +49,6 @@ abstract class _Paths {
   static const SUBSCRIPTIONS = '/subscriptions';
   static const COUPON = '/coupon';
   static const CALL_LOG = '/call-log';
+  static const QR_CODE = '/qr-code';
+  static const PURCHASES = '/purchases';
 }

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/discount.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
+import 'package:flutter_erp/app/modules/purchases/controllers/purchase_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
+import 'package:flutter_erp/widgets/form_field_widgets/course_selection_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_date_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_discount_form_field.dart';
 import 'package:flutter_erp/widgets/form_field_widgets/erp_text_form_field.dart';
@@ -13,8 +15,8 @@ import 'package:flutter_erp/widgets/form_field_widgets/payment_mode_selection_fo
 import 'package:get/get.dart';
 import 'package:resource_manager/resource_manager.dart';
 
-class SubscriptionFormView extends GetView<SubscriptionFormController> {
-  const SubscriptionFormView({Key? key}) : super(key: key);
+class PurchaseFormView extends GetView<PurchaseFormController> {
+  const PurchaseFormView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Add Subscription",
+              "Add Purchase",
               style: context.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onBackground,
@@ -46,35 +48,35 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
               child: Column(
                 children: [
                   CustomerSelectionFormField(
-                    initialValue: controller.subscription.value.customer,
+                    initialValue: controller.purchase.value.customer,
                     onSaved: (customer) {
-                      controller.subscription.value.customerId = customer?.id;
+                      controller.purchase.value.customerId = customer?.id;
                     },
                   ),
                   const SizedBox(height: 20),
-                  PackageSelectionFormField(
-                    initialValue: controller.subscription.value.package,
-                    onSaved: (package) {
-                      controller.subscription.value.packageId = package?.id;
+                  CourseSelectionFormField(
+                    initialValue: controller.purchase.value.course,
+                    onSaved: (course) {
+                      controller.purchase.value.courseId = course?.id;
                     },
                     validator: (value) {
                       if (value == null) {
-                        return "Please select a package";
+                        return "Please select a course";
                       }
                     },
                   ),
                   const SizedBox(height: 20),
                   PaymentModeSelectionFormField(
                     onSaved: (paymentMode) {
-                      controller.subscription.value.modeId = paymentMode?.id;
+                      controller.purchase.value.modeId = paymentMode?.id;
                     },
                   ),
                   const SizedBox(height: 20),
                   ErpDiscountFormField(
                     title: "Discount",
-                    initialValue: controller.subscription.value.discount,
+                    initialValue: controller.purchase.value.discount,
                     onSaved: (value) {
-                      controller.subscription.value.discount =
+                      controller.purchase.value.discount =
                           value ?? Discount(type: DiscountType.none, value: 0);
                     },
                     validator: (value) {
@@ -83,10 +85,10 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
                   ),
                   const SizedBox(height: 20),
                   ErpDateFormField(
-                    initialValue: controller.subscription.value.subscribedAt ??
-                        DateTime.now(),
+                    initialValue:
+                        controller.purchase.value.purchasedAt ?? DateTime.now(),
                     onSaved: (dateTime) {
-                      controller.subscription.value.subscribedAt = dateTime;
+                      controller.purchase.value.purchasedAt = dateTime;
                     },
                   ),
                   const SizedBox(height: 20),

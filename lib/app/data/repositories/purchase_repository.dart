@@ -1,13 +1,12 @@
-import 'package:flutter_erp/app/data/models/course.dart';
+import 'package:flutter_erp/app/data/models/purchase.dart';
+import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:resource_manager/data/abstracts/repository.dart';
 import 'package:resource_manager/data/responses/fetch_response.dart';
-import 'package:resource_manager/resource_manager.dart';
 
-import '../services/auth_service.dart';
-
-class CourseRepository extends Repository<Course> {
-  CourseRepository() : super(path: "/course");
+class PurchaseRepository extends Repository<Purchase> {
+  PurchaseRepository() : super(path: "/purchase");
 
   @override
   Future<Request> authenticator(Request request) async {
@@ -15,23 +14,11 @@ class CourseRepository extends Repository<Course> {
   }
 
   @override
-  Course get empty =>
-      Course(branchId: Get.find<AuthService>().currentBranch.id);
+  Purchase get empty =>
+      Purchase(branchId: Get.find<AuthService>().currentBranch.id);
 
   @override
-  Future<List<Course>> fetch(
-      {int limit = 100,
-      int offset = 0,
-      Map<String, dynamic> queries = const {}}) {
-    var updatedQueries = {
-      ...queries,
-      "branch_id": Get.find<AuthService>().currentBranch.id,
-    };
-    return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
-  }
-
-  @override
-  Future<FetchResponse<Course>> fetchWithCount(
+  Future<List<Purchase>> fetch(
       {int limit = 100,
       int offset = 0,
       Map<String, dynamic> queries = const {}}) async {
@@ -39,7 +26,21 @@ class CourseRepository extends Repository<Course> {
       ...queries,
       "branch_id": Get.find<AuthService>().currentBranch.id,
     };
-    FetchResponse<Course> response = await super
+    var response = await super
+        .fetch(limit: limit, offset: offset, queries: updatedQueries);
+    return response;
+  }
+
+  @override
+  Future<FetchResponse<Purchase>> fetchWithCount(
+      {int limit = 100,
+      int offset = 0,
+      Map<String, dynamic> queries = const {}}) async {
+    var updatedQueries = {
+      ...queries,
+      "branch_id": Get.find<AuthService>().currentBranch.id,
+    };
+    FetchResponse<Purchase> response = await super
         .fetchWithCount(limit: limit, offset: offset, queries: updatedQueries);
     return response;
   }

@@ -79,12 +79,8 @@ class _ErpDateFormField extends StatelessWidget {
             DateTime? result = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              firstDate: DateTime.now().subtract(const Duration(days: 1000)),
-              lastDate: DateTime.now().add(
-                const Duration(
-                  days: 1000,
-                ),
-              ),
+              firstDate: DateTime(1000),
+              lastDate: DateTime(3000),
             );
             if (result == null) return;
             state.didChange(result);

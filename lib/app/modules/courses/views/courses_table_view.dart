@@ -30,9 +30,9 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
           onRefresh: controller.refresh,
           child: ListView(
             children: [
-              if(!screen.isPhone) getHeader(controller),
+              if (!screen.isPhone) getHeader(controller),
               Obx(
-                    () => AdvancedPaginatedDataTable(
+                () => AdvancedPaginatedDataTable(
                   addEmptyRows: false,
                   source: controller.source,
                   showFirstLastButtons: true,
@@ -61,6 +61,17 @@ class CoursesTableView extends GetResponsiveView<CoursesTableController> {
                       onSort: controller.sort,
                       label: Text(
                         "Description",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      onSort: controller.sort,
+                      label: Text(
+                        "Batch no.",
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.black,

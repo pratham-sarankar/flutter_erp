@@ -46,7 +46,6 @@ class EmployeesTableView extends GetResponsiveView<EmployeesTableController> {
                   checkboxHorizontalMargin: 0,
                   sortAscending: controller.sortAscending.value,
                   sortColumnIndex: controller.sortColumnIndex.value,
-                  horizontalMargin: 14,
                   columns: [
                     DataColumn(
                       onSort: controller.sort,

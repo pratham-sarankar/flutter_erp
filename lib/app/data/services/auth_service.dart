@@ -142,6 +142,13 @@ class AuthService extends GetxService {
               boldIcon: IconlyBold.notification,
               path: Routes.SUBSCRIPTIONS,
             ),
+          if (canView("Purchases"))
+            SideBarDestination(
+              title: "Purchases",
+              icon: IconlyLight.buy,
+              boldIcon: IconlyBold.buy,
+              path: Routes.PURCHASES,
+            ),
         ],
       ),
       SideBarGroup(

@@ -1,5 +1,5 @@
 name: flutter_erp
-version: 1.9.6+1
+version: 2.1.0+1
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -29,6 +29,7 @@ dependencies:
   flutter_typeahead: ^4.3.7
   advanced_datatable: ^0.0.8
   syncfusion_flutter_datagrid: 20.4.54
+  qr_flutter: ^4.0.0
   resource_manager:
     git:
       url: https://github.com/pratham-sarankar/resource_manager

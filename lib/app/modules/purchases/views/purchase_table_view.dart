@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/app/modules/purchases/controllers/purchase_table_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_table_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/views/subscription_form_view.dart';
 import 'package:flutter_erp/widgets/global_widgets/erp_search_field.dart';
@@ -8,9 +9,8 @@ import 'package:get/get.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SubscriptionTableView
-    extends GetResponsiveView<SubscriptionTableController> {
-  SubscriptionTableView({Key? key}) : super(key: key);
+class PurchaseTableView extends GetResponsiveView<PurchaseTableController> {
+  PurchaseTableView({Key? key}) : super(key: key);
 
   @override
   Widget builder() {
@@ -57,18 +57,7 @@ class SubscriptionTableView
                     DataColumn(
                       onSort: controller.sort,
                       label: Text(
-                        "Class",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      onSort: controller.sort,
-                      label: Text(
-                        "Package",
+                        "Course",
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.black,
@@ -101,18 +90,7 @@ class SubscriptionTableView
                     DataColumn(
                       onSort: controller.sort,
                       label: Text(
-                        "Expiring At",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      onSort: controller.sort,
-                      label: Text(
-                        "Subscribed At",
+                        "Purchased At",
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.black,
@@ -133,14 +111,14 @@ class SubscriptionTableView
     );
   }
 
-  Widget getHeader(SubscriptionTableController controller) {
+  Widget getHeader(PurchaseTableController controller) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Subscriptions",
+            "All Purchases",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w500,
@@ -185,13 +163,7 @@ class SubscriptionTableView
                 ],
               ),
               onPressed: () async {
-                var result = await Get.dialog(
-                  const SubscriptionFormView(),
-                  barrierDismissible: false,
-                );
-                if (result) {
-                  controller.refresh();
-                }
+                controller.insertNew();
               },
             ),
           ),

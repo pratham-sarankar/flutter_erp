@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_erp/app/data/models/discount.dart';
+import 'package:flutter_erp/app/data/models/purchase.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/branch_repository.dart';
+import 'package:flutter_erp/app/data/repositories/purchase_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:get/get.dart';
 
-class SubscriptionFormController extends GetxController {
+class PurchaseFormController extends GetxController {
   late GlobalKey<FormState> formKey;
-  late Rx<Subscription> subscription;
+  late Rx<Purchase> purchase;
   late RxBool isLoading;
   late RxString error;
 
   @override
   void onInit() {
     formKey = GlobalKey<FormState>();
-    subscription = Rx<Subscription>(
+    purchase = Rx<Purchase>(
       Get.arguments ??
-          Subscription(branchId: Get.find<AuthService>().currentBranch.id),
+          Purchase(branchId: Get.find<AuthService>().currentBranch.id),
     );
     isLoading = false.obs;
     error = "".obs;
@@ -34,7 +36,7 @@ class SubscriptionFormController extends GetxController {
       isLoading.value = true;
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        await Get.find<SubscriptionRepository>().insert(subscription.value);
+        await Get.find<PurchaseRepository>().insert(purchase.value);
         Get.back(result: true);
       }
       isLoading.value = false;

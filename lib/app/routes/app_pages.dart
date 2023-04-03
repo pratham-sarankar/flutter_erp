@@ -33,6 +33,10 @@ import '../modules/permission_group/bindings/permission_group_binding.dart';
 import '../modules/permission_group/views/permission_group_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/purchases/bindings/purchases_binding.dart';
+import '../modules/purchases/views/purchases_view.dart';
+import '../modules/qr_code/bindings/qr_code_binding.dart';
+import '../modules/qr_code/views/qr_code_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
 import '../modules/subscriptions/bindings/subscriptions_binding.dart';
@@ -181,6 +185,16 @@ class AppPages {
       name: _Paths.CALL_LOG,
       page: () => CallLogView(),
       binding: CallLogBinding(),
+    ),
+    GetPage(
+      name: _Paths.QR_CODE,
+      page: () => const QrCodeView(),
+      binding: QrCodeBinding(),
+    ),
+    GetPage(
+      name: _Paths.PURCHASES,
+      page: () => PurchasesView(),
+      binding: PurchasesBinding(),
     ),
   ];
 }

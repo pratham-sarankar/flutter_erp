@@ -40,6 +40,7 @@ class CoursesTableController extends GetxController {
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
   }
+
   void insertNew() async {
     var result = await Get.dialog(
       const CoursesFormView(),
@@ -49,12 +50,12 @@ class CoursesTableController extends GetxController {
       refresh();
     }
   }
+
   @override
-  Future<void> refresh()async {
+  Future<void> refresh() async {
     source.refresh();
     super.refresh();
   }
-
 
   @override
   void onReady() {
@@ -112,6 +113,13 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
             fontWeight: FontWeight.w400,
           ),
         )),
+        DataCell(Text(
+          courseDetails?.batchNo?.toString() ?? "-",
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        )),
         DataCell(
           Text(
             courseDetails?.duration.toString() ?? "-",
@@ -123,7 +131,7 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
         ),
         DataCell(
           Text(
-            courseDetails?.getStartingDate() ?? "-",
+            courseDetails?.getFormattedStartingDate() ?? "-",
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -289,12 +297,15 @@ class CoursesDataSource extends AdvancedDataTableSource<Course> {
         columnName = "description";
         break;
       case 2:
-        columnName = "duration";
+        columnName = "description";
         break;
       case 3:
-        columnName = "starting_date";
+        columnName = "duration";
         break;
       case 4:
+        columnName = "starting_date";
+        break;
+      case 5:
         columnName = "price";
         break;
     }

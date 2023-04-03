@@ -81,6 +81,25 @@ class CoursesFormView extends GetView<CoursesFromController> {
                     const SizedBox(
                       height: 20,
                     ),
+                    ErpTextFormField(
+                      title: "Batch no.",
+                      initialValue: controller.course.batchNo?.toString() ?? "",
+                      isRequired: false,
+                      onSaved: (value) {
+                        controller.course.batchNo = int.parse(value!);
+                      },
+                      onValidate: (value) {
+                        try {
+                          double.parse(value ?? "");
+                          return null;
+                        } catch (e) {
+                          return "Invalid Batch no.";
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

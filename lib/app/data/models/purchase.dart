@@ -1,3 +1,4 @@
+import 'package:flutter_erp/app/data/models/course.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
 import 'package:flutter_erp/app/data/models/discount.dart';
 import 'package:flutter_erp/app/data/models/package.dart';
@@ -11,64 +12,54 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:resource_manager/resource_manager.dart';
 
-class Subscription extends Resource {
+class Purchase extends Resource {
   @override
   int? id;
   int? customerId;
-  int? packageId;
+  int? courseId;
   int? paymentId;
   int? branchId;
-  int? classId;
   int? modeId;
-  DateTime? subscribedAt;
-  DateTime? expiringAt;
+  DateTime? purchasedAt;
   Customer? customer;
-  Package? package;
+  Course? course;
   Payment? payment;
   Discount? discount;
 
-  // double? discountValue;
-  // DiscountType discountType;
   double? originalAmount;
   double? discountedAmount;
 
-  Subscription({
+  Purchase({
     this.id,
     this.customerId,
-    this.packageId,
     this.paymentId,
     this.branchId,
-    this.classId,
-    this.subscribedAt,
-    this.expiringAt,
     this.customer,
     this.modeId,
-    this.package,
     this.payment,
     this.discountedAmount,
     this.originalAmount,
     this.discount,
+    this.course,
+    this.courseId,
+    this.purchasedAt,
   });
 
   @override
-  Subscription fromMap(Map<String, dynamic> map) {
-    return Subscription(
+  Purchase fromMap(Map<String, dynamic> map) {
+    return Purchase(
       id: map['id'],
       customerId: map['customer_id'],
-      packageId: map['package_id'],
+      courseId: map['course_id'],
       paymentId: map['payment_id'],
       branchId: map['branch_id'],
-      classId: map['class_id'],
       modeId: map['mode_id'],
-      expiringAt:
-          map['expiringAt'] != null ? DateTime.parse(map['expiringAt']) : null,
-      subscribedAt: map['subscribedAt'] != null
-          ? DateTime.parse(map['subscribedAt'])
+      purchasedAt: map['purchased_at'] != null
+          ? DateTime.parse(map['purchased_at'])
           : null,
       customer:
           map['customer'] != null ? Customer().fromMap(map['customer']) : null,
-      package:
-          map['package'] != null ? Package().fromMap(map['package']) : null,
+      course: map['course'] != null ? Course().fromMap(map['course']) : null,
       payment:
           map['payment'] != null ? Payment().fromMap(map['payment']) : null,
       discountedAmount: double.parse(map['discounted_amount'].toString()),
@@ -137,32 +128,16 @@ class Subscription extends Resource {
           data: customer?.name,
         ),
         Cell(
-          data: package?.classDetails?.title,
-        ),
-        Cell(
-          data: package?.name,
-        ),
-        Cell(
           data: payment?.mode?.title,
-        ),
-        Cell(
-          data: getExpiringDate(),
-        ),
-        Cell(
-          data: getSubscribedDate(),
         ),
       ],
     );
   }
 
-  String getExpiringDate() {
-    return expiringAt == null ? "-" : DateFormat('d MMM y').format(expiringAt!);
-  }
-
-  String getSubscribedDate() {
-    return subscribedAt == null
+  String getPurchasedAt() {
+    return purchasedAt == null
         ? "-"
-        : DateFormat('d MMM y').format(subscribedAt!);
+        : DateFormat('d MMM y').format(purchasedAt!);
   }
 
   @override
@@ -176,14 +151,13 @@ class Subscription extends Resource {
     return {
       "id": id,
       "customer_id": customerId,
-      "package_id": packageId,
+      "course_id": courseId,
       "branch_id": branchId,
       "payment_id": paymentId,
       "mode_id": modeId,
-      "expiringAt":
-          expiringAt == null ? null : DateFormat('d MMM y').format(expiringAt!),
-      if (subscribedAt != null)
-        "subscribedAt": DateFormat('d MMM y').format(subscribedAt!),
+      "purchased_at": purchasedAt == null
+          ? null
+          : DateFormat('d MMM y').format(purchasedAt!),
       "discount_value": discount?.value,
       "discount_type": discount?.type.name,
     };
@@ -191,6 +165,6 @@ class Subscription extends Resource {
 
   @override
   String toString() {
-    return 'Subscription{id: $id, customerId: $customerId, packageId: $packageId, paymentId: $paymentId, classId: $classId, modeId: $modeId, subscribedAt: $subscribedAt, expiringAt: $expiringAt, customer: $customer, package: $package}';
+    return 'Purchase{id: $id, customerId: $customerId, courseId: $courseId, paymentId: $paymentId, branchId: $branchId, modeId: $modeId, purchasedAt: $purchasedAt, customer: $customer, course: $course, payment: $payment, discount: $discount, originalAmount: $originalAmount, discountedAmount: $discountedAmount}';
   }
 }

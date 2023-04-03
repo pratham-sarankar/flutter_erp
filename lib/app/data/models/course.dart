@@ -18,6 +18,7 @@ class Course extends Resource<Course> {
   String? photoUrl;
   double? duration;
   int? branchId;
+  int? batchNo;
 
   Course({
     this.id,
@@ -28,6 +29,7 @@ class Course extends Resource<Course> {
     this.duration,
     this.branchId,
     this.startingDate,
+    this.batchNo,
   });
 
   bool get hasPhoto => photoUrl != null;
@@ -43,10 +45,18 @@ class Course extends Resource<Course> {
       'duration': (duration ?? 0).toString(),
       "starting_date": startingDate == null ? null : getStartingDate(),
       'price': (price ?? 0).toString(),
+      'batch_no': batchNo,
     };
   }
 
   String getStartingDate() {
+    return startingDate == null
+        ? "-"
+        : DateFormat('yyyy-MM-dd').format(startingDate!);
+  }
+
+
+  String getFormattedStartingDate() {
     return startingDate == null
         ? "-"
         : DateFormat('d MMM y').format(startingDate!);
@@ -64,18 +74,14 @@ class Course extends Resource<Course> {
           ? null
           : DateTime.tryParse(map['starting_date']),
       price:
-          map['price'] == null ? null : double.parse((map['price']).toString()),
+      map['price'] == null ? null : double.parse((map['price']).toString()),
       duration: map['duration'] == null
           ? null
           : double.parse((map['duration']).toString()),
+      batchNo: map['batch_no'],
     );
   }
 
-  String getDateOfBirth() {
-    return startingDate == null
-        ? "-"
-        : DateFormat('d MMM y').format(startingDate!);
-  }
 
   @override
   ResourceColumn getResourceColumn() {

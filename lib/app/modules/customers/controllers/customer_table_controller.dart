@@ -3,13 +3,16 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
+import 'package:flutter_erp/app/data/models/purchase.dart';
 import 'package:flutter_erp/app/data/models/subscription.dart';
 import 'package:flutter_erp/app/data/repositories/customer_repository.dart';
 import 'package:flutter_erp/app/data/repositories/subscription_repository.dart';
 import 'package:flutter_erp/app/data/services/auth_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
 import 'package:flutter_erp/app/modules/customers/views/customer_form_view.dart';
+import 'package:flutter_erp/app/modules/purchases/views/purchase_form_view.dart';
 import 'package:flutter_erp/app/modules/subscriptions/views/subscription_form_view.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,6 +47,7 @@ class CustomerTableController extends GetxController {
     sortColumnIndex.value = columnIndex;
     source.sort(columnIndex, ascending);
   }
+
   void insertNew() async {
     var result = await Get.dialog(
       const CustomerFormView(),
@@ -55,11 +59,10 @@ class CustomerTableController extends GetxController {
   }
 
   @override
-  Future<void> refresh()async {
+  Future<void> refresh() async {
     source.refresh();
     super.refresh();
   }
-
 
   @override
   void onReady() {
@@ -161,6 +164,22 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
                         .showSuccessToast("Subscription added successfully.");
                   }
                   break;
+                case "add_purchase":
+                  var result = await Get.dialog(
+                    const PurchaseFormView(),
+                    arguments: Purchase(
+                      customer: customer,
+                      customerId: customer?.id,
+                      branchId: Get.find<AuthService>().currentBranch.id,
+                    ),
+                    barrierDismissible: false,
+                  );
+                  if (result) {
+                    refresh();
+                    Get.find<ToastService>()
+                        .showSuccessToast("Purchase added successfully.");
+                  }
+                  break;
                 case "edit":
                   var result = await Get.dialog(
                     const CustomerFormView(),
@@ -201,6 +220,24 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
                       SizedBox(width: 5),
                       Text(
                         "Add Subscription",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "add_purchase",
+                  height: 35,
+                  child: Row(
+                    children: const [
+                      Icon(
+                        IconlyLight.buy,
+                        size: 18,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Add Purchase",
                         style: TextStyle(fontSize: 14),
                       ),
                     ],
