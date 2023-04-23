@@ -16,31 +16,60 @@ class CourseRepository extends Repository<Course> {
 
   @override
   Course get empty =>
-      Course(branchId: Get.find<AuthService>().currentBranch.id);
+      Course(branchId: Get
+          .find<AuthService>()
+          .currentBranch
+          .id);
+
+  Future<CourseSummary> fetchSummary() async {
+    final branchId = Get
+        .find<AuthService>()
+        .currentBranch
+        .id;
+
+    Response response = await get(
+      '/summary?branch_id=$branchId',
+    );
+    return CourseSummary.fromJson(response.body['data']);
+  }
 
   @override
-  Future<List<Course>> fetch(
-      {int limit = 100,
-      int offset = 0,
-      Map<String, dynamic> queries = const {}}) {
+  Future<List<Course>> fetch({int limit = 100,
+    int offset = 0,
+    Map<String, dynamic> queries = const {}}) {
     var updatedQueries = {
       ...queries,
-      "branch_id": Get.find<AuthService>().currentBranch.id,
+      "branch_id": Get
+          .find<AuthService>()
+          .currentBranch
+          .id,
     };
     return super.fetch(limit: limit, offset: offset, queries: updatedQueries);
   }
 
   @override
-  Future<FetchResponse<Course>> fetchWithCount(
-      {int limit = 100,
-      int offset = 0,
-      Map<String, dynamic> queries = const {}}) async {
+  Future<FetchResponse<Course>> fetchWithCount({int limit = 100,
+    int offset = 0,
+    Map<String, dynamic> queries = const {}}) async {
     var updatedQueries = {
       ...queries,
-      "branch_id": Get.find<AuthService>().currentBranch.id,
+      "branch_id": Get
+          .find<AuthService>()
+          .currentBranch
+          .id,
     };
     FetchResponse<Course> response = await super
         .fetchWithCount(limit: limit, offset: offset, queries: updatedQueries);
     return response;
+  }
+}
+
+class CourseSummary {
+  num total = 0;
+
+  CourseSummary();
+
+  CourseSummary.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
   }
 }

@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class PaymentChart extends StatefulWidget {
-  const PaymentChart({Key? key, required this.data}) : super(key: key);
+class CustomersChart extends StatefulWidget {
+  const CustomersChart({Key? key, required this.data}) : super(key: key);
   final List<num> data;
 
   @override
-  State<PaymentChart> createState() => _PaymentChartState();
+  State<CustomersChart> createState() => _CustomersChartState();
 }
 
-class _PaymentChartState extends State<PaymentChart> {
+class _CustomersChartState extends State<CustomersChart> {
   late TooltipBehavior _tooltipBehavior;
 
   @override
@@ -30,13 +30,13 @@ class _PaymentChartState extends State<PaymentChart> {
       ),
       primaryYAxis: NumericAxis(
         minimum: 0,
-        maximum: 100000,
-        interval: 10000,
+        maximum: 100,
+        interval: 10,
         labelStyle: GoogleFonts.poppins(),
       ),
-      tooltipBehavior: TooltipBehavior(),
+      tooltipBehavior: _tooltipBehavior,
       series: <ChartSeries<_ChartData, String>>[
-        ColumnSeries<_ChartData, String>(
+        LineSeries<_ChartData, String>(
           dataSource: [
             _ChartData('JAN', (widget.data[0] ?? 0).toDouble()),
             _ChartData('FEB', (widget.data[1] ?? 0).toDouble()),
@@ -53,9 +53,12 @@ class _PaymentChartState extends State<PaymentChart> {
           ],
           xValueMapper: (_ChartData data, _) => data.x,
           yValueMapper: (_ChartData data, _) => data.y,
-          name: 'Gold',
+          name: 'Customers',
           color: context.theme.primaryColorDark,
-          spacing: 0.1,
+          markerSettings: MarkerSettings(
+            isVisible: true,
+            color: context.theme.primaryColorDark,
+          ),
         ),
       ],
     );

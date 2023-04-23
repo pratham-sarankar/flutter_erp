@@ -225,6 +225,7 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
                     ],
                   ),
                 ),
+                const PopupMenuDivider(height: 1),
                 PopupMenuItem(
                   value: "add_purchase",
                   height: 35,
@@ -243,6 +244,7 @@ class CustomersDataSource extends AdvancedDataTableSource<Customer> {
                     ],
                   ),
                 ),
+                const PopupMenuDivider(height: 1),
                 PopupMenuItem(
                   value: "edit",
                   height: 35,

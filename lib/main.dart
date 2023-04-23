@@ -25,17 +25,17 @@ import 'package:flutter_erp/app/data/services/ivr_service.dart';
 import 'package:flutter_erp/app/data/services/mail_service.dart';
 import 'package:flutter_erp/app/data/services/rrule_service.dart';
 import 'package:flutter_erp/app/data/services/toast_service.dart';
-import 'package:flutter_erp/app/data/utils/keys.dart';
+import 'package:flutter_erp/app/data/utils/custom_scroll_behaviour.dart';
 import 'package:flutter_erp/app/data/utils/themes.dart';
 import 'package:flutter_erp/app/modules/class/controllers/package_form_controller.dart';
 import 'package:flutter_erp/app/modules/classes/controllers/classes_form_controller.dart';
 import 'package:flutter_erp/app/modules/courses/controllers/courses_from_controller.dart';
 import 'package:flutter_erp/app/modules/customers/controllers/customer_form_controller.dart';
 import 'package:flutter_erp/app/modules/employees/controllers/employees_form_controller.dart';
+import 'package:flutter_erp/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter_erp/app/modules/payment/controllers/payment_form_controller.dart';
 import 'package:flutter_erp/app/modules/purchases/controllers/purchase_form_controller.dart';
 import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_form_controller.dart';
-import 'package:flutter_erp/app/modules/subscriptions/controllers/subscription_table_controller.dart';
 import 'package:flutter_erp/app/modules/users/controllers/user_form_controller.dart';
 import 'package:flutter_erp/widgets/global_widgets/window_scaffold.dart';
 import 'package:get/get.dart';
@@ -72,7 +72,7 @@ void main() async {
   Get.create<CustomerRepository>(() => CustomerRepository());
   Get.create<DesignationRepository>(() => DesignationRepository());
   Get.create<EmployeeRepository>(() => EmployeeRepository());
-  Get.create<ModuleRepository>(() => ModuleRepository());
+  Get.put<ModuleRepository>(ModuleRepository(), permanent: true);
   Get.create<PackageRepository>(() => PackageRepository());
   Get.create<PaymentModeRepository>(() => PaymentModeRepository());
   Get.create<PaymentRepository>(() => PaymentRepository());
@@ -119,6 +119,7 @@ void main() async {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
+      scrollBehavior: CustomScrollBehavior(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       defaultTransition: Transition.noTransition,

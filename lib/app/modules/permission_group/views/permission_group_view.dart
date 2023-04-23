@@ -100,7 +100,7 @@ class PermissionGroupView extends GetResponsiveView<UserGroupController> {
                           },
                           position: PopupMenuPosition.under,
                           itemBuilder: (context) {
-                            (Get.find<ModuleRepository>().modules.length);
+                            print(Get.find<ModuleRepository>().modules.length);
                             var modules = Get.find<ModuleRepository>()
                                 .modules
                                 .where(

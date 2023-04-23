@@ -41,56 +41,60 @@ class SubscriptionFormView extends GetView<SubscriptionFormController> {
               ),
             ),
             const SizedBox(height: 22),
-            Form(
-              key: controller.formKey,
-              child: Column(
-                children: [
-                  CustomerSelectionFormField(
-                    initialValue: controller.subscription.value.customer,
-                    onSaved: (customer) {
-                      controller.subscription.value.customerId = customer?.id;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  PackageSelectionFormField(
-                    initialValue: controller.subscription.value.package,
-                    onSaved: (package) {
-                      controller.subscription.value.packageId = package?.id;
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return "Please select a package";
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  PaymentModeSelectionFormField(
-                    onSaved: (paymentMode) {
-                      controller.subscription.value.modeId = paymentMode?.id;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ErpDiscountFormField(
-                    title: "Discount",
-                    initialValue: controller.subscription.value.discount,
-                    onSaved: (value) {
-                      controller.subscription.value.discount =
-                          value ?? Discount(type: DiscountType.none, value: 0);
-                    },
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ErpDateFormField(
-                    initialValue: controller.subscription.value.subscribedAt ??
-                        DateTime.now(),
-                    onSaved: (dateTime) {
-                      controller.subscription.value.subscribedAt = dateTime;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                ],
+            Flexible(
+              child: Form(
+                key: controller.formKey,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    CustomerSelectionFormField(
+                      initialValue: controller.subscription.value.customer,
+                      onSaved: (customer) {
+                        controller.subscription.value.customerId = customer?.id;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    PackageSelectionFormField(
+                      initialValue: controller.subscription.value.package,
+                      onSaved: (package) {
+                        controller.subscription.value.packageId = package?.id;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please select a package";
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    PaymentModeSelectionFormField(
+                      onSaved: (paymentMode) {
+                        controller.subscription.value.modeId = paymentMode?.id;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ErpDiscountFormField(
+                      title: "Discount",
+                      initialValue: controller.subscription.value.discount,
+                      onSaved: (value) {
+                        controller.subscription.value.discount = value ??
+                            Discount(type: DiscountType.none, value: 0);
+                      },
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ErpDateFormField(
+                      initialValue:
+                          controller.subscription.value.subscribedAt ??
+                              DateTime.now(),
+                      onSaved: (dateTime) {
+                        controller.subscription.value.subscribedAt = dateTime;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
             _footer(),

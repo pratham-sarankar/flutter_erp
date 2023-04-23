@@ -43,56 +43,59 @@ class PurchaseFormView extends GetView<PurchaseFormController> {
               ),
             ),
             const SizedBox(height: 22),
-            Form(
-              key: controller.formKey,
-              child: Column(
-                children: [
-                  CustomerSelectionFormField(
-                    initialValue: controller.purchase.value.customer,
-                    onSaved: (customer) {
-                      controller.purchase.value.customerId = customer?.id;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  CourseSelectionFormField(
-                    initialValue: controller.purchase.value.course,
-                    onSaved: (course) {
-                      controller.purchase.value.courseId = course?.id;
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return "Please select a course";
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  PaymentModeSelectionFormField(
-                    onSaved: (paymentMode) {
-                      controller.purchase.value.modeId = paymentMode?.id;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ErpDiscountFormField(
-                    title: "Discount",
-                    initialValue: controller.purchase.value.discount,
-                    onSaved: (value) {
-                      controller.purchase.value.discount =
-                          value ?? Discount(type: DiscountType.none, value: 0);
-                    },
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ErpDateFormField(
-                    initialValue:
-                        controller.purchase.value.purchasedAt ?? DateTime.now(),
-                    onSaved: (dateTime) {
-                      controller.purchase.value.purchasedAt = dateTime;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                ],
+            Flexible(
+              child: Form(
+                key: controller.formKey,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    CustomerSelectionFormField(
+                      initialValue: controller.purchase.value.customer,
+                      onSaved: (customer) {
+                        controller.purchase.value.customerId = customer?.id;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    CourseSelectionFormField(
+                      initialValue: controller.purchase.value.course,
+                      onSaved: (course) {
+                        controller.purchase.value.courseId = course?.id;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please select a course";
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    PaymentModeSelectionFormField(
+                      onSaved: (paymentMode) {
+                        controller.purchase.value.modeId = paymentMode?.id;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ErpDiscountFormField(
+                      title: "Discount",
+                      initialValue: controller.purchase.value.discount,
+                      onSaved: (value) {
+                        controller.purchase.value.discount = value ??
+                            Discount(type: DiscountType.none, value: 0);
+                      },
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ErpDateFormField(
+                      initialValue: controller.purchase.value.purchasedAt ??
+                          DateTime.now(),
+                      onSaved: (dateTime) {
+                        controller.purchase.value.purchasedAt = dateTime;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
             _footer(),

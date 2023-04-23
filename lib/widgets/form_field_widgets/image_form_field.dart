@@ -183,11 +183,16 @@ class _ImageFieldController extends GetxController {
       allowCompression: true,
       allowMultiple: false,
     );
-    var path = pickedFiles?.files.first.path;
     isLoading.value = false;
-    if (path == null) return;
-    File file = File(path);
-    Uint8List data = await file.readAsBytes();
+    Uint8List data;
+    if (GetPlatform.isWeb) {
+      data = pickedFiles!.files.first.bytes!;
+    } else {
+      var path = pickedFiles?.files.first.path;
+      if (path == null) return;
+      File file = File(path);
+      data = await file.readAsBytes();
+    }
     isLoading.value = true;
     String value = await Get.find<FileService>().uploadFile(data);
     isLoading.value = false;

@@ -1,5 +1,6 @@
 import 'package:flutter_erp/app/data/models/class.dart';
 import 'package:flutter_erp/app/data/models/customer.dart';
+import 'package:flutter_erp/app/data/utils/extensions/report_range.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:resource_manager/data/responses/fetch_response.dart';
@@ -17,6 +18,15 @@ class ClassRepository extends Repository<Class> {
 
   @override
   Class get empty => Class(branchId: Get.find<AuthService>().currentBranch.id);
+
+  Future<ClassSummary> fetchSummary() async {
+    final branchId = Get.find<AuthService>().currentBranch.id;
+
+    Response response = await get(
+      '/summary?branch_id=$branchId',
+    );
+    return ClassSummary.fromJson(response.body['data']);
+  }
 
   @override
   Future<List<Class>> fetch(
@@ -52,5 +62,15 @@ class ClassRepository extends Repository<Class> {
       data: data.map<Customer>((e) => Customer().fromMap(e)).toList(),
       total: count,
     );
+  }
+}
+
+class ClassSummary {
+  num total = 0;
+
+  ClassSummary();
+
+  ClassSummary.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
   }
 }

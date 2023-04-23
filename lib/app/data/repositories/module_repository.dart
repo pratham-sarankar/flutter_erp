@@ -7,8 +7,9 @@ class ModuleRepository extends Repository<Module> {
 
   List<Module> modules = [];
 
-  Future init() async {
+  Future<ModuleRepository> init() async {
     modules = await fetch();
+    return this;
   }
 
   @override

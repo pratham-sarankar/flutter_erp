@@ -22,6 +22,18 @@ class EmployeeRepository extends Repository<Employee> {
           .currentBranch
           .id);
 
+  Future<EmployeeSummary> fetchSummary() async {
+    final branchId = Get
+        .find<AuthService>()
+        .currentBranch
+        .id;
+
+    Response response = await get(
+      '/summary?branch_id=$branchId',
+    );
+    return EmployeeSummary.fromJson(response.body['data']);
+  }
+
   @override
   Future<List<Employee>> fetch({int limit = 100,
     int offset = 0,
@@ -50,5 +62,15 @@ class EmployeeRepository extends Repository<Employee> {
 
     return super.fetchWithCount(
         limit: limit, offset: offset, queries: updatedQueries);
+  }
+}
+
+class EmployeeSummary {
+  num total = 0;
+
+  EmployeeSummary();
+
+  EmployeeSummary.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
   }
 }
